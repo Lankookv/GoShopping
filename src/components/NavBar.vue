@@ -1,7 +1,7 @@
 <template>
   <div id="header">
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#F56E1C">
-      <div class="logo"><img src="./icon/logo.png"><span style="text-align: center;line-height:60px;">购小拼</span></div>
+      <div class="logo" @click="toHome"><img src="./icon/logo.png"><span style="text-align: center;line-height:60px;">购小拼</span></div>
       <el-submenu index="1">
         <template slot="title" class="mine">我的</template>
         <el-menu-item index="2-1" @click="toHistoricalGoods">查看历史商品</el-menu-item>
@@ -40,6 +40,9 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    toHome(){
+      this.$router.push({name:'Home',});
     },
     toHistoricalGoods(){
       this.$router.push({name:'HistoricalGoods',});
