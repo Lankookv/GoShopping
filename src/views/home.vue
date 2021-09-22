@@ -4,10 +4,10 @@
     <search></search>
     <div class="container1-1">
       <router-link :to="{name:'GoodDetails',params:{bid:1}}">
-        <img src="../components/icon/v.png">
+        <img src="../components/icon/1.png">
         <div class="container1-2" >
           <h3><b>bts周边</b></h3>
-          <h2><b>￥50</b></h2>
+          <h2><b>￥150</b></h2>
         </div>
       </router-link>
     </div>

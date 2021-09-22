@@ -1,14 +1,18 @@
 <template>
   <el-carousel :interval="4000" type="card" height="200px">
-    <el-carousel-item v-for="item in 6" :key="item">
-      <h3 class="medium">{{ item }}</h3>
+    <el-carousel-item v-for="item in 3" :key="item">
     </el-carousel-item>
   </el-carousel>
 </template>
 
 <script>
   export default {
-    name: "carousel"
+    name: "carousel",
+    data(){
+      return {
+
+      };
+    },
   }
 </script>
 
@@ -25,10 +29,28 @@
     line-height: 200px;
     margin: 0;
   }
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
+  .el-carousel__item:nth-child(3n) {
+    background-image: url(./icon/首页1.jpg);
+    background-size: 100% 100%;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
+  .el-carousel__item:nth-child(3n+1) {
+    background-image: url(./icon/首页2.jpg);
+    background-size: 100% 100%;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  .el-carousel__item:nth-child(3n+2) {
+    background-image: url(./icon/首页3.jpg);
+    background-size: 100% 100%;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
 </style>
