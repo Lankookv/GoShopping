@@ -36,6 +36,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: #FBBF9B;
-  height: 700px;
+  height:auto;
+  min-height:650px;
+  overflow: hidden;
 }
 </style>

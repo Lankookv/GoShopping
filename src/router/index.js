@@ -5,6 +5,8 @@ import goodDetails from "../views/goodDetails";
 import HistoricalGoods from "../views/HistoricalGoods"
 import ChangePassword from "../views/ChangePassword"
 
+import login from "../views/Login"
+
 Vue.use(Router)
 
 export default new Router({
@@ -13,6 +15,12 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: home
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login,
+      meta: { title: '登录' }
     },
     {
       path: '/goodDetails/:bid',
