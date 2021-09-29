@@ -2,7 +2,7 @@
   <div class="search">
     <input type="text" class="input-search" v-model="keyword" id="searchTxt" ref="searchTxt" placeholder="bts周边" filterable  value="">
 <!--    <link rel="preload" href="//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff2" as="font" type="font/woff2" crossorigin="anonymous">-->
-    <span class="iconfont">&#xe635;</span>
+    <i class="iconfont" @click="search">&#xe635;</i>
 <!--    <header class="page-header">-->
 <!--      <div class="searchwrap border-bottom">-->
 <!--        <div class="searchbox">-->
@@ -34,7 +34,12 @@
 
 <script>
   export default {
-    name: "search"
+    name: "search",
+    methods:{
+      search(){
+
+      },
+    }
   }
 </script>
 
@@ -71,6 +76,9 @@ input:focus{
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.iconfont:hover{
+  cursor:Pointer;
 }
 
 </style>
