@@ -6,6 +6,7 @@ import HistoricalGoods from "../views/HistoricalGoods"
 import ChangePassword from "../views/ChangePassword"
 import ProspectiveBuyers from "../views/ProspectiveBuyers"
 import goodDetailsSeller from "../views/goodDetailsSeller"
+import HistoricalGoodsDetail from "../views/HistoricalGoodsDetail"
 import b from "../views/b"
 
 import a from "../views/a"
@@ -20,7 +21,7 @@ export default new Router({
       component: home
     },
     {
-      path: '/goodDetails/:bid',
+      path: '/goodDetails/:bid',//bid:商品id
       name: 'GoodDetails',
       component: goodDetails
     },
@@ -35,7 +36,7 @@ export default new Router({
       component: b,//HistoricalGoods
     },
     {
-      path: '/goodDetails-seller/:bid',
+      path: '/goodDetails-seller/:bid',//bid:商品id
       name: 'GoodDetails-seller',
       component: goodDetailsSeller
     },
@@ -43,6 +44,11 @@ export default new Router({
       path: '/ProspectiveBuyers',
       name: 'ProspectiveBuyers',
       component: ProspectiveBuyers
+    },
+    {
+      path: '/HistoricalGoodsDetail/:bid',//bid:商品id
+      name: 'HistoricalGoodsDetail',
+      component: HistoricalGoodsDetail
     },
     {
       path: '/a',

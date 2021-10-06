@@ -3,31 +3,31 @@
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#F56E1C">
       <div class="logo" @click="toHome"><img src="./icon/logo.png"><span style="text-align: center;line-height:60px;">购小拼</span></div>
 
-      <div class="login">
-        <button class="btn1" @click="Login">
-          登录
-        </button>
-        <button class="btn2" @click="Register">
-          注册
-        </button>
-      </div>
+<!--      <div class="login">-->
+<!--        <button class="btn1" @click="Login">-->
+<!--          登录-->
+<!--        </button>-->
+<!--        <button class="btn2" @click="Register">-->
+<!--          注册-->
+<!--        </button>-->
+<!--      </div>-->
 
-<!--      <el-submenu index="1">-->
-<!--        <template slot="title" class="mine">我的</template>-->
-<!--        <el-menu-item index="2-1" @click="toSetting">我的设置</el-menu-item>-->
-<!--        <el-menu-item index="2-2" @click="toChangePassword">修改密码</el-menu-item>-->
-<!--        <el-menu-item index="2-3" @click="toHistoricalGoods">查看历史商品</el-menu-item>-->
-<!--        <el-menu-item index="2-4" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>-->
-<!--        <hr>-->
-<!--        <el-menu-item index="2-5" @click="logout">退出登录</el-menu-item>-->
-<!--&lt;!&ndash;        <el-submenu index="2-4">&ndash;&gt;-->
-<!--&lt;!&ndash;          <template slot="title">选项4</template>&ndash;&gt;-->
-<!--&lt;!&ndash;          <el-menu-item index="2-4-1">选项1</el-menu-item>&ndash;&gt;-->
-<!--&lt;!&ndash;          <el-menu-item index="2-4-2">选项2</el-menu-item>&ndash;&gt;-->
-<!--&lt;!&ndash;          <el-menu-item index="2-4-3">选项3</el-menu-item>&ndash;&gt;-->
-<!--&lt;!&ndash;        </el-submenu>&ndash;&gt;-->
-<!--      </el-submenu>-->
-<!--      <img src="./icon/v.png" class="faces" height="50px">-->
+      <el-submenu index="1">
+        <template slot="title" class="mine">我的</template>
+        <el-menu-item index="2-1" @click="toSetting">我的设置</el-menu-item>
+        <el-menu-item index="2-2" @click="toChangePassword">修改密码</el-menu-item>
+        <el-menu-item index="2-3" @click="toHistoricalGoods">查看历史商品</el-menu-item>
+        <el-menu-item index="2-4" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
+        <hr>
+        <el-menu-item index="2-5" @click="logout">退出登录</el-menu-item>
+<!--        <el-submenu index="2-4">-->
+<!--          <template slot="title">选项4</template>-->
+<!--          <el-menu-item index="2-4-1">选项1</el-menu-item>-->
+<!--          <el-menu-item index="2-4-2">选项2</el-menu-item>-->
+<!--          <el-menu-item index="2-4-3">选项3</el-menu-item>-->
+<!--        </el-submenu>-->
+      </el-submenu>
+      <img src="./icon/v.png" class="faces" height="50px">
 <!--      <el-menu-item index="2"><img src="v.png"></el-menu-item>-->
 <!--      <el-menu-item index="3" disabled>消息中心</el-menu-item>-->
 <!--      <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>-->
@@ -56,8 +56,8 @@
       <div class="ms-login" v-else>
         <div class="ms-title">欢迎来到购小拼<i class="iconfont" @click="close">&#xe650;</i></div>
         <el-form :model="registerParam" :rules="rules" ref="registerForm" label-width="0px" class="ms-content">
-          <el-form-item prop="username">
-            <el-input v-model="registerParam.username" placeholder="用户名" prefix-icon="el-icon-user">
+          <el-form-item prop="account">
+            <el-input v-model="registerParam.account" placeholder="用户名" prefix-icon="el-icon-user">
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
@@ -68,8 +68,8 @@
             <el-input type="password" placeholder="确认密码" v-model="registerParam.r_password" prefix-icon="el-icon-lock">
             </el-input>
           </el-form-item>
-          <el-form-item prop="email">
-            <el-input v-model="registerParam.email" placeholder="邮箱" prefix-icon="el-icon-message">
+          <el-form-item prop="phone">
+            <el-input v-model="registerParam.phone" placeholder="手机号码" prefix-icon="el-icon-message">
             </el-input>
           </el-form-item>
           <div class="login-btn">
@@ -108,13 +108,13 @@ export default {
       registerParam: {},
       rules: {
         account: [{ required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 2, max: 32, message: '请输入2-20位字符', trigger: 'blur'}],
+          { min: 3, max: 15, message: '请输入3-15位字符', trigger: 'blur'}],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 0, max: 32, message: '请输入6-32位字符', trigger: 'blur'}],
+          { min: 6, max: 12, message: '请输入6-12位字符', trigger: 'blur'}],
         r_password: [{ required: true, message: '请输入确认密码', trigger: 'blur' },
           { validator: validatePass, trigger: 'blur' }],
-        email: [{ required: true, message: '请输入邮箱', trigger: 'blur' },
-          { type: "email", message: '请输入正确电子邮件地址', trigger: 'blur' }]
+        phone: [{ required: true, message: '请输入手机号码', trigger: 'blur' },
+          { type: "phone", message: '请输入正确的手机号码', trigger: 'blur' }]
       },
     };
   },
@@ -153,15 +153,15 @@ export default {
         if (valid) {
           login(this.loginParam)
             .then((response)=> {
-              console.log(response);
-              alert("this.loginParam:"+this.loginParam);
-              sessionStorage.clear();
-              sessionStorage.setItem('token', response.data.details.token);
-              localStorage.setItem('token', response.data.details.token);
-              localStorage.setItem('id', response.data.details.id);
-              localStorage.setItem('account',response.data.details.account);
+              // console.log(response);
+               alert("this.loginParam:"+this.loginParam);
+              // sessionStorage.clear();
+              // sessionStorage.setItem('token', response.data.details.token);
+              // localStorage.setItem('token', response.data.details.token);
+              // localStorage.setItem('id', response.data.details.id);
+              // localStorage.setItem('account',response.data.details.account);
               this.$message.success('登录成功');
-              this.$router.push('/home');
+              this.$router.push('/');
             })
             .catch(error => {
               this.$message.error('用户名或密码错误');
@@ -178,7 +178,7 @@ export default {
           register(this.registerParam)
             .then((response)=> {
               this.$message.success('注册成功');
-              this.loginParam.username = this.registerParam.username
+              this.loginParam.account = this.registerParam.account
               this.loginParam.password = this.registerParam.password
               this.two = true
             })
@@ -193,7 +193,7 @@ export default {
       });
     },
     goFindPwd(){
-      this.$message.error('找个锤子。');
+      this.$message.error('重新注册吧');
     },
   },
 }
