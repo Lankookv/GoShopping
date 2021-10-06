@@ -1,24 +1,26 @@
 <template>
   <div class="container">
-    <span class="title">
+    <div class="container0">
+      <span class="title">
       <b>查看历史商品</b>
     </span>
-    <div >
-      <Input  v-model="query.keywords"
-              @on-enter="filterByKeyword"
-              @on-click="filterByKeyword"
-              placeholder="BTS周边"
-              class="search"
-              icon="ios-search-strong"/>
+      <div >
+        <Input  v-model="query.keywords"
+                @on-enter="filterByKeyword"
+                @on-click="filterByKeyword"
+                placeholder="BTS周边"
+                class="search"
+                icon="ios-search-strong"/>
+      </div>
+      <select >
+        <option value="" disabled selected hidden>分类</option>
+        <option value ="soldOut">已售空</option>
+        <option value ="onSale">在售</option>
+        <option value="frozen">冻结</option>
+      </select>
     </div>
-    <select >
-      <option value="" disabled selected hidden>分类</option>
-      <option value ="soldOut">已售空</option>
-      <option value ="onSale">在售</option>
-      <option value="frozen">冻结</option>
-    </select>
     <div class="container1">
-<!--      <div v-if="allCourses.length==0&&No_course==false" style="padding-top: 15%">-->
+<!--      <div v-if="allGoods.length==0&&No_good==false" style="padding-top: 15%">-->
 <!--        <center>-->
 <!--          <div style="margin-top:100px;" >-->
 <!--            <i size="big"class="el-icon-loading" ></i>-->
@@ -28,27 +30,43 @@
 <!--          <span style="text-align: center">正在努力加载中 请稍后 o(*￣▽￣*)ブ</span>-->
 <!--        </div>-->
 <!--      </div>-->
-<!--      <div v-else-if="allCourses.length==0&&No_course==true">-->
-        <div>
-        <center>
-          <img  src="../components/icon/pic30.png" style="width:100%">
-        </center>
-        <div style="text-align: center;">
-          <span style="text-align: center">没有搜索到任何课程哦 /(ㄒoㄒ)/~~</span>
-        </div>
-      </div>
+<!--      <div v-else-if="allGoods.length==0&&No_good==true">-->
+<!--      <div >-->
+<!--        <center>-->
+<!--          <img  src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">-->
+<!--        </center>-->
+<!--        <div style="text-align: center;">-->
+<!--          <span style="text-align: center">没有搜索到任何商品哦 /(ㄒoㄒ)/~~</span>-->
+<!--        </div>-->
+<!--      </div>-->
       <ul    :loading="loadings.table" >
-        <router-link class="container_1" v-for="(course,index) in allCourses" :to="{name:'the_platform_course',params:{cid:course.courseId}}" :key="index" tag="li" >
-          <div class="container1-1" >
-            <img :src="course.courseCover">
-            <div class="container1-2">
-              <h3><b>{{course.courseName}}</b></h3>
-              <p><small>{{course.courseUniversity}}&emsp;&emsp;&emsp;{{course.courseAuthor}}</small></p>
-              <div style="overflow-y: scroll;">
-                <small>{{course.courseDescription}}</small>
+<!--        <router-link class="container_1" v-for="(good,index) in allGoods" :to="{name:'HistoricalGoodsDetail',params:{bid:good.goodId}}" :key="index" tag="li" >-->
+<!--          <div class="container1-1" >-->
+<!--            <img :src="good.goodCover">-->
+<!--            <div class="container1-2">-->
+<!--              <h3><b>{{good.goodName}}</b></h3>-->
+<!--              <div style="overflow-y: scroll;">-->
+<!--                <small>{{good.goodDescription}}</small>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="container1-3">-->
+<!--              <h1 style="color: red;font-size: 40px"><b>￥150</b></h1>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </router-link>-->
+        <router-link class="container_1" v-for="(good,index) in allGoods" :to="{name:'HistoricalGoodsDetail',params:{bid:good.goodId}}" :key="index" tag="li" >
+            <img :src="good.goodCover" style="width: 200px;margin-left: 1%;margin-top: 1%">
+            <div class="container1-2" style="overflow:hidden;">
+              <h2><b>{{good.goodName}}</b></h2>
+              <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+                <small>{{good.goodDescription}}</small>
               </div>
             </div>
-          </div>
+            <span class="container1-3">
+<!--              <img src="../components/icon/冻结.png" style="width: 15%;float: right">-->
+              <img src="../components/icon/已卖出.png" style="width: 9%;float: right">
+              <h1 style="color: black;font-size: 40px;margin-top: 80px;margin-right: 4%"><b>￥150</b></h1>
+            </span>
         </router-link>
       </ul>
     </div>
@@ -65,7 +83,7 @@
   import Pagination from '../components/Pagination'
 
   export default {
-    name: "platform_course",
+    name: "platform_good",
     components: {
       Pagination
     },
@@ -76,10 +94,10 @@
         loadings: {
           table: true,
         },
-        No_course:false,
-        allCourses: [],
-        courses: [],
-        limit: 5,
+        No_good:false,
+        allGoods: [{goodId:1,goodCover:"https://img2.baidu.com/it/u=2612970998,458336255&fm=26&fmt=auto",goodName:"BTS专辑",goodDescription:"防弹少年团（BTS）是BigHit Entertainment于2013年6月13日推出的韩国男子演唱组合，由金南俊、金硕珍、闵玧其、郑号锡、朴智旻、金泰亨、田柾国7位成员组成。\n2013年6月，发行首张单曲专辑《2 COOL 4 SKOOL》 [1]  ，并在Mnet音乐节目《M! Countdown》中正式出道 [2]  ；同年，推出首张迷你专辑《O!RUL8,2?》 [3]  ，获得第5届Melon音乐盛典最佳新人奖 [4]  。2014年6月，推出首张日文单曲辑《NO MORE DREAM -Japanese Ver.-》，在日本正式出道 [5]  ；8月，推出首张正规专辑《DARK & WILD》 [6]  。2015年4月，凭借歌曲《I NEED U》获得了出道后首个韩国音乐节目的一位 [7]  ；同年，获得了第22届MTV欧洲音乐大奖最佳韩国艺人奖 [8]  。2016年10月，发行第二张正规专辑《WINGS》 [9]  。2017年9月，发行第三张迷你专辑《LOVE YOURSELF 承 'Her'》 [10]  ；11月，获得了“全世界在推特被提及次数最多的音乐组合”吉尼斯世界纪录的认证 [11]  。2018年5月，推出第三张正规专辑《LOVE YOURSELF 转 'Tear'》 [12]  ；同月，受邀出席美国第25届公告牌音乐奖典礼并获得“最佳社交艺人”奖 [13]  。2019福布斯100名人榜排名第43位 [14]  。\n2019年11月3日，MTVEMA获奖名单揭晓，BTS防弹少年团获最佳现场和最强粉丝团奖项。 [15]",},{goodId:2,goodCover:"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqny.smzdm.com%2F202104%2F19%2F607d44a9379f99175.png_d250.jpg&refer=http%3A%2F%2Fqny.smzdm.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1635507201&t=6930bef51f77c6a9b8b77c384e88834e",goodName:"ipad",goodDescription:"10.2 英寸\n采用原彩显示技术的视网膜显示屏\nA13 仿生芯片\n拥有神经网络引擎\n兼容：\nApple Pencil (第一代)\n智能键盘",},{goodId:3,goodCover:"https://img2.baidu.com/it/u=2612970998,458336255&fm=26&fmt=auto",goodName:"BTS专辑",goodDescription:"防弹少年团（BTS）是BigHit Entertainment于2013年6月13日推出的韩国男子演唱组合，由金南俊、金硕珍、闵玧其、郑号锡、朴智旻、金泰亨、田柾国7位成员组成。\n2013年6月，发行首张单曲专辑《2 COOL 4 SKOOL》 [1]  ，并在Mnet音乐节目《M! Countdown》中正式出道 [2]  ；同年，推出首张迷你专辑《O!RUL8,2?》 [3]  ，获得第5届Melon音乐盛典最佳新人奖 [4]  。2014年6月，推出首张日文单曲辑《NO MORE DREAM -Japanese Ver.-》，在日本正式出道 [5]  ；8月，推出首张正规专辑《DARK & WILD》 [6]  。2015年4月，凭借歌曲《I NEED U》获得了出道后首个韩国音乐节目的一位 [7]  ；同年，获得了第22届MTV欧洲音乐大奖最佳韩国艺人奖 [8]  。2016年10月，发行第二张正规专辑《WINGS》 [9]  。2017年9月，发行第三张迷你专辑《LOVE YOURSELF 承 'Her'》 [10]  ；11月，获得了“全世界在推特被提及次数最多的音乐组合”吉尼斯世界纪录的认证 [11]  。2018年5月，推出第三张正规专辑《LOVE YOURSELF 转 'Tear'》 [12]  ；同月，受邀出席美国第25届公告牌音乐奖典礼并获得“最佳社交艺人”奖 [13]  。2019福布斯100名人榜排名第43位 [14]  。\n2019年11月3日，MTVEMA获奖名单揭晓，BTS防弹少年团获最佳现场和最强粉丝团奖项。 [15]",}],
+        goods: [],
+        limit: 2,
         routeName: '',
         query: {
           keywords: '',
@@ -99,11 +117,11 @@
         if (this.query.page < 1) {
           this.query.page = 1
         }
-        this.getAllCourses()
+        this.getAllGoods()
       },
       pushRouter() {
         this.$router.push(
-          {name: 'platform_course', query: this.query}
+          {name: 'platform_good', query: this.query}
         )
       },
       sortBy (sort) {
@@ -115,21 +133,21 @@
         this.query.page = 1
         this.pushRouter()
       },
-      getAllCourses() {
+      getAllGoods() {
         let offset = (this.query.page - 1) * this.limit
         this.loadings.table = true
-        api.getPlatform_Courses(offset, this.limit, this.query).then(res => {
+        api.getPlatform_Goods(offset, this.limit, this.query).then(res => {
             // this.loadings.table = false
-            this.allCourses = res.data.data.results;
+            this.allGoods = res.data.data.results;
             this.total=res.data.data.total;
             //alert(this.total);
             if(this.total==0)
             {
-              this.No_course=true;
+              this.No_good=true;
             }
             else
             {
-              this.No_course=false;
+              this.No_good=false;
             }
           },
           res => {
@@ -137,7 +155,7 @@
           })
       },
       onReset () {
-        this.$router.push({name: 'platform_course'})
+        this.$router.push({name: 'platform_good'})
         parent.location.reload();
       },
     },
@@ -152,6 +170,11 @@
 </script>
 
 <style scoped lang="less">
+  .container0{
+    height:auto;
+    min-height:30px;
+    overflow: hidden;
+  }
   .btn1 {
     box-shadow: 2px 2px 2px #aaaaaa;
     width: 170px;
@@ -202,7 +225,7 @@
     margin-bottom: 20px; /*外边框的距离*/
     margin-left: 20px; /*外边框的距离*/
   }
-  .course_title{
+  .good_title{
     overflow : hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -251,13 +274,23 @@
     }
     .container_1{
       cursor: pointer;
-      padding:10px 10px 10px 10px;
+      padding:0px 0px 10px 10px;
+      background-color:  #F56E1C;
+      border-radius: 10px;
+      border: 1px solid black;
+      height:auto;
+      min-height:200px;
+      overflow: hidden;
     }
     .container_1:hover{
       cursor: pointer;
-      background-color: #eeeeee;
-      padding:10px 10px 10px 10px;
-      color:#3399ff;
+      padding:0px 0px 10px 10px;
+      background-color:  #F56E1C;
+      border-radius: 10px;
+      border: 1px solid #cccccc;
+      height:auto;
+      min-height:200px;
+      overflow: hidden;
     }
     .container1 {
       border-radius: 5px;
@@ -268,7 +301,7 @@
         padding-bottom: 10px;
         li{
           width: 100%;
-          margin:2% 4%;
+          margin:1% 4%;
           list-style: none;
           img{
             width: 30%;
@@ -276,19 +309,23 @@
             margin:auto;
           }
           .container1-2 {
-            width: 70%;
-            float:right;
-            h3{
-              margin-left: 3%;
+            width: 60%;
+            float:left;
+            margin-left: 2%;
+            text-align: left;
+            h2{
               margin-bottom: 1%;
+              margin-top: 2%;
+              margin-left: 5%;
             }
             p{
               margin-left: 3%;
               color: darkgray;
             }
             div{
-              height: 60px;
-              margin:1% 0px 0px 3%;
+              height: 140px;
+              width: 100%;
+              margin:1% 5% 0px 3%;
             }
           }
         }
