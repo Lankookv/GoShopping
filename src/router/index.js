@@ -7,9 +7,6 @@ import ChangePassword from "../views/ChangePassword"
 import ProspectiveBuyers from "../views/ProspectiveBuyers"
 import goodDetailsSeller from "../views/goodDetailsSeller"
 import HistoricalGoodsDetail from "../views/HistoricalGoodsDetail"
-import b from "../views/b"
-
-import a from "../views/a"
 
 Vue.use(Router)
 
@@ -33,7 +30,7 @@ export default new Router({
     {
       path: '/HistoricalGoods',
       name: 'HistoricalGoods',
-      component: b,//HistoricalGoods
+      component: HistoricalGoods
     },
     {
       path: '/goodDetails-seller/:bid',//bid:商品id
@@ -50,11 +47,5 @@ export default new Router({
       name: 'HistoricalGoodsDetail',
       component: HistoricalGoodsDetail
     },
-    {
-      path: '/a',
-      name: 'a',
-      component: a
-    },
-
   ]
 })

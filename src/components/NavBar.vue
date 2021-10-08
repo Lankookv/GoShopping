@@ -20,18 +20,8 @@
         <el-menu-item index="2-4" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
         <hr>
         <el-menu-item index="2-5" @click="logout">退出登录</el-menu-item>
-<!--        <el-submenu index="2-4">-->
-<!--          <template slot="title">选项4</template>-->
-<!--          <el-menu-item index="2-4-1">选项1</el-menu-item>-->
-<!--          <el-menu-item index="2-4-2">选项2</el-menu-item>-->
-<!--          <el-menu-item index="2-4-3">选项3</el-menu-item>-->
-<!--        </el-submenu>-->
       </el-submenu>
       <img src="./icon/v.png" class="faces" height="50px">
-<!--      <el-menu-item index="2"><img src="v.png"></el-menu-item>-->
-<!--      <el-menu-item index="3" disabled>消息中心</el-menu-item>-->
-<!--      <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>-->
-
 
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'">

@@ -45,25 +45,34 @@
 
 <style scoped lang="less">
 .search{
-  margin-top: 5px;
-}
-input{
-  outline-style: none ;
   border: 1px solid #ccc;
   border-radius: 20px;
-  padding: 8px 8px;
-  width: 350px;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: "Microsoft soft";
+  width: 400px;
+  margin:0 auto;
+  background-color: white;
 }
-input:focus{
+.search:focus{
   border-color: #66afe9;
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
 }
-
+//input:focus{
+//  border-color: #66afe9;
+//  outline: 0;
+//  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+//  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+//}
+.input-search{
+  border:none;
+  width: 350px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Microsoft soft";
+  padding: 8px 8px;
+  background-color:transparent;
+  outline:none;
+}
 @font-face {
   font-family: 'iconfont';  /* Project id 2810508 */
   src: url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff2?t=1631580008886') format('woff2'),
@@ -76,6 +85,7 @@ input:focus{
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin-right: 10px;
 }
 .iconfont:hover{
   cursor:Pointer;
