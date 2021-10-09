@@ -16,6 +16,7 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: home
+
     },
     {
       path: '/goodDetails/:bid',//bid:商品id
@@ -25,27 +26,32 @@ export default new Router({
     {
       path: '/ChangePassword',
       name: 'ChangePassword',
-      component: ChangePassword
+      component: ChangePassword,
+      meta:{isLogin:false},
     },
     {
       path: '/HistoricalGoods',
       name: 'HistoricalGoods',
-      component: HistoricalGoods
+      component: HistoricalGoods,
+      meta:{isLogin:false},
     },
     {
       path: '/goodDetails-seller/:bid',//bid:商品id
       name: 'GoodDetails-seller',
-      component: goodDetailsSeller
+      component: goodDetailsSeller,
+      meta:{isLogin:false},
     },
     {
       path: '/ProspectiveBuyers',
       name: 'ProspectiveBuyers',
-      component: ProspectiveBuyers
+      component: ProspectiveBuyers,
+      meta:{isLogin:false},
     },
     {
       path: '/HistoricalGoodsDetail/:bid',//bid:商品id
       name: 'HistoricalGoodsDetail',
-      component: HistoricalGoodsDetail
+      component: HistoricalGoodsDetail,
+      meta:{isLogin:false},
     },
   ]
 })

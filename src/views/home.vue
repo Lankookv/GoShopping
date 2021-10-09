@@ -12,12 +12,12 @@
 <!--      </router-link>-->
 <!--    </div>-->
     <ul>
-      <router-link v-for="(good,index) in allGoods" :to="{name:'GoodDetails',params:{cid:good.GoodId}}" :key="index" tag="li" style="list-style:none;">
+      <router-link v-for="(good,index) in allGoods" :to="{name:'GoodDetails',params:{bid:good.goodId}}" :key="index" tag="li" style="list-style:none;">
         <div class="container1-1" >
           <img :src="good.img">
           <div class="container1-2">
-            <h3><b>{{good.Name}}</b></h3>
-            <h2><b>￥{{good.Price}}</b></h2>
+            <h3><b>{{good.name}}</b></h3>
+            <h2><b>￥{{good.price}}</b></h2>
           </div>
         </div>
       </router-link>
@@ -59,7 +59,7 @@
       getAllGoods() {
         showAllGoods()
           .then((response)=> {
-            this.allGoods=response.AllGoodForSale;
+            this.allGoods=response.data.data.goodlist;
           })
       },
     },
@@ -72,7 +72,7 @@
     flex-wrap: wrap; //默认不换行
     li{
       width: 30%;
-      background-color: #F56E1C;
+      background-color: #F88E4E;
       border-radius: 10px;
       margin-left: 1%;//2.5%
       margin-right: 1%;

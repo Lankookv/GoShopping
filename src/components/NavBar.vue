@@ -1,27 +1,30 @@
 <template>
   <div id="header">
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#F56E1C">
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#F6792E">
       <div class="logo" @click="toHome"><img src="./icon/logo.png"><span style="text-align: center;line-height:60px;">购小拼</span></div>
 
+      <div class="login" v-if="!islogin">
 <!--      <div class="login">-->
-<!--        <button class="btn1" @click="Login">-->
-<!--          登录-->
-<!--        </button>-->
-<!--        <button class="btn2" @click="Register">-->
-<!--          注册-->
-<!--        </button>-->
-<!--      </div>-->
+        <button class="btn1" @click="Login">
+          登录
+        </button>
+        <button class="btn2" @click="Register">
+          注册
+        </button>
+      </div>
 
-      <el-submenu index="1">
-        <template slot="title" class="mine">我的</template>
-        <el-menu-item index="2-1" @click="toSetting">我的设置</el-menu-item>
-        <el-menu-item index="2-2" @click="toChangePassword">修改密码</el-menu-item>
-        <el-menu-item index="2-3" @click="toHistoricalGoods">查看历史商品</el-menu-item>
-        <el-menu-item index="2-4" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
-        <hr>
-        <el-menu-item index="2-5" @click="logout">退出登录</el-menu-item>
-      </el-submenu>
-      <img src="./icon/v.png" class="faces" height="50px">
+      <div v-else>
+        <el-submenu index="1">
+          <template slot="title" class="mine">我的</template>
+          <el-menu-item index="2-1" @click="toSetting">我的设置</el-menu-item>
+          <el-menu-item index="2-2" @click="toChangePassword">修改密码</el-menu-item>
+          <el-menu-item index="2-3" @click="toHistoricalGoods">查看历史商品</el-menu-item>
+          <el-menu-item index="2-4" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
+          <hr>
+          <el-menu-item index="2-5" @click="logout">退出登录</el-menu-item>
+        </el-submenu>
+        <img src="./icon/v.png" class="faces" height="50px">
+      </div>
 
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'">
@@ -92,6 +95,7 @@ export default {
     return {
       activeIndex: '1',
       activeIndex2: '1',
+      islogin:false,
       two: true,
       showModal:false,
       loginParam: {},
@@ -108,8 +112,8 @@ export default {
       },
     };
   },
-  mounted () {
-
+  created () {
+   // localStorage.setItem('account',JSON.stringify(""));
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -144,13 +148,16 @@ export default {
           login(this.loginParam)
             .then((response)=> {
               // console.log(response);
-               alert("this.loginParam:"+this.loginParam);
+              // alert("this.loginParam:"+this.loginParam);
               // sessionStorage.clear();
               // sessionStorage.setItem('token', response.data.details.token);
               // localStorage.setItem('token', response.data.details.token);
               // localStorage.setItem('id', response.data.details.id);
+              // localStorage.setItem('account', JSON.stringify(this.loginParam.account));
               // localStorage.setItem('account',response.data.details.account);
+              this.islogin=true;
               this.$message.success('登录成功');
+              this.showModal=!this.showModal;
               this.$router.push('/');
             })
             .catch(error => {
@@ -162,6 +169,9 @@ export default {
         }
       });
     },
+    logout(){
+      this.islogin=false;
+    },
     submitRegisterForm(formName){
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -171,6 +181,7 @@ export default {
               this.loginParam.account = this.registerParam.account
               this.loginParam.password = this.registerParam.password
               this.two = true
+              this.showModal=!this.showModal;
             })
             .catch((error)=> {
               var key = Object.keys(error.response.data.details)[0]
