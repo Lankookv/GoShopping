@@ -2,11 +2,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from "../views/home";
 import goodDetails from "../views/goodDetails";
+import ReleaseGoods from "../views/ReleaseGoods";
 import HistoricalGoods from "../views/HistoricalGoods"
 import ChangePassword from "../views/ChangePassword"
 import ProspectiveBuyers from "../views/ProspectiveBuyers"
-import goodDetailsSeller from "../views/goodDetailsSeller"
-import HistoricalGoodsDetail from "../views/HistoricalGoodsDetail"
+import goodDetailOnSale from "../views/goodDetail-onSale"
+import goodDetailSold from "../views/goodDetail-sold"
+import goodDetailFrozen from "../views/goodDetail-frozen"
 
 Vue.use(Router)
 
@@ -27,31 +29,43 @@ export default new Router({
       path: '/ChangePassword',
       name: 'ChangePassword',
       component: ChangePassword,
-      meta:{isLogin:false},
+      meta:{isSeller:true},
+    },
+    {
+      path: '/ReleaseGoods',
+      name: 'ReleaseGoods',
+      component: ReleaseGoods,
+      meta:{isSeller:true},
     },
     {
       path: '/HistoricalGoods',
       name: 'HistoricalGoods',
       component: HistoricalGoods,
-      meta:{isLogin:false},
-    },
-    {
-      path: '/goodDetails-seller/:bid',//bid:商品id
-      name: 'GoodDetails-seller',
-      component: goodDetailsSeller,
-      meta:{isLogin:false},
+      meta:{isSeller:true},
     },
     {
       path: '/ProspectiveBuyers',
       name: 'ProspectiveBuyers',
       component: ProspectiveBuyers,
-      meta:{isLogin:false},
+      meta:{isSeller:true},
     },
     {
-      path: '/HistoricalGoodsDetail/:bid',//bid:商品id
-      name: 'HistoricalGoodsDetail',
-      component: HistoricalGoodsDetail,
-      meta:{isLogin:false},
+      path: '/GoodDetail/:bid',//bid:商品id
+      name: 'goodDetail-onSale',
+      component: goodDetailOnSale,
+      meta:{isSeller:true},
+    },
+    {
+      path: '/GoodDetail/:bid',//bid:商品id
+      name: 'goodDetail-sold',
+      component: goodDetailSold,
+      meta:{isSeller:true},
+    },
+    {
+      path: '/GoodDetail/:bid',//bid:商品id
+      name: 'goodDetail-frozen',
+      component: goodDetailFrozen,
+      meta:{isSeller:true},
     },
   ]
 })

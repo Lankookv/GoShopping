@@ -2,30 +2,28 @@
   <div id="header">
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#F6792E">
       <div class="logo" @click="toHome"><img src="./icon/logo.png"><span style="text-align: center;line-height:60px;">购小拼</span></div>
-
-      <div class="login" v-if="!islogin">
+      <div class="login" v-if="islogin">
 <!--      <div class="login">-->
         <button class="btn1" @click="Login">
           登录
         </button>
-        <button class="btn2" @click="Register">
-          注册
-        </button>
+<!--        <button class="btn2" @click="Register">-->
+<!--          注册-->
+<!--        </button>-->
       </div>
-
       <div v-else>
         <el-submenu index="1">
           <template slot="title" class="mine">我的</template>
           <el-menu-item index="2-1" @click="toSetting">我的设置</el-menu-item>
           <el-menu-item index="2-2" @click="toChangePassword">修改密码</el-menu-item>
-          <el-menu-item index="2-3" @click="toHistoricalGoods">查看历史商品</el-menu-item>
-          <el-menu-item index="2-4" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
+          <el-menu-item index="2-3" @click="toReleaseGoods">发布商品</el-menu-item>
+          <el-menu-item index="2-4" @click="toHistoricalGoods">查看历史商品</el-menu-item>
+          <el-menu-item index="2-5" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
           <hr>
-          <el-menu-item index="2-5" @click="logout">退出登录</el-menu-item>
+          <el-menu-item index="2-6" @click="logout">退出登录</el-menu-item>
         </el-submenu>
         <img src="./icon/v.png" class="faces" height="50px">
       </div>
-
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'">
       <div class="ms-login" v-if="two">
@@ -122,6 +120,9 @@ export default {
     toHome(){
       this.$router.push({name:'Home',});
     },
+    toReleaseGoods(){
+      this.$router.push({name:'ReleaseGoods',});
+    },
     toHistoricalGoods(){
       this.$router.push({name:'HistoricalGoods',});
     },
@@ -133,6 +134,7 @@ export default {
     },
     Login(){
       this.two=true;
+
       this.showModal=!this.showModal;
     },
     Register(){
@@ -171,6 +173,7 @@ export default {
     },
     logout(){
       this.islogin=false;
+      this.$router.push('/');
     },
     submitRegisterForm(formName){
       this.$refs[formName].validate(valid => {

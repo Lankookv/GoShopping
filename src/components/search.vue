@@ -65,7 +65,7 @@
 //}
 .input-search{
   border:none;
-  width: 350px;
+  width: 330px;
   font-size: 14px;
   font-weight: 700;
   font-family: "Microsoft soft";

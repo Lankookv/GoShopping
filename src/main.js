@@ -18,7 +18,7 @@ new Vue({
   template: '<App/>',
   created () {
     router.beforeEach((to, from, next) => {
-      if (to.meta.isLogin) {
+      if (to.meta.isSeller) {
         //页面是否登录
         if (localStorage.getItem("account")) {
           //本地存储中是否有token(uid)数据
@@ -26,7 +26,7 @@ new Vue({
         } else {
           //next可以传递一个路由对象作为参数 表示需要跳转到的页面
           next({
-            name: "login"
+            name: "Home"
           });
         }
       } else {

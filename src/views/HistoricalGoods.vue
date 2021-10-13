@@ -5,20 +5,20 @@
         <b>查看历史商品</b>
       </span>
       <div class="search">
-        <Input  v-model="query.keywords"
-                @on-enter="filterByKeyword"
-                @on-click="filterByKeyword"
-                placeholder="BTS专辑"
-                class="input-search"/>
-        <span slot="append">
-          <Button type="primary" style="background-color:transparent;border: none">
-            <i class="iconfont" @click.prevent="filterByKeyword">&#xe635;</i>
-          </Button>
-        </span>
+<!--        <Input  v-model="query.keywords"-->
+<!--                @on-enter="filterByKeyword"-->
+<!--                @on-click="filterByKeyword"-->
+<!--                placeholder="BTS专辑"-->
+<!--                class="input-search"/>-->
+<!--        <span slot="append">-->
+<!--          <Button type="primary" style="background-color:transparent;border: none">-->
+<!--            <i class="iconfont" @click.prevent="filterByKeyword">&#xe635;</i>-->
+<!--          </Button>-->
+<!--        </span>-->
       </div>
-      <select >
-        <option value="" disabled selected hidden>分类</option>
-        <option value ="soldOut">已售空</option>
+      <select name="classify" onchange="cll(this.options[this.options.selectedIndex].value)">
+        <option value="all" selected>全部</option>
+        <option value ="sold">已售空</option>
         <option value ="onSale">在售</option>
         <option value="frozen">冻结</option>
       </select>
@@ -43,55 +43,85 @@
       <!--          <span style="text-align: center">没有搜索到任何商品哦 /(ㄒoㄒ)/~~</span>-->
       <!--        </div>-->
       <!--      </div>-->
-      <ul    :loading="loadings.table" >
-        <!--        <router-link class="container_1" v-for="(good,index) in allGoods" :to="{name:'HistoricalGoodsDetail',params:{bid:good.goodId}}" :key="index" tag="li" >-->
-        <!--          <div class="container1-1" >-->
-        <!--            <img :src="good.goodCover">-->
-        <!--            <div class="container1-2">-->
-        <!--              <h3><b>{{good.goodName}}</b></h3>-->
-        <!--              <div style="overflow-y: scroll;">-->
-        <!--                <small>{{good.goodDescription}}</small>-->
-        <!--              </div>-->
-        <!--            </div>-->
-        <!--            <div class="container1-3">-->
-        <!--              <h1 style="color: red;font-size: 40px"><b>￥150</b></h1>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </router-link>-->
-        <router-link :class="good.type" v-for="(good,index) in allGoods" :to="{name:'HistoricalGoodsDetail',params:{bid:good.goodId}}" :key="index" tag="li" >
+      <ul :loading="loadings.table" id="allGood">
+        <router-link :class="good.type" v-for="(good,index) in allGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
           <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="overflow:hidden;">
             <h2><b>{{good.name}}</b></h2>
             <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
-              <small>{{good.goodDescription}}</small>
+              <small v-html="good.description"></small>
             </div>
           </div>
           <span class="container1-3" v-if="good.type==='sold'">
-<!--              <img src="../components/icon/冻结.png" style="width: 15%;float: right">-->
             <img src="../components/icon/已卖出.png" style="width: 9%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 4%"><b>￥150</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
           </span>
           <span class="container1-3" v-else-if="good.type==='frozen'">
             <img src="../components/icon/冻结.png" style="width: 15%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 4%"><b>￥150</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
           </span>
           <span class="container1-3" v-else>
-            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 4%"><b>￥150</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+          </span>
+        </router-link>
+      </ul>
+      <ul :loading="loadings.table" id="frozenGood" style="display:none;">
+        <router-link class="frozen" v-for="(good,index) in frozenGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
+          <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+          <div class="container1-2" style="overflow:hidden;">
+            <h2><b>{{good.name}}</b></h2>
+            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+              <small v-html="good.description"></small>
+            </div>
+          </div>
+          <span class="container1-3">
+            <img src="../components/icon/冻结.png" style="width: 15%;float: right">
+            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+          </span>
+        </router-link>
+      </ul>
+      <ul :loading="loadings.table" id="soldGood" style="display:none;">
+        <router-link class="sold" v-for="(good,index) in soldGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
+          <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+          <div class="container1-2" style="overflow:hidden;">
+            <h2><b>{{good.name}}</b></h2>
+            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+              <small v-html="good.description"></small>
+            </div>
+          </div>
+          <span class="container1-3">
+            <img src="../components/icon/已卖出.png" style="width: 9%;float: right">
+            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+          </span>
+        </router-link>
+      </ul>
+      <ul :loading="loadings.table" id="onSaleGood" style="display:none;">
+        <router-link class="onSale" v-for="(good,index) in onSaleGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
+          <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+          <div class="container1-2" style="overflow:hidden;">
+            <h2><b>{{good.name}}</b></h2>
+            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+              <small v-html="good.description"></small>
+            </div>
+          </div>
+          <span class="container1-3">
+            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
           </span>
         </router-link>
       </ul>
     </div>
-    <Pagination :total="total"
-                :page-size.sync="limit"
-                :current.sync="query.page"
-                @on-change="pushRouter"
-    ></Pagination>
+<!--    <Pagination :total="total"-->
+<!--                :page-size.sync="limit"-->
+<!--                :current.sync="query.page"-->
+<!--                @on-change="pushRouter">-->
+<!--    </Pagination>-->
   </div>
 </template>
 
 <script>
   //import api from '../api'
   import Pagination from '../components/Pagination'
+  import {showAllHistoricalGoods} from '../api';
 
   export default {
     name: "HistoricalGoods",
@@ -106,69 +136,130 @@
           table: true,
         },
         No_good:false,
-        allGoods: [{goodId:1,img:"https://img2.baidu.com/it/u=2612970998,458336255&fm=26&fmt=auto",name:"BTS专辑",goodDescription:"防弹少年团（BTS）是BigHit Entertainment于2013年6月13日推出的韩国男子演唱组合，由金南俊、金硕珍、闵玧其、郑号锡、朴智旻、金泰亨、田柾国7位成员组成。\n2013年6月，发行首张单曲专辑《2 COOL 4 SKOOL》 [1]  ，并在Mnet音乐节目《M! Countdown》中正式出道 [2]  ；同年，推出首张迷你专辑《O!RUL8,2?》 [3]  ，获得第5届Melon音乐盛典最佳新人奖 [4]  。2014年6月，推出首张日文单曲辑《NO MORE DREAM -Japanese Ver.-》，在日本正式出道 [5]  ；8月，推出首张正规专辑《DARK & WILD》 [6]  。2015年4月，凭借歌曲《I NEED U》获得了出道后首个韩国音乐节目的一位 [7]  ；同年，获得了第22届MTV欧洲音乐大奖最佳韩国艺人奖 [8]  。2016年10月，发行第二张正规专辑《WINGS》 [9]  。2017年9月，发行第三张迷你专辑《LOVE YOURSELF 承 'Her'》 [10]  ；11月，获得了“全世界在推特被提及次数最多的音乐组合”吉尼斯世界纪录的认证 [11]  。2018年5月，推出第三张正规专辑《LOVE YOURSELF 转 'Tear'》 [12]  ；同月，受邀出席美国第25届公告牌音乐奖典礼并获得“最佳社交艺人”奖 [13]  。2019福布斯100名人榜排名第43位 [14]  。\n2019年11月3日，MTVEMA获奖名单揭晓，BTS防弹少年团获最佳现场和最强粉丝团奖项。 [15]",type:"sold"},{goodId:2,img:"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fqny.smzdm.com%2F202104%2F19%2F607d44a9379f99175.png_d250.jpg&refer=http%3A%2F%2Fqny.smzdm.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1636251195&t=6a8585aa583f80127279991d23995a53",name:"ipad",goodDescription:"10.2 英寸\n采用原彩显示技术的视网膜显示屏\nA13 仿生芯片\n拥有神经网络引擎\n兼容：\nApple Pencil (第一代)\n智能键盘",type:"frozen"},{goodId:3,img:"https://img2.baidu.com/it/u=2612970998,458336255&fm=26&fmt=auto",name:"BTS专辑",goodDescription:"防弹少年团（BTS）是BigHit Entertainment于2013年6月13日推出的韩国男子演唱组合，由金南俊、金硕珍、闵玧其、郑号锡、朴智旻、金泰亨、田柾国7位成员组成。\n2013年6月，发行首张单曲专辑《2 COOL 4 SKOOL》 [1]  ，并在Mnet音乐节目《M! Countdown》中正式出道 [2]  ；同年，推出首张迷你专辑《O!RUL8,2?》 [3]  ，获得第5届Melon音乐盛典最佳新人奖 [4]  。2014年6月，推出首张日文单曲辑《NO MORE DREAM -Japanese Ver.-》，在日本正式出道 [5]  ；8月，推出首张正规专辑《DARK & WILD》 [6]  。2015年4月，凭借歌曲《I NEED U》获得了出道后首个韩国音乐节目的一位 [7]  ；同年，获得了第22届MTV欧洲音乐大奖最佳韩国艺人奖 [8]  。2016年10月，发行第二张正规专辑《WINGS》 [9]  。2017年9月，发行第三张迷你专辑《LOVE YOURSELF 承 'Her'》 [10]  ；11月，获得了“全世界在推特被提及次数最多的音乐组合”吉尼斯世界纪录的认证 [11]  。2018年5月，推出第三张正规专辑《LOVE YOURSELF 转 'Tear'》 [12]  ；同月，受邀出席美国第25届公告牌音乐奖典礼并获得“最佳社交艺人”奖 [13]  。2019福布斯100名人榜排名第43位 [14]  。\n2019年11月3日，MTVEMA获奖名单揭晓，BTS防弹少年团获最佳现场和最强粉丝团奖项。 [15]",type:"onSale"}],
-        goods: [],
+        allGoods: [],
+        frozenGoods: [],
+        soldGoods: [],
+        onSaleGoods: [],
         limit: 2,
         routeName: '',
         query: {
           keywords: '',
           page: 1,
-        }
+        },
+        sellerid:1,
       }
     },
     mounted() {
       this.init()
     },
     methods: {
-      init() {
-        this.routeName = this.$route.name
-        let query = this.$route.query
-        this.query.keywords = query.keywords || ''
-        this.query.page = parseInt(query.page) || 1
-        if (this.query.page < 1) {
-          this.query.page = 1
-        }
-        this.getAllGoods()
-      },
-      pushRouter() {
-        this.$router.push(
-          {name: 'platform_good', query: this.query}
-        )
-      },
-      sortBy (sort) {
-        this.query.sort = sort
-        this.query.page = 1
-        this.pushRouter()
-      },
-      filterByKeyword () {
-        this.query.page = 1
-        this.pushRouter()
-      },
-      getAllGoods() {
-        let offset = (this.query.page - 1) * this.limit
-        this.loadings.table = true
-        api.getPlatform_Goods(offset, this.limit, this.query).then(res => {
-            // this.loadings.table = false
-            this.allGoods = res.data.data.results;
-            this.total=res.data.data.total;
-            //alert(this.total);
-            if(this.total==0)
-            {
-              this.No_good=true;
-            }
-            else
-            {
-              this.No_good=false;
-            }
-          },
-          res => {
-            this.loadings.table = false
+      init(){
+        showAllHistoricalGoods({
+          sellerId:JSON.stringify(this.sellerid),
+          contentType: "application/json",
+        })
+          .then((response)=> {
+            //alert(this.sellerid)
+            let arr1 = [];
+            let arr2 = [];
+            let arr3 = [];
+            this.allGoods=response.data.data.goodlist;
+            this.allGoods.forEach(function(item){
+              if( item.sold===true){
+                item.type="sold";
+                item.toRouter="goodDetail-sold";
+                arr1.push(item);
+              }
+              else if( item.frozen===true){
+                item.type="frozen";
+                item.toRouter="goodDetail-frozen";
+                arr2.push(item);
+              }
+             else{
+                item.type="onSale";
+                item.toRouter="goodDetail-onSale";
+                arr3.push(item);
+              }
+            });
+            this.soldGoods=arr1;
+            this.frozenGoods=arr2;
+            this.onSaleGoods=arr3;
           })
       },
-      onReset () {
-        this.$router.push({name: 'platform_good'})
-        parent.location.reload();
+      cll(id){
+        txt.value =id;
+        document.all.sel.options[0].selected=true;
+        alert(id);
+        if(id==='sold'){
+          eval("soldGood.style.display=\"\";");
+          eval("allGood.style.display=\"none\";");
+          eval("frozenGood.style.display=\"none\";");
+          eval("onSaleGood.style.display=\"none\";");}
+        else if(val==='onSale'){
+          eval("onSaleGood.style.display=\"\";");
+          eval("allGood.style.display=\"none\";");
+          eval("frozenGood.style.display=\"none\";");
+          eval("soldGood.style.display=\"none\";");}
+        else if(val==='frozen'){
+          eval("frozenGood.style.display=\"\";");
+          eval("allGood.style.display=\"none\";");
+          eval("onSaleGood.style.display=\"none\";");
+          eval("soldGood.style.display=\"none\";");}
+        else{
+          eval("allGood.style.display=\"\";");
+          eval("frozenGood.style.display=\"none\";");
+          eval("onSaleGood.style.display=\"none\";");
+          eval("soldGood.style.display=\"none\";");}
       },
+      // init() {
+      //   this.routeName = this.$route.name
+      //   let query = this.$route.query
+      //   this.query.keywords = query.keywords || ''
+      //   this.query.page = parseInt(query.page) || 1
+      //   if (this.query.page < 1) {
+      //     this.query.page = 1
+      //   }
+      //   this.getAllGoods()
+      // },
+      // pushRouter() {
+      //   this.$router.push(
+      //     {name: 'platform_good', query: this.query}
+      //   )
+      // },
+      // sortBy (sort) {
+      //   this.query.sort = sort
+      //   this.query.page = 1
+      //   this.pushRouter()
+      // },
+      // filterByKeyword () {
+      //   this.query.page = 1
+      //   this.pushRouter()
+      // },
+      // getAllGoods() {
+      //   let offset = (this.query.page - 1) * this.limit
+      //   this.loadings.table = true
+      //   api.getPlatform_Goods(offset, this.limit, this.query).then(res => {
+      //       // this.loadings.table = false
+      //       this.allGoods = res.data.data.results;
+      //       this.total=res.data.data.total;
+      //       //alert(this.total);
+      //       if(this.total==0)
+      //       {
+      //         this.No_good=true;
+      //       }
+      //       else
+      //       {
+      //         this.No_good=false;
+      //       }
+      //     },
+      //     res => {
+      //       this.loadings.table = false
+      //     })
+      // },
+      // onReset () {
+      //   this.$router.push({name: 'platform_good'})
+      //   parent.location.reload();
+      // },
     },
     watch: {
       '$route'(newVal, oldVal) {
@@ -390,7 +481,7 @@
           margin:1% 4%;
           list-style: none;
           .container1-2 {
-            width: 60%;
+            width: 55%;
             float:left;
             margin-left: 1%;
             text-align: left;

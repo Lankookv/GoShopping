@@ -9,10 +9,13 @@
             <small v-html="good.good.description"></small>
           </div>
         </div>
-        <h1 style="color: red;font-size: 40px"><b>￥{{good.good.price}}</b></h1>
-        <button>
-          需要购买
-        </button>
+        <h1 style="color: red;font-size: 40px;margin-left: 8%"><b>￥{{good.good.price}}</b></h1>
+        <p style="margin-top: 5%">
+          <button>历史购买信息</button>
+          <span style="vertical-align:middle; line-height:50px;float: right;margin-right: 20px">
+            库存：1
+          </span>
+        </p>
       </div>
       <div class="container4">
         <span>
@@ -23,9 +26,9 @@
         </div>
       </div>
     </div>
-    <div class="container3">
-      <card></card>
-    </div>
+    <!--    <div class="container3">-->
+    <!--      <card></card>-->
+    <!--    </div>-->
   </div>
 </template>
 
@@ -34,7 +37,7 @@
   import {showGoodDetail} from '../api';
 
   export default {
-    name: "goodDetails",
+    name: "goodDetail-sold",
     components: {
       card
     },
@@ -51,11 +54,10 @@
         showGoodDetail({
           goodId:JSON.stringify(this.$route.params.bid),
           contentType: "application/json"
-      })
-          .then((response)=> {
-            //alert(JSON.stringify(this.$route.params.bid))
-            this.good=response.data.data;
-          })
+        }).then((response)=> {
+          //alert(JSON.stringify(this.$route.params.bid))
+          this.good=response.data.data;
+        })
       },
     }
   }
@@ -70,10 +72,10 @@
     font-size: 15px;
     .container1{
       height:90%;
-      width: 78%;
-      margin:0 2%;
+      width: 90%;
+      margin:0 5%;
       float: left;
-      border-right: 1px solid #7b7b7b;
+      //border-right: 1px solid #7b7b7b;
       img{
         width: 40%;
         height: 100%;
@@ -124,8 +126,7 @@
       width: 25%;
       height: 50px;
       float: right;
-      margin-top: 5%;
-      margin-right: 15%;
+      margin-right: 10%;
       font-size: 20px;
       background-color: #F56E1C;
       border: 1px solid;
@@ -135,9 +136,8 @@
       width: 25%;
       height: 50px;
       float: right;
-      margin-top: 5%;
+      margin-right: 10%;
       font-size: 20px;
-      margin-right: 15%;
       background-color: #F56E1C;
       border: 1px solid #cccccc;
       border-radius: 10px;

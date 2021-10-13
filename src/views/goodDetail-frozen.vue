@@ -9,10 +9,14 @@
             <small v-html="good.good.description"></small>
           </div>
         </div>
-        <h1 style="color: red;font-size: 40px"><b>￥{{good.good.price}}</b></h1>
-        <button>
-          需要购买
-        </button>
+        <h1 style="color: red;font-size: 40px;margin-left: 8%"><b>￥{{good.good.price}}</b></h1>
+        <p style="margin-top: 5%">
+          <button @click="toFrozenGoodInformation()">查看冻结信息</button>
+          <frozenGoodBuyerInformationModal v-show="showModal" v-on:closeme="closeme" :goodId="good.good.goodId"></frozenGoodBuyerInformationModal>
+          <span style="vertical-align:middle; line-height:50px;float: right;margin-right: 20px">
+            库存：1
+          </span>
+        </p>
       </div>
       <div class="container4">
         <span>
@@ -23,24 +27,22 @@
         </div>
       </div>
     </div>
-    <div class="container3">
-      <card></card>
-    </div>
   </div>
 </template>
 
 <script>
-  import card from "../components/card";
+  import frozenGoodBuyerInformationModal from "./frozenGoodBuyerInformationModal";
   import {showGoodDetail} from '../api';
 
   export default {
-    name: "goodDetails",
+    name: "goodDetail-frozen",
     components: {
-      card
+      frozenGoodBuyerInformationModal
     },
     data() {
       return {
         good:{},
+        showModal:false,
       }
     },
     created() {
@@ -51,12 +53,17 @@
         showGoodDetail({
           goodId:JSON.stringify(this.$route.params.bid),
           contentType: "application/json"
-      })
-          .then((response)=> {
-            //alert(JSON.stringify(this.$route.params.bid))
-            this.good=response.data.data;
-          })
+        }).then((response)=> {
+          //alert(JSON.stringify(this.$route.params.bid))
+          this.good=response.data.data;
+        })
       },
+      toFrozenGoodInformation(){
+        this.showModal=!this.showModal;
+      },
+      closeme(){
+        this.showModal=!this.showModal;
+      }
     }
   }
 </script>
@@ -70,10 +77,10 @@
     font-size: 15px;
     .container1{
       height:90%;
-      width: 78%;
-      margin:0 2%;
+      width: 90%;
+      margin:0 5%;
       float: left;
-      border-right: 1px solid #7b7b7b;
+      //border-right: 1px solid #7b7b7b;
       img{
         width: 40%;
         height: 100%;
@@ -124,8 +131,7 @@
       width: 25%;
       height: 50px;
       float: right;
-      margin-top: 5%;
-      margin-right: 15%;
+      margin-right: 10%;
       font-size: 20px;
       background-color: #F56E1C;
       border: 1px solid;
@@ -135,9 +141,8 @@
       width: 25%;
       height: 50px;
       float: right;
-      margin-top: 5%;
+      margin-right: 10%;
       font-size: 20px;
-      margin-right: 15%;
       background-color: #F56E1C;
       border: 1px solid #cccccc;
       border-radius: 10px;
