@@ -10,7 +10,7 @@
           </div>
         </div>
         <h1 style="color: red;font-size: 40px"><b>￥{{good.good.price}}</b></h1>
-        <button>
+        <button @click="toWriteBuyerInfo">
           需要购买
         </button>
       </div>
@@ -57,6 +57,9 @@
             this.good=response.data.data;
           })
       },
+      toWriteBuyerInfo(){
+        this.$router.push({name:'buyerDetails',params:{bid:this.$route.params.bid}});
+      }
     }
   }
 </script>

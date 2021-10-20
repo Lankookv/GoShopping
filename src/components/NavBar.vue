@@ -2,7 +2,7 @@
   <div id="header">
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#F6792E">
       <div class="logo" @click="toHome"><img src="./icon/logo.png"><span style="text-align: center;line-height:60px;">购小拼</span></div>
-      <div class="login" v-if="islogin">
+      <div class="login" v-if="!isLogin">
 <!--      <div class="login">-->
         <button class="btn1" @click="Login">
           登录
@@ -11,7 +11,7 @@
 <!--          注册-->
 <!--        </button>-->
       </div>
-      <div v-else>
+      <div v-else class="hasLogin">
         <el-submenu index="1">
           <template slot="title" class="mine">我的</template>
           <el-menu-item index="2-1" @click="toSetting">我的设置</el-menu-item>
@@ -93,7 +93,7 @@ export default {
     return {
       activeIndex: '1',
       activeIndex2: '1',
-      islogin:false,
+      isLogin:false,
       two: true,
       showModal:false,
       loginParam: {},
@@ -111,9 +111,17 @@ export default {
     };
   },
   created () {
-   // localStorage.setItem('account',JSON.stringify(""));
+    this.init();
   },
   methods: {
+    init(){
+     // alert("localStorage.getItem(\"userId\"):"+localStorage.getItem("userId"))
+      if(localStorage.getItem("userId")==null){
+        this.isLogin=false;
+      }else {
+        this.isLogin=true;
+      }
+    },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -134,7 +142,6 @@ export default {
     },
     Login(){
       this.two=true;
-
       this.showModal=!this.showModal;
     },
     Register(){
@@ -149,22 +156,22 @@ export default {
         if (valid) {
           login(this.loginParam)
             .then((response)=> {
-              // console.log(response);
-              // alert("this.loginParam:"+this.loginParam);
               // sessionStorage.clear();
               // sessionStorage.setItem('token', response.data.details.token);
               // localStorage.setItem('token', response.data.details.token);
               // localStorage.setItem('id', response.data.details.id);
-              // localStorage.setItem('account', JSON.stringify(this.loginParam.account));
               // localStorage.setItem('account',response.data.details.account);
-              this.islogin=true;
-              this.$message.success('登录成功');
-              this.showModal=!this.showModal;
-              this.$router.push('/');
+              if(response.data.code===-1){
+                this.$message.error('用户名或密码错误');
+              }
+              else{
+                localStorage.setItem('userId', this.loginParam.account);
+                this.isLogin=!this.isLogin;
+                this.$message.success('登录成功');
+                this.showModal=!this.showModal;
+                this.$router.push('/');
+              }
             })
-            .catch(error => {
-              this.$message.error('用户名或密码错误');
-            });
         } else {
           this.$message.error('请输入账号和密码');
           return false;
@@ -172,7 +179,8 @@ export default {
       });
     },
     logout(){
-      this.islogin=false;
+      localStorage.removeItem('userId');
+      this.isLogin=!this.isLogin;
       this.$router.push('/');
     },
     submitRegisterForm(formName){

@@ -1,63 +1,179 @@
 <template>
-  <div>
-    <h1>
-      修改密码
-    </h1>
-    <h2>
-      请输入旧密码：
-      <input type="text"></input>
-    </h2>
-    <h2>
-      请输入新密码：
-      <input type="text"></input>
-    </h2>
-    <h2>
-      请确认新密码：
-      <input type="text"></input>
-    </h2>
-    <button>
-      确认修改
-    </button>
+  <div class="changepassword">
+    <el-form ref="changePwdForm" class="changeForm" :model="changePwdParam" :rules="rules" >
+      <h1>修改密码</h1>
+      <h2 style="margin-right: 18%">请输入原密码：</h2>
+      <el-form-item  prop="oldPassword">
+        <el-input type="password" id="oldpwd" @change="getOldPassword(changePwdParam.oldPassword)" v-model="changePwdParam.oldPassword" style="width:400px"></el-input>
+        <i class="iconfont" style="color: green" v-if="oldPwdFlag == 1">&#xe630;</i>
+        <i class="iconfont" style="color: red" v-else-if="oldPwdFlag == 2">&#xe632;</i>
+      </el-form-item >
+      <h2 style="margin-right: 18%">请输入新密码：</h2>
+      <el-form-item  prop="newPassword">
+        <el-input type="password" v-model="changePwdParam.newPassword" style="width:400px"></el-input>
+        <i class="iconfont" style="color: green" v-if="newPwdFlag == 1">&#xe630;</i>
+        <i class="iconfont" style="color: red" v-else-if="newPwdFlag == 2">&#xe632;</i>
+      </el-form-item >
+      <h2 style="margin-right: 18%">请确认新密码：</h2>
+      <el-form-item  prop="r_newPassword">
+        <el-input type="password" v-model="changePwdParam.r_newPassword" style="width:400px"></el-input>
+        <i class="iconfont" style="color: green" v-if="againPwdFlag == 1">&#xe630;</i>
+        <i class="iconfont" style="color: red" v-else-if="againPwdFlag == 2">&#xe632;</i>
+      </el-form-item >
+      <button type="primary" @click="handleSubmit('changePwdForm')"> 确认修改</button>
+    </el-form>
   </div>
 </template>
 
 <script>
+  import {changePassword, checkOldPassword} from '../api'
   export default {
-    name: "ChangePassword"
+    name: "ChangePassword",
+    data: function () {
+      // 新密码验证
+      var newPasswordcheck = (rule, value, callback) => {
+        var str = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
+        if (value.length == 0) {
+          this.newPwdFlag=2;
+          return callback(new Error(str+'新密码不能为空！'));
+        } else if (value.length < 6) {
+          this.newPwdFlag=2;
+          return callback(new Error(str+'新密码不能少于6位！'));
+        } else if (value.length > 12) {
+          this.newPwdFlag=2;
+          return callback(new Error(str+'密码最长不能超过12位！'));
+        } else {
+          this.newPwdFlag=1;
+          callback();
+        }
+      }
+      // 重复密码验证
+      var r_newPasswordcheck = (rule, value, callback) => {
+        var str = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
+        if (value.length === 0) {
+          this.againPwdFlag=2;
+          return callback(new Error(str+'重复密码不能为空！'));
+        } else if (value !== this.changePwdParam.newPassword) {
+          this.againPwdFlag=2;
+          return callback(new Error('两次输入密码不一致！'));
+        } else {
+          this.againPwdFlag=1;
+          callback();
+        }
+      };
+      return {
+        a:{},
+        oldPwdFlag: 0,
+        newPwdFlag: 0,
+        againPwdFlag: 0,
+        changePwdParam: {
+          oldPassword: "",
+          newPassword: "",
+          r_newPassword: ""
+        },
+        rules: {
+          oldPassword: [
+            {trigger: 'blur'},
+            {trigger: 'blur'}
+          ],
+          newPassword: [
+            {trigger: 'blur'},
+            {validator: newPasswordcheck, trigger: 'blur',}
+          ],
+          r_newPassword: [
+            {trigger: 'blur'},
+            {validator: r_newPasswordcheck, trigger: 'blur'}
+          ]
+        }
+      }
+    },
+    methods: {
+      handleSubmit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            changePassword({
+              userId:  JSON.stringify(10),
+              password:  this.changePwdParam.oldPassword,
+              newPassword: this.changePwdParam.newPassword,
+              contentType: "application/json"
+            })
+              .then((response) => {
+                this.a=response;
+                if(response.data.code !== -1){
+                  this.$message.success('修改成功');
+                  this.$router.push('/');
+                }
+              })
+          } else {
+            this.$message.error('修改失败');
+            this.$router.push('/');
+          }
+        })
+      },
+
+      getOldPassword(oldpwd) {//验证旧密码
+        var str = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
+        checkOldPassword({
+          userId: JSON.stringify(10),
+          password:(oldpwd)})
+          .then((response) => {
+            if (response.data.code !== -1) {
+              this.oldPwdFlag=1;
+              this.$message.success('旧密码正确');
+            } else {
+              this.oldPwdFlag=2;
+              return callback(new Error("旧密码错误"));
+            }
+          })
+      }
+    }
   }
 </script>
-
 <style scoped lang="less">
-h1{
-  width: 100%;
-  text-align: left;
-  margin-left: 5%;
-}
-h2{
-  margin-top: 4%;
-}
-input{
-  padding:8px;
-  width: 25%;
-  border: 1px solid;
-  border-radius: 10px;
-}
-button{
-  width: 15%;
-  height: 40px;
-  margin-top: 8%;
-  font-size: 20px;
-  background-color: #F56E1C;
-  border: 1px solid;
-  border-radius: 10px;
-}
-button:hover{
-  width: 15%;
-  height: 40px;
-  margin-top: 8%;
-  font-size: 20px;
-  background-color: #F56E1C;
-  border: 1px solid #cccccc;
-  border-radius: 10px;
-}
+  @font-face {
+    font-family: 'iconfont';  /* Project id 2810508 */
+    src: url('//at.alicdn.com/t/font_2810508_ptlmddtnie.woff2?t=1634465290246') format('woff2'),
+    url('//at.alicdn.com/t/font_2810508_ptlmddtnie.woff?t=1634465290246') format('woff'),
+    url('//at.alicdn.com/t/font_2810508_ptlmddtnie.ttf?t=1634465290246') format('truetype');
+  }
+  .iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.4px;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1{
+    width: 100%;
+    text-align: left;
+    margin-left: 5%;
+  }
+  h2{
+    margin-top: 0%;
+  }
+  el-input{
+    padding:8px;
+    width: 25%;
+    border: 1px solid;
+    border-radius: 10px;
+  }
+  button{
+    width: 15%;
+    height: 40px;
+    margin-top: 3%;
+    margin-right: 1.5%;
+    font-size: 20px;
+    background-color: #F56E1C;
+    border: 1px solid;
+    border-radius: 10px;
+  }
+  button:hover{
+    width: 15%;
+    height: 40px;
+    margin-top: 3%;
+    font-size: 20px;
+    background-color: #F56E1C;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+  }
 </style>

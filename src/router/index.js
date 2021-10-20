@@ -9,6 +9,9 @@ import ProspectiveBuyers from "../views/ProspectiveBuyers"
 import goodDetailOnSale from "../views/goodDetail-onSale"
 import goodDetailSold from "../views/goodDetail-sold"
 import goodDetailFrozen from "../views/goodDetail-frozen"
+import buyerDetails from "../views/buyerDetails"
+
+import c from "../views/c"
 
 Vue.use(Router)
 
@@ -24,6 +27,11 @@ export default new Router({
       path: '/goodDetails/:bid',//bid:商品id
       name: 'GoodDetails',
       component: goodDetails
+    },
+    {
+      path: '/:bid/buyerDetails',//bid:商品id
+      name: 'buyerDetails',
+      component: buyerDetails,
     },
     {
       path: '/ChangePassword',
@@ -66,6 +74,11 @@ export default new Router({
       name: 'goodDetail-frozen',
       component: goodDetailFrozen,
       meta:{isSeller:true},
+    },
+    {
+      path: '/c',//bid:商品id
+      name: 'c',
+      component: c,
     },
   ]
 })

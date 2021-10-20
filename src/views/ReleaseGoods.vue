@@ -3,24 +3,23 @@
     <h1>
       发布新商品
     </h1>
-    <h2>
-      商品名称：
-      <input type="text" style="width: 20%"></input>
-      &emsp;
-      商品价格：
-      <input type="text" style="width: 15%"></input>
+    <h2 style="height:35px">
+      <span style="margin-left: 19%;float: left">商品名称：</span>
+      <input type="text" style="width: 20%;float: left"></input>
+      <span style="margin-left: 5%;float: left">商品价格：</span>
+      <input type="text" style="width: 15%;float: left"></input>
     </h2>
-    <h2 >
-      封面图片：
-      <i class="iconfont">&#xe639;</i>
-    </h2>
+    <div style="height: 200px">
+      <h2 style="float: left;margin-left:19%;height:200px;vertical-align:middle; line-height:200px;margin-top: 0;margin-bottom: 0">封面图片：&nbsp;</h2>
+      <i class="iconfont" style="font-size: 180px;float: left;margin-top: 10px;border: none">&#xe639;</i>
+    </div>
     <h2 style="height: 100px">
-      <div style="height:100px;vertical-align:middle; line-height:100px;width: 30%;float: left;text-align: right">详细介绍：&nbsp;</div>
-      <textarea style="height: 100px;width: 50%;resize: none;border: 1px solid;border-radius: 10px;font-size: 20px;float: left"></textarea>
+      <div style="float: left;margin-left:19%;height:100px;vertical-align:middle; line-height:100px;">详细介绍：&nbsp;</div>
+      <textarea style="height: 100px;width: 50%;resize: none;border: 1px solid;border-radius: 10px;font-size: 20px;float: left;"></textarea>
     </h2>
-    <h2>
-      商品详情：
-      <div class="uploadImg">
+    <div style="height: 150px">
+      <h2 style="float: left;margin-left:19%;height:150px;vertical-align:middle; line-height:150px;margin-top: 0;margin-bottom: 0">商品详情：&nbsp;</h2>
+     <div class="uploadImg">
         <div class="upload-content">
           <div class="upload-title">
             <p>{{upTitle}}</p>
@@ -34,13 +33,13 @@
             <div class="uploadSec">
 <!--              <img :src="globalPath+'img/insurance/upload.png'" alt="上传图标">-->
               <i class="iconfont">&#xe639;</i>
-              <i class="iconfont">&#xe63c;</i>
+              <i class="iconfont">&#xe639;</i>
               <input type="file" value="" id="choose" @change='onUpload' multiple>
             </div>
           </ul>
         </div>
       </div>
-    </h2>
+    </div>
     <button>
       确认发布
     </button>
@@ -133,7 +132,7 @@
   }
   .iconfont{
     font-family:"iconfont" !important;
-    font-size:32px;font-style:normal;
+    font-size:130px;font-style:normal;
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;}
@@ -141,9 +140,6 @@
     width: 100%;
     text-align: left;
     margin-left: 5%;
-  }
-  h2{
-    margin-top: 4%;
   }
   input{
     padding:8px;

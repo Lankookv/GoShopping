@@ -20,6 +20,8 @@ export default {
   components: {
     NavBar,
   },
+  created() {
+  }
 }
 </script>
 
