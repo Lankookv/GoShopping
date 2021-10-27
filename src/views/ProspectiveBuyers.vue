@@ -55,13 +55,13 @@
         <li class="container_1" v-for="(good,index) in allGoods" @click="toGoodDetailOnSale(good.goodId)" :key="index">
           <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.name}}</b></h2>
+            <h2><b>{{good.goodName}}</b></h2>
             <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
               <small v-html="good.description"></small>
             </div>
           </div>
           <span class="container1-3">
-            <h1 style="color: black;font-size: 40px;margin-top: 4%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 4%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
             <button @click.stop @click="getIntentionListByGoodId(good.goodId)">查看意向购买人</button>
              <ProspectiveBuyersModal @click.stop v-show="showModal" v-on:closeme="closeme" :intentionList="intentionList"></ProspectiveBuyersModal>
           </span>
@@ -96,7 +96,7 @@
           table: true,
         },
         No_good:false,
-        // allGoods: [{goodId:1,img: "http://t13.baidu.com/it/u=2612970998,458336255&fm=224&app=112&f=JPEG?w=500&h=500&s=B8362E9A42E746AC8A0DD5F503009029",name:"bts专辑",description:"ncdsjknsjcn",price:77.77,},],
+        // allGoods: [{goodId:1,img: "http://t13.baidu.com/it/u=2612970998,458336255&fm=224&app=112&f=JPEG?w=500&h=500&s=B8362E9A42E746AC8A0DD5F503009029",name:"bts专辑",description:"ncdsjknsjcn",goodPrice:77.77,},],
         allGoods:[],
         intentionList:[],
         limit: 2,
@@ -105,7 +105,6 @@
           keywords: '',
           page: 1,
         },
-        sellerid:1,
       }
     },
     mounted() {
@@ -114,7 +113,7 @@
     methods: {
       init(){
         showAllGoodsOfInterestedBuyers({
-          sellerId:JSON.stringify(this.sellerid),
+          sellerId:parseInt(sessionStorage.getItem("userId")),
           contentType: "application/json",
         })
           .then((response)=> {

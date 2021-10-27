@@ -20,14 +20,14 @@ new Vue({
     router.beforeEach((to, from, next) => {
       if (to.meta.isSeller) {
         //页面是否登录
-        if (JSON.parse(localStorage.getItem("userId"))==null) {
+        if (JSON.parse(sessionStorage.getItem("userId"))==null) {
           //next可以传递一个路由对象作为参数 表示需要跳转到的页面
           next({
             name: "Home"
           });
         } else {
           //本地存储中是否有token(uid)数据
-          //alert("ok\nlocalStorage.getItem(\"userId\"):"+localStorage.getItem("userId"))
+          //alert("ok\nsessionStorage.getItem(\"userId\"):"+sessionStorage.getItem("userId"))
           next(); //表示已经登录
         }
       } else {

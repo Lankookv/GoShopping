@@ -20,7 +20,7 @@
             <el-table-column
               prop="date"
               label="时间"
-              width=140px>
+              width=200px>
             </el-table-column>
             <el-table-column
               fixed="right"
@@ -63,7 +63,6 @@
     },
     data() {
       return {
-        massage:"",
         showModal1:false,
         showModal2:false,
         // intentionList:[{id:1,name:"a",time:"2021.10.10 20:25"},{id:2,name:"b",time:"20:25"},{id:3,name:"c",time:"2021.10.10 20:25"},{id:4,name:"d",time:"20:25"},{id:5,name:"e",time:"2021.10.10 20:25"},{id:6,name:"f",time:"20:25"},{id:1,name:"a",time:"2021.10.10 20:25"},{id:2,name:"b",time:"20:25"},{id:3,name:"c",time:"2021.10.10 20:25"},{id:4,name:"d",time:"20:25"},{id:5,name:"e",time:"2021.10.10 20:25"},{id:6,name:"f",time:"20:25"},],
@@ -86,6 +85,7 @@
           contentType: "application/json",
         })
           .then((response)=> {
+            //alert("id:"+id)
             this.buyerInfo=response.data.data;
           })
       },
@@ -100,8 +100,11 @@
           contentType: "application/json"
         })
           .then((response)=> {
-            this.massage=response.data;
-            alert("toFreezeGood")
+            if(response.data.code !== -1){
+              this.$message.success('冻结成功！');
+            }else {
+              this.$message.error('冻结失败！');
+            }
           })
       },
       closeme1(){

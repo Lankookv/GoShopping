@@ -3,13 +3,13 @@
     <div class="container1">
       <img :src="good.img[0].imagine" alt="这里是封面">
       <div class="container2">
-        <h1><b>{{good.good.name}}</b></h1>
+        <h1><b>{{good.good.goodName}}</b></h1>
         <div style="overflow:hidden;width:95%;">
           <div class="info">
             <small v-html="good.good.description"></small>
           </div>
         </div>
-        <h1 style="color: red;font-size: 40px"><b>￥{{good.good.price}}</b></h1>
+        <h1 style="color: red;font-size: 40px"><b>￥{{good.good.goodPrice}}</b></h1>
         <button @click="toWriteBuyerInfo">
           需要购买
         </button>

@@ -30,6 +30,17 @@
   export default {
     name: "ChangePassword",
     data: function () {
+      // //旧密码验证
+      // var oldPasswordcheck = (rule, value, callback) => {
+      //   var str = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
+      //   if (value.length == 0) {
+      //     this.oldPwdFlag=2;
+      //     return callback(new Error(str+'新密码不能为空！'));
+      //   }else {
+      //     callback();
+      //   }
+      // }
+
       // 新密码验证
       var newPasswordcheck = (rule, value, callback) => {
         var str = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
@@ -55,7 +66,7 @@
           return callback(new Error(str+'重复密码不能为空！'));
         } else if (value !== this.changePwdParam.newPassword) {
           this.againPwdFlag=2;
-          return callback(new Error('两次输入密码不一致！'));
+          return callback(new Error(str+'两次输入密码不一致！'));
         } else {
           this.againPwdFlag=1;
           callback();
@@ -74,7 +85,7 @@
         rules: {
           oldPassword: [
             {trigger: 'blur'},
-            {trigger: 'blur'}
+            // {validator:oldPasswordcheck,trigger: 'blur'}
           ],
           newPassword: [
             {trigger: 'blur'},
@@ -92,7 +103,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             changePassword({
-              userId:  JSON.stringify(10),
+              userId: parseInt(sessionStorage.getItem("userId")),
               password:  this.changePwdParam.oldPassword,
               newPassword: this.changePwdParam.newPassword,
               contentType: "application/json"
@@ -100,13 +111,14 @@
               .then((response) => {
                 this.a=response;
                 if(response.data.code !== -1){
-                  this.$message.success('修改成功');
+                  this.$message.success('修改成功！');
                   this.$router.push('/');
+                }else {
+                  this.$message.error('修改失败！');
                 }
               })
           } else {
-            this.$message.error('修改失败');
-            this.$router.push('/');
+            this.$message.error('修改失败！');
           }
         })
       },
@@ -114,15 +126,15 @@
       getOldPassword(oldpwd) {//验证旧密码
         var str = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
         checkOldPassword({
-          userId: JSON.stringify(10),
+          userId:parseInt(sessionStorage.getItem("userId")),
           password:(oldpwd)})
           .then((response) => {
             if (response.data.code !== -1) {
               this.oldPwdFlag=1;
-              this.$message.success('旧密码正确');
             } else {
+              // alert("旧密码错误")
               this.oldPwdFlag=2;
-              return callback(new Error("旧密码错误"));
+              return callback(new Error(str+"旧密码错误"));
             }
           })
       }

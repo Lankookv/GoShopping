@@ -3,13 +3,13 @@
     <div class="container1">
       <img :src="good.img[0].imagine" alt="这里是封面">
       <div class="container2">
-        <h1><b>{{good.good.name}}</b></h1>
+        <h1><b>{{good.good.goodName}}</b></h1>
         <div style="overflow:hidden;width:95%;">
           <div class="info">
             <small v-html="good.good.description"></small>
           </div>
         </div>
-        <h1 style="color: red;font-size: 40px;margin-left: 8%"><b>￥{{good.good.price}}</b></h1>
+        <h1 style="color: red;font-size: 40px;margin-left: 8%"><b>￥{{good.good.goodPrice}}</b></h1>
         <p style="margin-top: 5%">
           <button @click="toFrozenGoodInformation()">查看冻结信息</button>
           <frozenGoodBuyerInformationModal v-show="showModal" v-on:closeme="closeme" :goodId="good.good.goodId"></frozenGoodBuyerInformationModal>

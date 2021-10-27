@@ -11,8 +11,6 @@ import goodDetailSold from "../views/goodDetail-sold"
 import goodDetailFrozen from "../views/goodDetail-frozen"
 import buyerDetails from "../views/buyerDetails"
 
-import c from "../views/c"
-
 Vue.use(Router)
 
 export default new Router({
@@ -74,11 +72,6 @@ export default new Router({
       name: 'goodDetail-frozen',
       component: goodDetailFrozen,
       meta:{isSeller:true},
-    },
-    {
-      path: '/c',//bid:商品id
-      name: 'c',
-      component: c,
     },
   ]
 })

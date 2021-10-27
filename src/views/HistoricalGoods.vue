@@ -4,18 +4,18 @@
       <span class="title">
         <b>查看历史商品</b>
       </span>
-      <div class="search">
-<!--        <Input  v-model="query.keywords"-->
-<!--                @on-enter="filterByKeyword"-->
-<!--                @on-click="filterByKeyword"-->
-<!--                placeholder="BTS专辑"-->
-<!--                class="input-search"/>-->
-<!--        <span slot="append">-->
-<!--          <Button type="primary" style="background-color:transparent;border: none">-->
-<!--            <i class="iconfont" @click.prevent="filterByKeyword">&#xe635;</i>-->
-<!--          </Button>-->
-<!--        </span>-->
-      </div>
+      <!--      <div class="search">-->
+      <!--        <Input  v-model="query.keywords"-->
+      <!--                @on-enter="filterByKeyword"-->
+      <!--                @on-click="filterByKeyword"-->
+      <!--                placeholder="BTS专辑"-->
+      <!--                class="input-search"/>-->
+      <!--        <span slot="append">-->
+      <!--          <Button type="primary" style="background-color:transparent;border: none">-->
+      <!--            <i class="iconfont" @click.prevent="filterByKeyword">&#xe635;</i>-->
+      <!--          </Button>-->
+      <!--        </span>-->
+      <!--      </div>-->
       <select name="classify" onchange="cll(this.options[this.options.selectedIndex].value)">
         <option value="all" selected>全部</option>
         <option value ="sold">已售空</option>
@@ -23,45 +23,34 @@
         <option value="frozen">冻结</option>
       </select>
     </div>
+    <div class="container1-1">
+      <input type="checkbox" v-model='allChecked' @change='chooseAll' style="zoom:170%;float: left">
+      <P>全选</P>
+    </div>
     <div class="container1">
-      <!--      <div v-if="allGoods.length==0&&No_good==false" style="padding-top: 15%">-->
-      <!--        <center>-->
-      <!--          <div style="margin-top:100px;" >-->
-      <!--            <i size="big"class="el-icon-loading" ></i>-->
-      <!--          </div>-->
-      <!--        </center>-->
-      <!--        <div style="text-align: center;">-->
-      <!--          <span style="text-align: center">正在努力加载中 请稍后 o(*￣▽￣*)ブ</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--      <div v-else-if="allGoods.length==0&&No_good==true">-->
-      <!--      <div >-->
-      <!--        <center>-->
-      <!--          <img  src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">-->
-      <!--        </center>-->
-      <!--        <div style="text-align: center;">-->
-      <!--          <span style="text-align: center">没有搜索到任何商品哦 /(ㄒoㄒ)/~~</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
       <ul :loading="loadings.table" id="allGood">
         <router-link :class="good.type" v-for="(good,index) in allGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
+          <input type="checkbox" v-model='good.checked' @click.stop @change='chooseOne' style="float: left;margin-top: 7%;width:15px;height: 15px"></input>
           <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.name}}</b></h2>
+            <h2><b>{{good.goodName}}</b></h2>
             <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
               <small v-html="good.description"></small>
             </div>
           </div>
           <span class="container1-3" v-if="good.type==='sold'">
             <img src="../components/icon/已卖出.png" style="width: 9%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+            <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
           </span>
           <span class="container1-3" v-else-if="good.type==='frozen'">
             <img src="../components/icon/冻结.png" style="width: 15%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+            <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
           </span>
           <span class="container1-3" v-else>
-            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+            <!--        <button class="deleteOneGood"@click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
           </span>
         </router-link>
       </ul>
@@ -69,14 +58,14 @@
         <router-link class="frozen" v-for="(good,index) in frozenGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
           <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.name}}</b></h2>
+            <h2><b>{{good.goodName}}</b></h2>
             <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
               <small v-html="good.description"></small>
             </div>
           </div>
           <span class="container1-3">
             <img src="../components/icon/冻结.png" style="width: 15%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
           </span>
         </router-link>
       </ul>
@@ -84,14 +73,14 @@
         <router-link class="sold" v-for="(good,index) in soldGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
           <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.name}}</b></h2>
+            <h2><b>{{good.goodName}}</b></h2>
             <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
               <small v-html="good.description"></small>
             </div>
           </div>
           <span class="container1-3">
             <img src="../components/icon/已卖出.png" style="width: 9%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
           </span>
         </router-link>
       </ul>
@@ -99,29 +88,31 @@
         <router-link class="onSale" v-for="(good,index) in onSaleGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
           <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.name}}</b></h2>
+            <h2><b>{{good.goodName}}</b></h2>
             <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
               <small v-html="good.description"></small>
             </div>
           </div>
           <span class="container1-3">
-            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.price}}</b></h1>
+            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
           </span>
         </router-link>
       </ul>
+      <div class="footer">
+        <button id="deleteChooseGoods" @click="handleDelete()">删除所选商品</button>
+      </div>
     </div>
-<!--    <Pagination :total="total"-->
-<!--                :page-size.sync="limit"-->
-<!--                :current.sync="query.page"-->
-<!--                @on-change="pushRouter">-->
-<!--    </Pagination>-->
+    <!--    <Pagination :total="total"-->
+    <!--                :page-size.sync="limit"-->
+    <!--                :current.sync="query.page"-->
+    <!--                @on-change="pushRouter">-->
+    <!--    </Pagination>-->
   </div>
 </template>
 
 <script>
-  //import api from '../api'
   import Pagination from '../components/Pagination'
-  import {showAllHistoricalGoods} from '../api';
+  import {showAllHistoricalGoods,deleteHistoricalGood } from '../api';
 
   export default {
     name: "HistoricalGoods",
@@ -135,138 +126,165 @@
         loadings: {
           table: true,
         },
-        No_good:false,
-        allGoods: [],
+        No_good: false,
+        allGoods: [{checked: false}],
         frozenGoods: [],
         soldGoods: [],
         onSaleGoods: [],
         limit: 2,
         routeName: '',
+        allChecked: false,
+        goodIdArr: [],//存放要删除商品id的数组
         query: {
           keywords: '',
           page: 1,
         },
-        sellerid:1,
       }
     },
     mounted() {
       this.init()
     },
     methods: {
-      init(){
+      init() {
         showAllHistoricalGoods({
-          sellerId:JSON.stringify(this.sellerid),
+          sellerId:parseInt(sessionStorage.getItem("userId")),
           contentType: "application/json",
         })
-          .then((response)=> {
-            //alert(this.sellerid)
+          .then((response) => {
             let arr1 = [];
             let arr2 = [];
             let arr3 = [];
-            this.allGoods=response.data.data.goodlist;
-            this.allGoods.forEach(function(item){
-              if( item.sold===true){
-                item.type="sold";
-                item.toRouter="goodDetail-sold";
+            this.allGoods = response.data.data.goodlist;
+            this.allGoods.forEach(function (item) {
+              if (item.sold === true) {
+                item.type = "sold";
+                item.toRouter = "goodDetail-sold";
                 arr1.push(item);
-              }
-              else if( item.frozen===true){
-                item.type="frozen";
-                item.toRouter="goodDetail-frozen";
+              } else if (item.frozen === true) {
+                item.type = "frozen";
+                item.toRouter = "goodDetail-frozen";
                 arr2.push(item);
-              }
-             else{
-                item.type="onSale";
-                item.toRouter="goodDetail-onSale";
+              } else {
+                item.type = "onSale";
+                item.toRouter = "goodDetail-onSale";
                 arr3.push(item);
               }
             });
-            this.soldGoods=arr1;
-            this.frozenGoods=arr2;
-            this.onSaleGoods=arr3;
+            this.soldGoods = arr1;
+            this.frozenGoods = arr2;
+            this.onSaleGoods = arr3;
           })
       },
-      cll(id){
-        txt.value =id;
-        document.all.sel.options[0].selected=true;
-        alert(id);
-        if(id==='sold'){
+      cll(id) {
+        txt.value = id;
+        document.all.sel.options[0].selected = true;
+        // alert(id);
+        if (id === 'sold') {
           eval("soldGood.style.display=\"\";");
           eval("allGood.style.display=\"none\";");
           eval("frozenGood.style.display=\"none\";");
-          eval("onSaleGood.style.display=\"none\";");}
-        else if(val==='onSale'){
+          eval("onSaleGood.style.display=\"none\";");
+        } else if (val === 'onSale') {
           eval("onSaleGood.style.display=\"\";");
           eval("allGood.style.display=\"none\";");
           eval("frozenGood.style.display=\"none\";");
-          eval("soldGood.style.display=\"none\";");}
-        else if(val==='frozen'){
+          eval("soldGood.style.display=\"none\";");
+        } else if (val === 'frozen') {
           eval("frozenGood.style.display=\"\";");
           eval("allGood.style.display=\"none\";");
           eval("onSaleGood.style.display=\"none\";");
-          eval("soldGood.style.display=\"none\";");}
-        else{
+          eval("soldGood.style.display=\"none\";");
+        } else {
           eval("allGood.style.display=\"\";");
           eval("frozenGood.style.display=\"none\";");
           eval("onSaleGood.style.display=\"none\";");
-          eval("soldGood.style.display=\"none\";");}
-      },
-      // init() {
-      //   this.routeName = this.$route.name
-      //   let query = this.$route.query
-      //   this.query.keywords = query.keywords || ''
-      //   this.query.page = parseInt(query.page) || 1
-      //   if (this.query.page < 1) {
-      //     this.query.page = 1
-      //   }
-      //   this.getAllGoods()
-      // },
-      // pushRouter() {
-      //   this.$router.push(
-      //     {name: 'platform_good', query: this.query}
-      //   )
-      // },
-      // sortBy (sort) {
-      //   this.query.sort = sort
-      //   this.query.page = 1
-      //   this.pushRouter()
-      // },
-      // filterByKeyword () {
-      //   this.query.page = 1
-      //   this.pushRouter()
-      // },
-      // getAllGoods() {
-      //   let offset = (this.query.page - 1) * this.limit
-      //   this.loadings.table = true
-      //   api.getPlatform_Goods(offset, this.limit, this.query).then(res => {
-      //       // this.loadings.table = false
-      //       this.allGoods = res.data.data.results;
-      //       this.total=res.data.data.total;
-      //       //alert(this.total);
-      //       if(this.total==0)
-      //       {
-      //         this.No_good=true;
-      //       }
-      //       else
-      //       {
-      //         this.No_good=false;
-      //       }
-      //     },
-      //     res => {
-      //       this.loadings.table = false
-      //     })
-      // },
-      // onReset () {
-      //   this.$router.push({name: 'platform_good'})
-      //   parent.location.reload();
-      // },
-    },
-    watch: {
-      '$route'(newVal, oldVal) {
-        if (newVal !== oldVal) {
-          this.init(true)
+          eval("soldGood.style.display=\"none\";");
         }
-      }
+      },
+      //单选
+      chooseOne() {
+        this.allChecked = this.allGoods.every(good => {
+          // alert("调用单选方法");
+          return good.checked === true;
+        })
+      },
+
+      //全选
+      chooseAll() {
+        this.allGoods.forEach((good) => {
+          good.checked = this.allChecked;
+        })
+      },
+
+      //删除提示
+      // openDelConfirm() {
+      //   return this.$confirm(`是否删除所选商品？`, '提示', {
+      //     confirmButtonText: '确定',
+      //     cancelButtonText: '取消',
+      //     type: 'warning'
+      //   })
+      // },
+
+      //点击删除所选商品
+      //handleDelete(){
+      //  this.openDelConfirm().then(() => {
+      //   deleteHistoryGoods().then(res => {
+      //     this.$message({
+      //         type: 'success',
+      //         message: '删除成功!'
+      //       })
+      //        this.fetchTableData()
+      //     })
+      //    }).catch(() => {
+      //    })
+      // }
+      //},
+      // handleDelete() {
+      //   alert("调用按钮删除方法");
+      //   var i = 0;
+      //   this.allGoods = this.allGoods.filter((goodId) => {
+      //     if (good.checked == true) {
+      //       goodIdArr[i] = goodId;
+      //       i++;
+      //     }
+      //   })
+      //   deleteHistoricalGood({
+      //     goodId: JSON.stringify(goodIdArr),
+      //     contentType: "application/json"
+      //   })
+      //     .then((response) => {
+      //       alert("数据传给后端，删除商品方法调用成功");
+      //       if (response.data.code !== -1) {
+      //         this.$messagesuccess('删除成功');
+      //            } else {
+      //              this.$messagesuccess('删除失败');
+      //            }
+      //          })
+      // }
+
+      handleDelete() {
+        // alert("调用底部按钮删除方法");
+        // var i = 0;
+        deleteHistoricalGood({
+          goodId: JSON.stringify(6),
+          contentType: "application/json"
+        })
+          .then((response) => {
+            // alert("数据传给后端，删除商品方法调用成功");
+            if (response.data.code !== -1) {
+              this.$message.success('删除成功');
+            } else {
+              this.$message.error('删除失败');
+            }
+          })
+      },
+      watch: {
+        '$route'(newVal, oldVal) {
+          if (newVal !== oldVal) {
+            this.init(true)
+          }
+        }
+      },
     }
   }
 </script>
@@ -365,7 +383,7 @@
       font-size: 32px;
     }
     select{
-      float: right;
+      float: left;
       width: 6%;
       height: 36px;
       margin-top: 1.35%;
@@ -373,7 +391,7 @@
       border: 1px solid black ;
     }
     select:hover{
-      float: right;
+      float: left;
       width: 6%;
       height: 36px;
       margin-top: 1.35%;
@@ -381,13 +399,33 @@
       border: 1px solid #cccccc ;
       cursor:Pointer;
     }
+    .footer{
+      position:fixed;
+      bottom: 0px;
+      width: 89%;
+      height: 55px;
+      background-color: #F88E4E;
+    }
+    #deleteChooseGoods{
+      color: white;
+      float: right;
+      width: 10%;
+      height: 36px;
+      margin-right: 8%;
+      margin-top: 10px;
+      background-color: orangered;
+      border: 1px solid black;
+      cursor:Pointer;
+      border-radius: 10px;
+
+    }
     .search{
       width: 30%;
-      float: right;
+      float: left;
       margin-top: 1.3%;
       margin-right: 3%;
       border: 1px solid #ccc;
-      border-radius: 20px;
+      border-radius: 30px;
       margin-left: 10px;
       background-color: white;
     }
@@ -478,10 +516,10 @@
         margin-top: 5px;
         li{
           width: 100%;
-          margin:1% 4%;
+          margin:0% 4% 2% 4%;
           list-style: none;
           .container1-2 {
-            width: 55%;
+            width: 50%;
             float:left;
             margin-left: 1%;
             text-align: left;
@@ -496,8 +534,8 @@
             }
             div{
               height: 140px;
-              width: 100%;
-              margin:1% 5% 0px 3%;
+              width: 101%;
+              margin:1% 0% 0px 3%;
             }
           }
         }
@@ -509,5 +547,15 @@
     height: 270px;
     cursor: pointer;
   }
-
+  .container1-1{
+    float: left;
+    margin-left: 50px;
+    margin-top: 1%;
+  }
+  p{
+    float: left;
+    margin: 3px;
+    font-size: 18px;
+    font-weight: bold;
+  }
 </style>

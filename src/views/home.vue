@@ -2,36 +2,17 @@
   <div style="white-space: nowrap;">
     <carousel></carousel>
     <search></search>
-<!--    <div class="container1-1">-->
-<!--      <router-link :to="{name:'GoodDetails',params:{bid:1}}">-->
-<!--        <img src="../components/icon/1.png">-->
-<!--        <div class="container1-2" >-->
-<!--          <h3><b>bts周边</b></h3>-->
-<!--          <h2><b>￥150</b></h2>-->
-<!--        </div>-->
-<!--      </router-link>-->
-<!--    </div>-->
     <ul>
       <router-link v-for="(good,index) in allGoods" :to="{name:'GoodDetails',params:{bid:good.goodId}}" :key="index" tag="li" style="list-style:none;">
         <div class="container1-1" >
           <img :src="good.img">
           <div class="container1-2">
-            <h3><b>{{good.name}}</b></h3>
-            <h2><b>￥{{good.price}}</b></h2>
+            <h3><b>{{good.goodName}}</b></h3>
+            <h2><b>￥{{good.goodPrice}}</b></h2>
           </div>
         </div>
       </router-link>
     </ul>
-<!--    <router-link v-for="(good,index) in allGoods" :to="{name:'GoodDetails',params:{cid:good.GoodId}}" :key="index" tag="li" >-->
-<!--      <div class="container1-1" >-->
-<!--        <img :src="good.goodimg">-->
-<!--        <div class="container1-2">-->
-<!--          <h3><b>{{good.goodName}}</b></h3>-->
-<!--          <h2><b>{{good.goodPrice}}</b></h2>-->
-<!--        </div>-->
-
-<!--      </div>-->
-<!--    </router-link>-->
   </div>
 </template>
 
@@ -126,7 +107,6 @@
     //  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
     //}
   }
-
 
   //.container1 {
   //  border-radius: 5px;

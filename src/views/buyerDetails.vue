@@ -33,7 +33,7 @@
     name: "buyerDetails",
     data() {
       return {
-        goodId:{},
+        buyerId:{},
       }
     },
     methods: {
@@ -61,14 +61,14 @@
                       contentType: "application/json"
                       }).then((response)=> {
                       this.$message.success('填写成功');
-                      this.goodId=response.data.data;
+                      this.buyerId=response.data.data;
                       createIntention({
-                        buyerId: this.goodId,
+                        buyerId: this.buyerId,
                         goodId:this.$route.params.bid,
                         contentType: "application/json"
                       })
                         .then((response)=> {
-                          alert("生成意向")
+                          // alert("生成意向")
                         })
                       })
                     }
@@ -98,8 +98,9 @@
     border-radius: 10px;
   }
   textarea{
-    width: 35%;
-    height: 80px;
+    resize: none;
+    width: 45%;
+    height: 120px;
     border-radius: 10px;
     padding:8px;
     border: 1px solid;

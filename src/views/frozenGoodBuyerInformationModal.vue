@@ -13,28 +13,28 @@
           max-height=80%
           style="width: 100%"size="20px">
           <el-table-column
-            prop="name"
+            prop="buyerName"
             label="姓名"
             width=120px>
           </el-table-column>
+<!--          <el-table-column-->
+<!--            prop="number"-->
+<!--            label="数量"-->
+<!--            width=100px>-->
+<!--          </el-table-column>-->
           <el-table-column
-            prop="number"
-            label="数量"
-            width=100px>
-          </el-table-column>
-          <el-table-column
-            prop="time"
+            prop="date"
             label="时间"
-            width=140px>
+            width=200px>
           </el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
             width=200px>
             <template slot-scope="scope">
-              <el-button  @click="putOnGood(scope.row.id)" id="putOnGood">上架</el-button>
+              <el-button  @click="putOnGood(scope.row.dealId)" id="putOnGood">上架</el-button>
 <!--              <putOnGoodModal v-on:closeme1="closeme1" id="putOnGoodModal"></putOnGoodModal>-->
-              <el-button  @click="putOffGood(scope.row.id)" id="putOffGood">下架</el-button>
+              <el-button  @click="putOffGood(scope.row.dealId)" id="putOffGood">下架</el-button>
 <!--              <putOffGoodModal v-show="showModal2" v-on:closeme2="closeme2" :buyerId="scope.row.id"></putOffGoodModal>-->
             </template>
           </el-table-column>
@@ -68,10 +68,10 @@ export default {
   },
   data() {
     return {
-      massage:"",
       showModal1:false,
       showModal2:false,
-      frozenGoodsBuyerList:[{id:1,name:"a",number:2,time:"2021.10.10 20:25"},{id:2,name:"b",number:2,time:"20:25"},{id:3,name:"c",number:2,time:"2021.10.10 20:25"},{id:4,name:"d",number:2,time:"20:25"},{id:5,name:"e",number:2,time:"2021.10.10 20:25"},{id:6,name:"f",number:2,time:"20:25"},{id:1,name:"a",number:2,time:"2021.10.10 20:25"},{id:2,name:"b",number:2,time:"20:25"},{id:3,name:"c",number:2,time:"2021.10.10 20:25"},{id:4,name:"d",number:2,time:"20:25"},{id:5,name:"e",number:2,time:"2021.10.10 20:25"},{id:6,name:"f",number:2,time:"20:25"},],
+      // frozenGoodsBuyerList:[{id:1,name:"a",number:2,time:"2021.10.10 20:25"},{id:2,name:"b",number:2,time:"20:25"},{id:3,name:"c",number:2,time:"2021.10.10 20:25"},{id:4,name:"d",number:2,time:"20:25"},{id:5,name:"e",number:2,time:"2021.10.10 20:25"},{id:6,name:"f",number:2,time:"20:25"},{id:1,name:"a",number:2,time:"2021.10.10 20:25"},{id:2,name:"b",number:2,time:"20:25"},{id:3,name:"c",number:2,time:"2021.10.10 20:25"},{id:4,name:"d",number:2,time:"20:25"},{id:5,name:"e",number:2,time:"2021.10.10 20:25"},{id:6,name:"f",number:2,time:"20:25"},],
+      frozenGoodsBuyerList:[],
     }
   },
   created() {
@@ -84,8 +84,8 @@ export default {
         contentType: "application/json"
       })
         .then((response)=> {
-          //alert(JSON.stringify(this.$route.params.bid))
-          this.frozenGoodsBuyerList=response.data.data;
+          // alert("JSON.stringify(this.$route.params.bid):"+this.$route.params.bid)
+          this.frozenGoodsBuyerList=response.data.data.dealList;
         })
     },
     closeSelf() {
@@ -98,12 +98,15 @@ export default {
       // this.showModal1=!this.showModal1;
       // alert(this.showModal1);
       putOnGood({
-        goodId:JSON.stringify(4),
+        dealId:JSON.stringify(id),
         contentType: "application/json"
       })
         .then((response)=> {
-          this.massage=response;
-          alert("putOnGood")
+          if(response.data.code===-1){
+            this.$message.error('上架失败！');
+          }
+          else
+            this.$message.success('上架成功！');
         })
     },
     putOffGood(id){
@@ -114,8 +117,11 @@ export default {
         contentType: "application/json"
       })
         .then((response)=> {
-          this.massage=response;
-          alert("putOffGood")
+          if(response.data.code===-1){
+            this.$message.error('下架失败！');
+          }
+          else
+            this.$message.success('下架成功！');
         })
     },
     closeme1(){

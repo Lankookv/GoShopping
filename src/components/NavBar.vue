@@ -1,9 +1,8 @@
 <template>
   <div id="header">
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#F6792E">
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#F6792E" text-color="#2c3e50">
       <div class="logo" @click="toHome"><img src="./icon/logo.png"><span style="text-align: center;line-height:60px;">购小拼</span></div>
       <div class="login" v-if="!isLogin">
-<!--      <div class="login">-->
         <button class="btn1" @click="Login">
           登录
         </button>
@@ -12,13 +11,21 @@
 <!--        </button>-->
       </div>
       <div v-else class="hasLogin">
-        <el-submenu index="1">
+        <el-submenu index="1" >
           <template slot="title" class="mine">我的</template>
-          <el-menu-item index="2-1" @click="toSetting">我的设置</el-menu-item>
-          <el-menu-item index="2-2" @click="toChangePassword">修改密码</el-menu-item>
-          <el-menu-item index="2-3" @click="toReleaseGoods">发布商品</el-menu-item>
-          <el-menu-item index="2-4" @click="toHistoricalGoods">查看历史商品</el-menu-item>
-          <el-menu-item index="2-5" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
+          <el-submenu index="2-1" :popper-append-to-body="true">
+            <template slot="title">账号管理</template>
+            <el-menu-item index="2-1-1" @click="toChangePassword">修改密码</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2-2" :popper-append-to-body="true">
+            <template slot="title">商品管理</template>
+            <el-menu-item index="2-2-1" @click="toReleaseGoods">发布商品</el-menu-item>
+            <el-menu-item index="2-2-2" @click="toHistoricalGoods">查看历史商品</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2-3" :popper-append-to-body="true">
+            <template slot="title">交易管理</template>
+            <el-menu-item index="2-3-1" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
+          </el-submenu>
           <hr>
           <el-menu-item index="2-6" @click="logout">退出登录</el-menu-item>
         </el-submenu>
@@ -115,8 +122,8 @@ export default {
   },
   methods: {
     init(){
-     // alert("localStorage.getItem(\"userId\"):"+localStorage.getItem("userId"))
-      if(localStorage.getItem("userId")==null){
+     // alert("sessionStorage.getItem(\"userId\"):"+sessionStorage.getItem("userId"))
+      if(sessionStorage.getItem("userId")==null){
         this.isLogin=false;
       }else {
         this.isLogin=true;
@@ -158,14 +165,14 @@ export default {
             .then((response)=> {
               // sessionStorage.clear();
               // sessionStorage.setItem('token', response.data.details.token);
-              // localStorage.setItem('token', response.data.details.token);
-              // localStorage.setItem('id', response.data.details.id);
-              // localStorage.setItem('account',response.data.details.account);
+              // sessionStorage.setItem('token', response.data.details.token);
+              // sessionStorage.setItem('id', response.data.details.id);
+              // sessionStorage.setItem('account',response.data.details.account);
               if(response.data.code===-1){
                 this.$message.error('用户名或密码错误');
               }
               else{
-                localStorage.setItem('userId', this.loginParam.account);
+                sessionStorage.setItem('userId', response.data.data);
                 this.isLogin=!this.isLogin;
                 this.$message.success('登录成功');
                 this.showModal=!this.showModal;
@@ -179,7 +186,7 @@ export default {
       });
     },
     logout(){
-      localStorage.removeItem('userId');
+      sessionStorage.removeItem('userId');
       this.isLogin=!this.isLogin;
       this.$router.push('/');
     },
@@ -212,7 +219,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  @font-face {
+  //.el-menu--collapse .el-menu .el-submenu, .el-menu--popup {
+  //  min-width:140px !important;
+  //}
+   @font-face {
     font-family: 'iconfont';  /* Project id 2810508 */
     src: url('//at.alicdn.com/t/font_2810508_q2uw1cggabk.woff2?t=1632579523926') format('woff2'),
     url('//at.alicdn.com/t/font_2810508_q2uw1cggabk.woff?t=1632579523926') format('woff'),
@@ -307,7 +317,6 @@ export default {
     line-height: 50px;
     text-align: center;
     font-size: 20px;
-    color: #2d333f;
     border-bottom: 1px solid #ddd;
     i{
       float: right;
@@ -336,4 +345,5 @@ export default {
     height: 36px;
     margin-bottom: 10px;
   }
+
 </style>
