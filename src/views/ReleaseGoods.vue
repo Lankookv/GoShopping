@@ -25,7 +25,7 @@
             :limit=1
             v-show="showModal"
           >
-            <i class="iconfont">&#xe803</i>
+            <img src="../components/icon/上传图片.png" class="iconfont">
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="90%" :src="dialogImageUrl" alt="" />
@@ -176,15 +176,10 @@
     width: 138px;
     height: 138px;
   }
-  @font-face {
-    font-family: 'iconfont';  /* Project id 2810508 */
-    src: url('//at.alicdn.com/t/font_2810508_2w9zoyge9hu.woff2?t=1634127892200') format('woff2'),
-    url('//at.alicdn.com/t/font_2810508_2w9zoyge9hu.woff?t=1634127892200') format('woff'),
-    url('//at.alicdn.com/t/font_2810508_2w9zoyge9hu.ttf?t=1634127892200') format('truetype');
-  }
   .iconfont{
     font-family:"iconfont" !important;
-    font-size:60px;font-style:normal;
+    width:60px;
+    font-style:normal;
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;}

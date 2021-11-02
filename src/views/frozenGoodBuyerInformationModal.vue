@@ -4,7 +4,7 @@
     <div class="modal" >
       <div class="modal-header">
         <h2 style="margin-top: 0;margin-bottom: 0">冻结商品信息</h2>
-        <i class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;">&#xe650;</i>
+        <img src="../components/icon/关闭.png" class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;">
       </div>
       <div class="modal-body">
         <el-table
@@ -206,15 +206,10 @@ export default {
 .el-button {
   padding: 5px 20px;
 }
-@font-face {
-  font-family: 'iconfont';  /* Project id 2810508 */
-  src: url('//at.alicdn.com/t/font_2810508_q2uw1cggabk.woff2?t=1632579523926') format('woff2'),
-  url('//at.alicdn.com/t/font_2810508_q2uw1cggabk.woff?t=1632579523926') format('woff'),
-  url('//at.alicdn.com/t/font_2810508_q2uw1cggabk.ttf?t=1632579523926') format('truetype');
-}
 .iconfont{
   font-family:"iconfont" !important;
-  font-size:16px;font-style:normal;
+  width:16px;
+  font-style:normal;
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;

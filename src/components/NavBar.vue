@@ -34,7 +34,7 @@
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'">
       <div class="ms-login" v-if="two">
-        <div class="ms-title">欢迎来到购小拼<i class="iconfont" @click="close">&#xe650;</i></div>
+        <div class="ms-title">欢迎来到购小拼<img src="./icon/关闭.png" class="iconfont" @click="close"></div>
         <el-form :model="loginParam" :rules="rules" ref="loginForm" label-width="0px" class="ms-content">
           <el-form-item prop="account">
             <el-input v-model="loginParam.account" placeholder="用户名" prefix-icon="el-icon-user">
@@ -52,7 +52,7 @@
         </el-form>
       </div>
       <div class="ms-login" v-else>
-        <div class="ms-title">欢迎来到购小拼<i class="iconfont" @click="close">&#xe650;</i></div>
+        <div class="ms-title">欢迎来到购小拼<img src="icon/关闭.png" class="iconfont" @click="close"></div>
         <el-form :model="registerParam" :rules="rules" ref="registerForm" label-width="0px" class="ms-content">
           <el-form-item prop="account">
             <el-input v-model="registerParam.account" placeholder="用户名" prefix-icon="el-icon-user">
@@ -222,15 +222,10 @@ export default {
   //.el-menu--collapse .el-menu .el-submenu, .el-menu--popup {
   //  min-width:140px !important;
   //}
-   @font-face {
-    font-family: 'iconfont';  /* Project id 2810508 */
-    src: url('//at.alicdn.com/t/font_2810508_q2uw1cggabk.woff2?t=1632579523926') format('woff2'),
-    url('//at.alicdn.com/t/font_2810508_q2uw1cggabk.woff?t=1632579523926') format('woff'),
-    url('//at.alicdn.com/t/font_2810508_q2uw1cggabk.ttf?t=1632579523926') format('truetype');
-  }
   .iconfont{
     font-family:"iconfont" !important;
-    font-size:16px;font-style:normal;
+    width:16px;
+    font-style:normal;
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;

@@ -2,7 +2,7 @@
   <div class="search">
     <input type="text" class="input-search" v-model="keyword" id="searchTxt" ref="searchTxt" placeholder="bts周边" filterable  value="">
 <!--    <link rel="preload" href="//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff2" as="font" type="font/woff2" crossorigin="anonymous">-->
-    <i class="iconfont" @click="search">&#xe635;</i>
+    <img src="./icon/搜索.png" class="iconfont" @click="search">
 <!--    <header class="page-header">-->
 <!--      <div class="searchwrap border-bottom">-->
 <!--        <div class="searchbox">-->
@@ -73,15 +73,10 @@
   background-color:transparent;
   outline:none;
 }
-@font-face {
-  font-family: 'iconfont';  /* Project id 2810508 */
-  src: url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff2?t=1631580008886') format('woff2'),
-  url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff?t=1631580008886') format('woff'),
-  url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.ttf?t=1631580008886') format('truetype');
-}
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 20px;
+  width: 20px;
+  //font-size: 10px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

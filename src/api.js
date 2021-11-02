@@ -1,14 +1,14 @@
 // src\api\api.js
 import axios from 'axios';    // 导入axios
 
-// let host = 'http://10.61.196.17:2887/api';//苇苇学校
-// let host = 'http://192.168.12.23:2887/api';//苇苇寝室
-let host = 'http://192.168.2.40:2887/api';//苇苇热点
-// let host = 'http://10.61.180.170:2887/api';//杨柳学校
-// let host = 'http://10.61.196.17:2887/api';//杨柳寝室
-// let host = 'http://192.168.43.104:2887/api';//杨柳热点
-// let host = 'http://192.168.43.104:2887/api';//我热点
-
+// // let host = 'http://10.61.196.17:2887/api';//苇苇学校
+// // let host = 'http://192.168.12.23:2887/api';//苇苇寝室
+// let host = 'http://192.168.2.40:2887/api';//苇苇热点
+// // let host = 'http://10.61.180.170:2887/api';//杨柳学校
+// // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
+// // let host = 'http://192.168.43.104:2887/api';//杨柳热点
+// // let host = 'http://192.168.43.104:2887/api';//我热点
+let host = "http://localhost:2887/api";
 // 登录
 export const login = params => { return axios.post(`${host}/seller/sellerLogin/`, params)};
 

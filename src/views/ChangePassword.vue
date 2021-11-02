@@ -5,20 +5,20 @@
       <h2 style="margin-right: 18%">请输入原密码：</h2>
       <el-form-item  prop="oldPassword">
         <el-input type="password" id="oldpwd" @change="getOldPassword(changePwdParam.oldPassword)" v-model="changePwdParam.oldPassword" style="width:400px"></el-input>
-        <i class="iconfont" style="color: green" v-if="oldPwdFlag == 1">&#xe630;</i>
-        <i class="iconfont" style="color: red" v-else-if="oldPwdFlag == 2">&#xe632;</i>
+        <img src="../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="oldPwdFlag == 1">
+        <img src="../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="oldPwdFlag == 2">
       </el-form-item >
       <h2 style="margin-right: 18%">请输入新密码：</h2>
       <el-form-item  prop="newPassword">
         <el-input type="password" v-model="changePwdParam.newPassword" style="width:400px"></el-input>
-        <i class="iconfont" style="color: green" v-if="newPwdFlag == 1">&#xe630;</i>
-        <i class="iconfont" style="color: red" v-else-if="newPwdFlag == 2">&#xe632;</i>
+        <img src="../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="newPwdFlag == 1">
+        <img src="../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="newPwdFlag == 2">
       </el-form-item >
       <h2 style="margin-right: 18%">请确认新密码：</h2>
       <el-form-item  prop="r_newPassword">
         <el-input type="password" v-model="changePwdParam.r_newPassword" style="width:400px"></el-input>
-        <i class="iconfont" style="color: green" v-if="againPwdFlag == 1">&#xe630;</i>
-        <i class="iconfont" style="color: red" v-else-if="againPwdFlag == 2">&#xe632;</i>
+        <img src="../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="againPwdFlag == 1">
+        <img src="../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="againPwdFlag == 2">
       </el-form-item >
       <button type="primary" @click="handleSubmit('changePwdForm')"> 确认修改</button>
     </el-form>
@@ -142,15 +142,10 @@
   }
 </script>
 <style scoped lang="less">
-  @font-face {
-    font-family: 'iconfont';  /* Project id 2810508 */
-    src: url('//at.alicdn.com/t/font_2810508_ptlmddtnie.woff2?t=1634465290246') format('woff2'),
-    url('//at.alicdn.com/t/font_2810508_ptlmddtnie.woff?t=1634465290246') format('woff'),
-    url('//at.alicdn.com/t/font_2810508_ptlmddtnie.ttf?t=1634465290246') format('truetype');
-  }
   .iconfont{
     font-family:"iconfont" !important;
-    font-size:16px;font-style:normal;
+    width:16px;
+    font-style:normal;
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.4px;
     -moz-osx-font-smoothing: grayscale;
