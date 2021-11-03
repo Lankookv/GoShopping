@@ -4,18 +4,18 @@
       <span class="title">
         <b>查看意向购买人</b>
       </span>
-      <div class="search">
-        <!--        <Input  v-model="query.keywords"-->
-        <!--                @on-enter="filterByKeyword"-->
-        <!--                @on-click="filterByKeyword"-->
-        <!--                placeholder="BTS专辑"-->
-        <!--                class="input-search"/>-->
-        <!--        <span slot="append">-->
-        <!--          <Button type="primary" style="background-color:transparent;border: none">-->
-        <!--            <i class="iconfont" @click.prevent="filterByKeyword">&#xe635;</i>-->
-        <!--          </Button>-->
-        <!--        </span>-->
-      </div>
+<!--      <div class="search">-->
+<!--                <Input  v-model="query.keywords"-->
+<!--                        @on-enter="filterByKeyword"-->
+<!--                        @on-click="filterByKeyword"-->
+<!--                        placeholder="BTS专辑"-->
+<!--                        class="input-search"/>-->
+<!--                <span slot="append">-->
+<!--                  <Button type="primary" style="background-color:transparent;border: none">-->
+<!--                    <i class="iconfont" @click.prevent="filterByKeyword">&#xe635;</i>-->
+<!--                  </Button>-->
+<!--                </span>-->
+<!--      </div>-->
     </div>
     <div class="container1">
       <!--      <div v-if="allGoods.length==0&&No_good==false" style="padding-top: 15%">-->

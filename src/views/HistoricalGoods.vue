@@ -16,88 +16,93 @@
       <!--          </Button>-->
       <!--        </span>-->
       <!--      </div>-->
-      <select name="classify" onchange="cll(this.options[this.options.selectedIndex].value)">
-        <option value="all" selected>全部</option>
-        <option value ="sold">已售空</option>
-        <option value ="onSale">在售</option>
-        <option value="frozen">冻结</option>
-      </select>
+<!--      <select name="classify" onchange="cll(this.options[this.options.selectedIndex].value)">-->
+<!--        <option value="all" selected>全部</option>-->
+<!--        <option value ="sold">已售空</option>-->
+<!--        <option value ="onSale">在售</option>-->
+<!--        <option value="frozen">冻结</option>-->
+<!--      </select>-->
     </div>
     <div class="container1-1">
       <input type="checkbox" v-model='allChecked' @change='chooseAll' style="zoom:170%;float: left">
       <P>全选</P>
     </div>
     <div class="container1">
-      <ul :loading="loadings.table" id="allGood">
-        <router-link :class="good.type" v-for="(good,index) in allGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
-          <input type="checkbox" v-model='good.checked' @click.stop @change='chooseOne' style="float: left;margin-top: 7%;width:15px;height: 15px"></input>
-          <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
-          <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.goodName}}</b></h2>
-            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
-              <small v-html="good.description"></small>
+      <div v-if="allGoods.length===0">
+        暂无商品哦~
+      </div>
+      <div v-else>
+        <ul :loading="loadings.table" id="allGood">
+          <router-link :class="good.type" v-for="(good,index) in allGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
+            <input type="checkbox" v-model='good.checked' @click.stop @change='chooseOne' style="float: left;margin-top: 7%;width:15px;height: 15px"></input>
+            <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+            <div class="container1-2" style="overflow:hidden;">
+              <h2><b>{{good.goodName}}</b></h2>
+              <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+                <small v-html="good.description"></small>
+              </div>
             </div>
-          </div>
-          <span class="container1-3" v-if="good.type==='sold'">
-            <img src="../components/icon/已卖出.png" style="width: 9%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-            <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
-          </span>
-          <span class="container1-3" v-else-if="good.type==='frozen'">
-            <img src="../components/icon/冻结.png" style="width: 15%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-            <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
-          </span>
-          <span class="container1-3" v-else>
-            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-            <!--        <button class="deleteOneGood"@click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
-          </span>
-        </router-link>
-      </ul>
-      <ul :loading="loadings.table" id="frozenGood" style="display:none;">
-        <router-link class="frozen" v-for="(good,index) in frozenGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
-          <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
-          <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.goodName}}</b></h2>
-            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
-              <small v-html="good.description"></small>
+            <span class="container1-3" v-if="good.type==='sold'">
+              <img src="../components/icon/已卖出.png" style="width: 10%;float: right">
+              <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+              <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
+            </span>
+            <span class="container1-3" v-else-if="good.type==='frozen'">
+              <img src="../components/icon/冻结.png" style="width: 13%;float: right">
+              <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+              <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
+            </span>
+            <span class="container1-3" v-else>
+              <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+              <!--        <button class="deleteOneGood"@click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
+            </span>
+          </router-link>
+        </ul>
+        <ul :loading="loadings.table" id="frozenGood" style="display:none;">
+          <router-link class="frozen" v-for="(good,index) in frozenGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
+            <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+            <div class="container1-2" style="overflow:hidden;">
+              <h2><b>{{good.goodName}}</b></h2>
+              <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+                <small v-html="good.description"></small>
+              </div>
             </div>
-          </div>
-          <span class="container1-3">
-            <img src="../components/icon/冻结.png" style="width: 15%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-          </span>
-        </router-link>
-      </ul>
-      <ul :loading="loadings.table" id="soldGood" style="display:none;">
-        <router-link class="sold" v-for="(good,index) in soldGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
-          <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
-          <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.goodName}}</b></h2>
-            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
-              <small v-html="good.description"></small>
+            <span class="container1-3">
+              <img src="../components/icon/冻结.png" style="width: 13%;float: right">
+              <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+            </span>
+          </router-link>
+        </ul>
+        <ul :loading="loadings.table" id="soldGood" style="display:none;">
+          <router-link class="sold" v-for="(good,index) in soldGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
+            <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+            <div class="container1-2" style="overflow:hidden;">
+              <h2><b>{{good.goodName}}</b></h2>
+              <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+                <small v-html="good.description"></small>
+              </div>
             </div>
-          </div>
-          <span class="container1-3">
-            <img src="../components/icon/已卖出.png" style="width: 9%;float: right">
-            <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-          </span>
-        </router-link>
-      </ul>
-      <ul :loading="loadings.table" id="onSaleGood" style="display:none;">
-        <router-link class="onSale" v-for="(good,index) in onSaleGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
-          <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
-          <div class="container1-2" style="overflow:hidden;">
-            <h2><b>{{good.goodName}}</b></h2>
-            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
-              <small v-html="good.description"></small>
+            <span class="container1-3">
+              <img src="../components/icon/已卖出.png" style="width: 10%;float: right">
+              <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+            </span>
+          </router-link>
+        </ul>
+        <ul :loading="loadings.table" id="onSaleGood" style="display:none;">
+          <router-link class="onSale" v-for="(good,index) in onSaleGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
+            <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+            <div class="container1-2" style="overflow:hidden;">
+              <h2><b>{{good.goodName}}</b></h2>
+              <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+                <small v-html="good.description"></small>
+              </div>
             </div>
-          </div>
-          <span class="container1-3">
-            <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-          </span>
-        </router-link>
-      </ul>
+            <span class="container1-3">
+              <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
+            </span>
+          </router-link>
+        </ul>
+      </div>
       <div class="footer">
         <button id="deleteChooseGoods" @click="handleDelete()">删除所选商品</button>
       </div>
@@ -278,24 +283,18 @@
             }
           })
       },
-      watch: {
-        '$route'(newVal, oldVal) {
-          if (newVal !== oldVal) {
-            this.init(true)
-          }
-        }
-      },
+      // watch: {
+      //   '$route'(newVal, oldVal) {
+      //     if (newVal !== oldVal) {
+      //       this.init(true)
+      //     }
+      //   }
+      // },
     }
   }
 </script>
 
 <style scoped lang="less">
-  @font-face {
-    font-family: 'iconfont';  /* Project id 2810508 */
-    src: url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff2?t=1631580008886') format('woff2'),
-    url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff?t=1631580008886') format('woff'),
-    url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.ttf?t=1631580008886') format('truetype');
-  }
   .iconfont {
     font-family: "iconfont" !important;
     font-size: 20px;

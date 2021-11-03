@@ -45,6 +45,7 @@
 
 <style scoped lang="less">
 .search{
+  display:flex;
   border: 1px solid #ccc;
   border-radius: 20px;
   width: 400px;
@@ -65,22 +66,23 @@
 //}
 .input-search{
   border:none;
-  width: 330px;
+  width: 340px;
   font-size: 14px;
   font-weight: 700;
   font-family: "Microsoft soft";
   padding: 8px 8px;
+  margin-left: 10px;
   background-color:transparent;
   outline:none;
 }
 .iconfont {
+  align-self:center;
   font-family: "iconfont" !important;
   width: 20px;
   //font-size: 10px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-right: 10px;
 }
 .iconfont:hover{
   cursor:Pointer;

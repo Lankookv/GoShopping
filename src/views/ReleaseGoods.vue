@@ -21,7 +21,7 @@
             :on-remove="handleRemove0"
             :auto-upload="false"
             :multiple="true"
-            style="float: left"
+            style="float: left;"
             :limit=1
             v-show="showModal"
           >
@@ -158,7 +158,7 @@
   };
 </script>
 
-<style lang="less">
+<style scoped lang="less">
   .form .el-form-item__label{
     font-size: 1.5em;
     color: #2c3e50;
@@ -179,6 +179,7 @@
   .iconfont{
     font-family:"iconfont" !important;
     width:60px;
+    margin-top: 35px;
     font-style:normal;
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.2px;

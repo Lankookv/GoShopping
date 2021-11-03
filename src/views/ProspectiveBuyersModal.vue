@@ -3,7 +3,7 @@
     <div style="overflow:hidden;width:50%;">
       <div class="modal" >
         <div class="modal-header">
-          <h2 style="margin-top: 0;margin-bottom: 0">意向购买人</h2>
+          <h2 style="margin-top: 0;margin-bottom: 0;height: 40px">意向购买人</h2>
           <img src="../components/icon/关闭.png" class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;">
         </div>
         <div class="modal-body">
@@ -27,8 +27,8 @@
               label="操作"
               width=250px>
               <template slot-scope="scope">
-                <el-button  @click="toProspectiveBuyersDetail(scope.row.buyerId)" id="ProspectiveBuyersDetail">详细信息</el-button>
-                  <ProspectiveBuyersDetailModal v-show="showModal1" v-on:closeme1="closeme1" :buyerInfo="buyerInfo" :id="putOnGoodModal"></ProspectiveBuyersDetailModal>
+<!--                <el-button  @click="toProspectiveBuyersDetail(scope.row.buyerId)" id="ProspectiveBuyersDetail">详细信息</el-button>-->
+<!--                  <ProspectiveBuyersDetailModal v-show="showModal1" v-on:closeme1="closeme1" :buyerInfo="buyerInfo" :id="putOnGoodModal"></ProspectiveBuyersDetailModal>-->
                 <el-button  @click="toFreezeGood(scope.row)" id="FreezeGood">冻结</el-button>
                 <!--              <putOffGoodModal v-show="showModal2" v-on:closeme2="closeme2" :buyerId="scope.row.id"></putOffGoodModal>-->
               </template>
@@ -190,6 +190,7 @@
   .iconfont{
     font-family:"iconfont" !important;
     width:16px;
+    height:16px;
     font-style:normal;
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.2px;

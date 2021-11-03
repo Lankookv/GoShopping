@@ -52,7 +52,7 @@
         </el-form>
       </div>
       <div class="ms-login" v-else>
-        <div class="ms-title">欢迎来到购小拼<img src="icon/关闭.png" class="iconfont" @click="close"></div>
+        <div class="ms-title">欢迎来到购小拼<img src="./icon/关闭.png" class="iconfont" @click="close"></div>
         <el-form :model="registerParam" :rules="rules" ref="registerForm" label-width="0px" class="ms-content">
           <el-form-item prop="account">
             <el-input v-model="registerParam.account" placeholder="用户名" prefix-icon="el-icon-user">
@@ -188,6 +188,7 @@ export default {
     logout(){
       sessionStorage.removeItem('userId');
       this.isLogin=!this.isLogin;
+      this.$message.success('退出登录成功');
       this.$router.push('/');
     },
     submitRegisterForm(formName){
@@ -223,6 +224,9 @@ export default {
   //  min-width:140px !important;
   //}
   .iconfont{
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
     font-family:"iconfont" !important;
     width:16px;
     font-style:normal;

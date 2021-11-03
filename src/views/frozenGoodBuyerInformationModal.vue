@@ -209,6 +209,7 @@ export default {
 .iconfont{
   font-family:"iconfont" !important;
   width:16px;
+  height: 16px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke-width: 0.2px;
