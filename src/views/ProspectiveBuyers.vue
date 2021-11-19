@@ -28,15 +28,14 @@
       <!--          <span style="text-align: center">正在努力加载中 请稍后 o(*￣▽￣*)ブ</span>-->
       <!--        </div>-->
       <!--      </div>-->
-      <!--      <div v-else-if="allGoods.length==0&&No_good==true">-->
-      <!--      <div >-->
-      <!--        <center>-->
-      <!--          <img  src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">-->
-      <!--        </center>-->
-      <!--        <div style="text-align: center;">-->
-      <!--          <span style="text-align: center">没有搜索到任何商品哦 /(ㄒoㄒ)/~~</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
+            <div v-if="allGoods.length===0">
+              <center>
+                <img  src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">
+              </center>
+              <div style="text-align: center;">
+                <span style="text-align: center">暂无任何商品有意向哦 /(ㄒoㄒ)/~~</span>
+              </div>
+            </div>
       <ul    :loading="loadings.table" >
         <!--        <router-link class="container_1" v-for="(good,index) in allGoods" :to="{name:'HistoricalGoodsDetail',params:{bid:good.goodId}}" :key="index" tag="li" >-->
         <!--          <div class="container1-1" >-->

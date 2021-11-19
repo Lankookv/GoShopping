@@ -29,7 +29,12 @@
     </div>
     <div class="container1">
       <div v-if="allGoods.length===0">
-        暂无商品哦~
+        <center>
+          <img  src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">
+        </center>
+        <div style="text-align: center;">
+          <span style="text-align: center">暂无任何商品哦 /(ㄒoㄒ)/~~</span>
+        </div>
       </div>
       <div v-else>
         <ul :loading="loadings.table" id="allGood">
