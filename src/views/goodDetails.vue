@@ -10,9 +10,14 @@
           </div>
         </div>
         <h1 style="color: red;font-size: 40px"><b>￥{{good.good.goodPrice}}</b></h1>
-        <button @click="toWriteBuyerInfo">
-          需要购买
-        </button>
+        <p style="margin-top: 5%">
+          <button @click="toWriteBuyerInfo">
+            需要购买
+          </button>
+          <span style="vertical-align:middle; line-height:50px;float: right;margin-right: 20px">
+            库存：{{good.good.storage}}
+          </span>
+        </p>
       </div>
       <div class="container4">
         <span>
@@ -127,7 +132,6 @@
       width: 25%;
       height: 50px;
       float: right;
-      margin-top: 5%;
       margin-right: 15%;
       font-size: 20px;
       background-color: #F56E1C;
@@ -138,7 +142,6 @@
       width: 25%;
       height: 50px;
       float: right;
-      margin-top: 5%;
       font-size: 20px;
       margin-right: 15%;
       background-color: #F56E1C;

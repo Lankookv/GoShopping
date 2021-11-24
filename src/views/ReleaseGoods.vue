@@ -9,7 +9,7 @@
         <el-form-item label="商品价格：">
           <el-input v-model="form.price"></el-input>
         </el-form-item>
-        <el-form-item label="封面图片上传：" label-width="190px" >
+        <el-form-item label="封面图片上传：" label-width="140px" >
 <!--                    //action 如果是手动上传 action随便填一下就好了，自动上传填接口地址就行-->
           <span style="float: left">请上传一张jpg、jpeg、png、bmp形式的图片</span><br>
           <el-upload
@@ -34,7 +34,7 @@
         <el-form-item label="详细介绍：" >
           <el-input type="textarea" v-model="form.description"></el-input>
         </el-form-item>
-        <el-form-item label="商品详情图片上传：" label-width="235px">
+        <el-form-item label="商品详情图片上传：" label-width="140px">
           <!--          //action 如果是手动上传 action随便填一下就好了，自动上传填接口地址就行-->
           <span style="float: left">请上传jpg、jpeg、png、bmp形式的图片</span><br>
           <el-upload
@@ -53,6 +53,9 @@
           <el-dialog :visible.sync="dialogVisible">
             <img width="90%" :src="dialogImageUrl" alt="" />
           </el-dialog>
+        </el-form-item>
+        <el-form-item label="商品详情视频上传：" label-width="140px">
+          <input type="file" id="myfile" name="myfile" @change="handleFile" style="float:left;vertical-align:middle; line-height:40px;"/> <br />　　
         </el-form-item>
         <el-form-item style="margin-right: 140px;">
           <el-button type="primary" @click="onSubmit">立即发布</el-button>
@@ -81,6 +84,7 @@
         fileList: [],
         SignBase64:[],
         fileForm:true,
+        resource:['mp4'],
       };
     },
     methods: {
@@ -114,22 +118,42 @@
           //到这里，已经转换为base64编码了，此时直接调用后台接口，把参数传过去，后台进行保存即可
           // this.SignBase64 即为所需上传图片的编码
 
-          releaseGood({
-            // Good:this.param,
-            sellerId: parseInt(sessionStorage.getItem("userId")),
-            goodName: _this.form.name,
-            goodPrice: _this.form.price,
-            description: _this.form.description,
-            img: this.SignBase64,
-            contentType: "application/json",
-          })
-            .then((response) => {
-              if (response.data.code === -1) {
-                this.$message.error('发布失败！');
-              } else
-                this.$message.success('发布成功！');
-            })
+          let form_data = new window.FormData()
+          form_data=this.formdata0;
+          const index = this.fileName0.lastIndexOf('.');
+          const type=this.fileName0.substring(index+1);
+          // alert("type:"+type);
+          if(this.resource.indexOf(type) > -1){
+              releaseGood({
+                // Good:this.param,
+                sellerId: parseInt(sessionStorage.getItem("userId")),
+                goodName: _this.form.name,
+                goodPrice: _this.form.price,
+                description: _this.form.description,
+                img: this.SignBase64,
+                file:form_data,
+                contentType: "application/json",
+                headers: {'content-type': 'multipart/form-data'}
+              })
+                .then((response) => {
+                  if (response.data.code === -1) {
+                    this.$message.error('发布失败！');
+                  } else
+                    this.$message.success('发布成功！');
+                })
+          }
         }
+      },
+      handleFile(data) {
+        //此时data为上传文件后返回的数据, data.target.files[0]为一个file流;
+        this.fileBook0=data.target.files[0];
+        this.fileName0=data.target.files[0].name;
+        //此时new FormData()为new一个新的form表单对象，将拿到的file流通过append方法存进去
+        this.formdata0 = new FormData();
+        this.formdata0.append("resource_file", this.fileBook0) ;
+        // this.formdata.append("miniMchId", this.storeDetail.miniMchId);
+        // this.formdata.append("miniPayKey" , this.storeDetail. miniPayKey);
+        // this.formdata.append("miniSecret", this.storeDetail. miniSecret);
       },
       handleRemove0(file, fileList) {
         console.log(file, fileList);
@@ -163,7 +187,7 @@
     font-size: 1.5em;
     color: #2c3e50;
   }
-  .el-textarea__inner{
+  .el-textarea__inner {
     resize: none;
     height: 140px;
   }

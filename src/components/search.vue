@@ -33,11 +33,23 @@
 </template>
 
 <script>
+  import {search} from "../api";
+
   export default {
     name: "search",
+    data() {
+      return {
+        goods:[],
+      }
+    },
     methods:{
       search(){
-
+        search({
+          q:JSON.stringify(document.getElementById('searchTxt').value),
+          contentType: "application/json"
+        }).then((response)=> {
+          //this.goods=response;
+        })
       },
     }
   }

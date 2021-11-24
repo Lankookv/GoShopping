@@ -6,9 +6,9 @@
         <button class="btn1" @click="Login">
           登录
         </button>
-<!--        <button class="btn2" @click="Register">-->
-<!--          注册-->
-<!--        </button>-->
+        <button class="btn2" @click="Register">
+          注册
+        </button>
       </div>
       <div v-else class="hasLogin">
         <el-submenu index="1" >
@@ -26,13 +26,17 @@
             <template slot="title">交易管理</template>
             <el-menu-item index="2-3-1" @click="toProspectiveBuyers">查看意向购买人</el-menu-item>
           </el-submenu>
+          <el-submenu index="2-4" :popper-append-to-body="true">
+            <template slot="title">客户管理</template>
+            <el-menu-item index="2-3-1" @click="toCustomerInformation">查看客户信息</el-menu-item>
+          </el-submenu>
           <hr>
           <el-menu-item index="2-6" @click="logout">退出登录</el-menu-item>
         </el-submenu>
         <img src="./icon/v.png" class="faces" height="50px">
       </div>
     </el-menu>
-    <div class="login-wrap" :style="showModal===false?'display:none':'display:block'">
+    <div class="login-wrap" :style="showModal===false?'display:none':'display:block'" style="padding: 30px 30px 10px 30px">
       <div class="ms-login" v-if="two">
         <div class="ms-title">欢迎来到购小拼<img src="./icon/关闭.png" class="iconfont" @click="close"></div>
         <el-form :model="loginParam" :rules="rules" ref="loginForm" label-width="0px" class="ms-content">
@@ -53,7 +57,7 @@
       </div>
       <div class="ms-login" v-else>
         <div class="ms-title">欢迎来到购小拼<img src="./icon/关闭.png" class="iconfont" @click="close"></div>
-        <el-form :model="registerParam" :rules="rules" ref="registerForm" label-width="0px" class="ms-content">
+        <el-form :model="registerParam" :rules="rules" ref="registerForm" label-width="0px" class="ms-content" style="padding: 30px 30px 10px 30px">
           <el-form-item prop="account">
             <el-input v-model="registerParam.account" placeholder="用户名" prefix-icon="el-icon-user">
             </el-input>
@@ -66,10 +70,14 @@
             <el-input type="password" placeholder="确认密码" v-model="registerParam.r_password" prefix-icon="el-icon-lock">
             </el-input>
           </el-form-item>
-          <el-form-item prop="phone">
+          <el-form-item prop="phone" style="margin-bottom: 15px;">
             <el-input v-model="registerParam.phone" placeholder="手机号码" prefix-icon="el-icon-message">
             </el-input>
           </el-form-item>
+<!--          <div style="margin-bottom: 15px;text-align:left;color: #606266;font-size: 14px;">身份选择：-->
+<!--            <el-radio v-model="registerParam.identity" label="buyer">买家</el-radio>-->
+<!--            <el-radio v-model="registerParam.identity" label="seller">卖家</el-radio>-->
+<!--          </div>-->
           <div class="login-btn">
             <el-button type="primary" @click="submitRegisterForm('registerForm')">注册</el-button>
           </div>
@@ -104,7 +112,7 @@ export default {
       two: true,
       showModal:false,
       loginParam: {},
-      registerParam: {},
+      registerParam: {identity:"buyer",},
       rules: {
         account: [{ required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 3, max: 15, message: '请输入3-15位字符', trigger: 'blur'}],
@@ -146,6 +154,9 @@ export default {
     },
     toProspectiveBuyers(){
       this.$router.push({name:'ProspectiveBuyers',})
+    },
+    toCustomerInformation(){
+      this.$router.push({name:'CustomerInformation',})
     },
     Login(){
       this.two=true;
@@ -197,9 +208,9 @@ export default {
           register(this.registerParam)
             .then((response)=> {
               this.$message.success('注册成功');
-              this.loginParam.account = this.registerParam.account
-              this.loginParam.password = this.registerParam.password
-              this.two = true
+              // this.loginParam.account = this.registerParam.account
+              // this.loginParam.password = this.registerParam.password
+              // this.two = true
               this.showModal=!this.showModal;
             })
             .catch((error)=> {

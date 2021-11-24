@@ -14,7 +14,7 @@
           <button @click="toFrozenGoodInformation()">查看冻结信息</button>
           <frozenGoodBuyerInformationModal v-show="showModal" v-on:closeme="closeme" :goodId="good.good.goodId"></frozenGoodBuyerInformationModal>
           <span style="vertical-align:middle; line-height:50px;float: right;margin-right: 20px">
-            库存：1
+            库存：{{good.good.storage}}
           </span>
         </p>
       </div>

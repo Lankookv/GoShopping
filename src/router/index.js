@@ -10,6 +10,7 @@ import goodDetailOnSale from "../views/goodDetail-onSale"
 import goodDetailSold from "../views/goodDetail-sold"
 import goodDetailFrozen from "../views/goodDetail-frozen"
 import buyerDetails from "../views/buyerDetails"
+import CustomerInformation from "../views/CustomerInformation"
 
 Vue.use(Router)
 
@@ -53,6 +54,12 @@ export default new Router({
       path: '/ProspectiveBuyers',
       name: 'ProspectiveBuyers',
       component: ProspectiveBuyers,
+      meta:{isSeller:true},
+    },
+    {
+      path: '/CustomerInformation',
+      name: 'CustomerInformation',
+      component: CustomerInformation,
       meta:{isSeller:true},
     },
     {

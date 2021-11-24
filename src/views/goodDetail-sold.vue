@@ -13,7 +13,7 @@
         <p style="margin-top: 5%">
           <button>历史购买信息</button>
           <span style="vertical-align:middle; line-height:50px;float: right;margin-right: 20px">
-            库存：1
+            库存：{{good.good.storage}}
           </span>
         </p>
       </div>
