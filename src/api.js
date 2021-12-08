@@ -3,7 +3,7 @@ import axios from 'axios';    // 导入axios
 
 // // let host = 'http://10.61.196.17:2887/api';//苇苇学校
 // // let host = 'http://192.168.12.23:2887/api';//苇苇寝室
-let host = 'http://192.168.158.40:2887/api';//苇苇热点
+let host = 'http://192.168.45.40:2887/api';//苇苇热点
 // // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // // let host = 'http://192.168.43.104:2887/api';//杨柳热点
@@ -17,7 +17,7 @@ export const login = params => { return axios.post(`${host}/seller/sellerLogin/`
 export const register = params => { return axios.post(`${host}/seller/sellerRegister`, params)};
 
 // 搜索
-export const search = params => { return axios.get(`${host}/buyer/searchGood`, params)};
+export const search = params => { return axios.post(`${host}/buyer/searchGood`, params)};
 
 // 显示所有商品(首页) （只是不显示已下架）
 export const showAllGoods = params => { return axios.post(`${host}/buyer/getAllGoodListFB`, params)};
@@ -85,3 +85,6 @@ export const releaseGood = params => {return axios.post(`${host}/seller/raiseGoo
 
 // 查看客户信息
 export const showAllBuyerInfo = params => { return axios.post(`${host}/admin/getAllBuyerInfo`, params)};
+
+// 查看客户购买记录
+export const showPurchaseRecords = params => { return axios.post(`${host}/admin/getBuyerHistoryByBuyerId`, params)};

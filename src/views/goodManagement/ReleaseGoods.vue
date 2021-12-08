@@ -25,7 +25,7 @@
             :limit=1
             v-show="showModal"
           >
-            <img src="../components/icon/上传图片.png" class="iconfont">
+            <img src="../../components/icon/上传图片.png" class="iconfont">
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="90%" :src="dialogImageUrl" alt="" />
@@ -67,8 +67,7 @@
 </template>
 
 <script>
-  import {releaseGood} from "../api";
-  import { uploadImgToBase64 } from '../utils/utils'
+  import {releaseGood} from "../../api";
 
   export default {
     data() {
@@ -93,47 +92,25 @@
         let _this = this;
         this.$refs.upload0.submit();
         this.$refs.upload.submit();
-        const imgBroadcastListBase64 = []
-        // if (this.IsReupload) {
-        // 并发 转码轮播图片list => base64
-        const filePromises = this.fileList.map(async file => {
-          var name = file.name;
-          var fileName = name.substring(name.lastIndexOf(".")+1).toLowerCase();
-          if(fileName !=="jpg" && fileName !=="jpeg" && fileName !=="png" && fileName !=="bmp"){
-            this.$message.error('图片格式不正确！请上传jpg、jpeg、png、bmp形式的图片');
-            this.fileForm=false;
-            return false;
-          }
-          const response = await uploadImgToBase64(file)
-          return response.result;
-          // return response.result.replace(/.*;base64,/, '') // 去掉data:image/jpeg;base64,
-        })
         if(this.fileForm) {
-          // 按次序输出 base64图片
-          for (const textPromise of filePromises) {
-            imgBroadcastListBase64.push(await textPromise)
-          }
-          this.SignBase64 = imgBroadcastListBase64;
-          // this.SignBase64 = imgBroadcastListBase64.join()
-          //到这里，已经转换为base64编码了，此时直接调用后台接口，把参数传过去，后台进行保存即可
-          // this.SignBase64 即为所需上传图片的编码
-
-          let form_data = new window.FormData()
-          form_data=this.formdata0;
+          let form_data = new FormData()
+          form_data=this.fileList;
+          let form_data0 = new FormData()
+          form_data0=this.formdata0;
           const index = this.fileName0.lastIndexOf('.');
           const type=this.fileName0.substring(index+1);
-          // alert("type:"+type);
+          alert("type:"+type);
+          console.log("form_data:"+form_data);
+          console.log("form_data0:"+form_data0);
           if(this.resource.indexOf(type) > -1){
               releaseGood({
-                // Good:this.param,
                 sellerId: parseInt(sessionStorage.getItem("userId")),
                 goodName: _this.form.name,
                 goodPrice: _this.form.price,
                 description: _this.form.description,
-                img: this.SignBase64,
-                file:form_data,
+                img: form_data,
+                file: form_data0,
                 contentType: "application/json",
-                headers: {'content-type': 'multipart/form-data'}
               })
                 .then((response) => {
                   if (response.data.code === -1) {
@@ -141,6 +118,9 @@
                   } else
                     this.$message.success('发布成功！');
                 })
+          }
+          else {
+            his.$message.error('视频格式不正确！请上传mp4形式的视频');
           }
         }
       },
@@ -163,7 +143,15 @@
         this.dialogVisible = true;
       },
       beforeUpload0(file) {
+        var name = file.name;
+        var fileName = name.substring(name.lastIndexOf(".")+1).toLowerCase();
+        if(fileName !=="jpg" && fileName !=="jpeg" && fileName !=="png" && fileName !=="bmp"){
+          this.$message.error('图片格式不正确！请上传jpg、jpeg、png、bmp形式的图片');
+          this.fileForm=false;
+          return false;
+        }
         this.fileList.push(file);
+        this.fileForm=true;
         return false;
       },
       handleRemove(file, fileList) {
@@ -174,6 +162,13 @@
         this.dialogVisible = true;
       },
       beforeUpload(file) {
+        var name = file.name;
+        var fileName = name.substring(name.lastIndexOf(".")+1).toLowerCase();
+        if(fileName !=="jpg" && fileName !=="jpeg" && fileName !=="png" && fileName !=="bmp"){
+          this.$message.error('图片格式不正确！请上传jpg、jpeg、png、bmp形式的图片');
+          this.fileForm=false;
+          return false;
+        }
         this.fileList.push(file);
         this.fileForm=true;
         return false;

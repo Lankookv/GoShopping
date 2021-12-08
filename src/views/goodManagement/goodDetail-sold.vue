@@ -33,8 +33,8 @@
 </template>
 
 <script>
-  import card from "../components/card";
-  import {showGoodDetail} from '../api';
+  import card from "../../components/card";
+  import {showGoodDetail} from '../../api';
 
   export default {
     name: "goodDetail-sold",

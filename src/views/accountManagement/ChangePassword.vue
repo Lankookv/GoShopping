@@ -5,20 +5,20 @@
       <h2 style="margin-right: 18%">请输入原密码：</h2>
       <el-form-item  prop="oldPassword">
         <el-input type="password" id="oldpwd" @change="getOldPassword(changePwdParam.oldPassword)" v-model="changePwdParam.oldPassword" style="width:400px"></el-input>
-        <img src="../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="oldPwdFlag == 1">
-        <img src="../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="oldPwdFlag == 2">
+        <img src="../../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="oldPwdFlag == 1">
+        <img src="../../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="oldPwdFlag == 2">
       </el-form-item >
       <h2 style="margin-right: 18%">请输入新密码：</h2>
       <el-form-item  prop="newPassword">
         <el-input type="password" v-model="changePwdParam.newPassword" style="width:400px"></el-input>
-        <img src="../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="newPwdFlag == 1">
-        <img src="../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="newPwdFlag == 2">
+        <img src="../../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="newPwdFlag == 1">
+        <img src="../../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="newPwdFlag == 2">
       </el-form-item >
       <h2 style="margin-right: 18%">请确认新密码：</h2>
       <el-form-item  prop="r_newPassword">
         <el-input type="password" v-model="changePwdParam.r_newPassword" style="width:400px"></el-input>
-        <img src="../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="againPwdFlag == 1">
-        <img src="../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="againPwdFlag == 2">
+        <img src="../../components/icon/icon_通用_对错_对.png" class="iconfont" style="color: green" v-if="againPwdFlag == 1">
+        <img src="../../components/icon/icon_通用_对错_错.png" class="iconfont" style="color: red" v-else-if="againPwdFlag == 2">
       </el-form-item >
       <button type="primary" @click="handleSubmit('changePwdForm')"> 确认修改</button>
     </el-form>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import {changePassword, checkOldPassword} from '../api'
+  import {changePassword, checkOldPassword} from '../../api'
   export default {
     name: "ChangePassword",
     data: function () {

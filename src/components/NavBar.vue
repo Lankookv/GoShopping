@@ -245,6 +245,18 @@ export default {
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;
   }
+  .iconfont:hover{
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+    font-family:"iconfont" !important;
+    width:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+    cursor:Pointer;
+  }
   .el-menu-demo{
     margin-top: auto;
     .logo{

@@ -45,10 +45,10 @@
     methods:{
       search(){
         search({
-          q:JSON.stringify(document.getElementById('searchTxt').value),
+          keyword:document.getElementById('searchTxt').value,
           contentType: "application/json"
         }).then((response)=> {
-          //this.goods=response;
+          this.goods=response;
         })
       },
     }

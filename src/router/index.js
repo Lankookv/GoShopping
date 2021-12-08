@@ -2,15 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from "../views/home";
 import goodDetails from "../views/goodDetails";
-import ReleaseGoods from "../views/ReleaseGoods";
-import HistoricalGoods from "../views/HistoricalGoods"
-import ChangePassword from "../views/ChangePassword"
-import ProspectiveBuyers from "../views/ProspectiveBuyers"
-import goodDetailOnSale from "../views/goodDetail-onSale"
-import goodDetailSold from "../views/goodDetail-sold"
-import goodDetailFrozen from "../views/goodDetail-frozen"
+import ReleaseGoods from "../views/goodManagement/ReleaseGoods";
+import HistoricalGoods from "../views/goodManagement/HistoricalGoods"
+import ChangePassword from "../views/accountManagement/ChangePassword"
+import ProspectiveBuyers from "../views/transactionManagement/ProspectiveBuyers"
+import goodDetailOnSale from "../views/goodManagement/goodDetail-onSale"
+import goodDetailSold from "../views/goodManagement/goodDetail-sold"
+import goodDetailFrozen from "../views/goodManagement/goodDetail-frozen"
 import buyerDetails from "../views/buyerDetails"
-import CustomerInformation from "../views/CustomerInformation"
+import CustomerInformation from "../views/customerManagement/CustomerInformation"
 
 Vue.use(Router)
 
@@ -60,7 +60,7 @@ export default new Router({
       path: '/CustomerInformation',
       name: 'CustomerInformation',
       component: CustomerInformation,
-      meta:{isSeller:true},
+      //meta:{isSeller:true},
     },
     {
       path: '/GoodDetail/:bid',//bid:商品id

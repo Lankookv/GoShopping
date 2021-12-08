@@ -31,8 +31,8 @@
 </template>
 
 <script>
-  import frozenGoodBuyerInformationModal from "./frozenGoodBuyerInformationModal";
-  import {showGoodDetail} from '../api';
+  import frozenGoodBuyerInformationModal from "../transactionManagement/frozenGoodBuyerInformationModal";
+  import {showGoodDetail} from '../../api';
 
   export default {
     name: "goodDetail-frozen",

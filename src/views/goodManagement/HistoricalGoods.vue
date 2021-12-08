@@ -30,7 +30,7 @@
     <div class="container1">
       <div v-if="allGoods.length===0">
         <center>
-          <img  src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">
+          <img src="../../components/icon/pic30.png" style="width:90%;margin-top: 15px">
         </center>
         <div style="text-align: center;">
           <span style="text-align: center">暂无任何商品哦 /(ㄒoㄒ)/~~</span>
@@ -48,12 +48,12 @@
               </div>
             </div>
             <span class="container1-3" v-if="good.type==='sold'">
-              <img src="../components/icon/已卖出.png" style="width: 10%;float: right">
+              <img src="../../components/icon/已卖出.png" style="width: 10%;float: right">
               <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
               <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
             </span>
             <span class="container1-3" v-else-if="good.type==='frozen'">
-              <img src="../components/icon/冻结.png" style="width: 13%;float: right">
+              <img src="../../components/icon/冻结.png" style="width: 13%;float: right">
               <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
               <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
             </span>
@@ -73,7 +73,7 @@
               </div>
             </div>
             <span class="container1-3">
-              <img src="../components/icon/冻结.png" style="width: 13%;float: right">
+              <img src="../../components/icon/冻结.png" style="width: 13%;float: right">
               <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
             </span>
           </router-link>
@@ -88,7 +88,7 @@
               </div>
             </div>
             <span class="container1-3">
-              <img src="../components/icon/已卖出.png" style="width: 10%;float: right">
+              <img src="../../components/icon/已卖出.png" style="width: 10%;float: right">
               <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
             </span>
           </router-link>
@@ -121,8 +121,8 @@
 </template>
 
 <script>
-  import Pagination from '../components/Pagination'
-  import {showAllHistoricalGoods,deleteHistoricalGood } from '../api';
+  import Pagination from '../../components/Pagination'
+  import {showAllHistoricalGoods,deleteHistoricalGood } from '../../api';
 
   export default {
     name: "HistoricalGoods",

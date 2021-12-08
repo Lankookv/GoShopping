@@ -4,7 +4,7 @@
       <div class="modal" >
         <div class="modal-header">
           <h2 style="margin-top: 0;margin-bottom: 0;height: 40px">意向购买人</h2>
-          <img src="../components/icon/关闭.png" class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;">
+          <img src="../../components/icon/关闭.png" class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;">
         </div>
         <div class="modal-body">
           <el-table
@@ -41,8 +41,8 @@
 </template>
 
 <script>
-  import {freezeGood, showBuyerInfo, showIntentionListByGoodId} from '../api';
-  import ProspectiveBuyersDetailModal from "../components/ProspectiveBuyersDetailModal"
+  import {freezeGood, showBuyerInfo, showIntentionListByGoodId} from '../../api';
+  import ProspectiveBuyersDetailModal from "../../components/ProspectiveBuyersDetailModal"
   // import putOnGoodModal from "../components/putOnGoodModal"
 
   export default {

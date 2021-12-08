@@ -30,7 +30,7 @@
       <!--      </div>-->
             <div v-if="allGoods.length===0">
               <center>
-                <img  src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">
+                <img src="../../components/icon/pic30.png" style="width:90%;margin-top: 15px">
               </center>
               <div style="text-align: center;">
                 <span style="text-align: center">暂无任何商品有意向哦 /(ㄒoㄒ)/~~</span>
@@ -76,9 +76,9 @@
 </template>
 
 <script>
-  import Pagination from '../components/Pagination'
-  import {showAllGoodsOfInterestedBuyers, showIntentionListByGoodId} from '../api';
-  import ProspectiveBuyersModal from "../views/ProspectiveBuyersModal"
+  import Pagination from '../../components/Pagination'
+  import {showAllGoodsOfInterestedBuyers, showIntentionListByGoodId} from '../../api';
+  import ProspectiveBuyersModal from "./ProspectiveBuyersModal"
 
   export default {
     name: "ProspectiveBuyers",
