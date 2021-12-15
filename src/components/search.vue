@@ -45,9 +45,10 @@
     methods:{
       search(){
         search({
-          keyword:document.getElementById('searchTxt').value,
-          contentType: "application/json"
+          keyword:JSON.stringify(document.getElementById('searchTxt').value),
+          contentType: "application/json;charset=UTF-8",
         }).then((response)=> {
+          alert(JSON.stringify(document.getElementById('searchTxt').value))
           this.goods=response;
         })
       },

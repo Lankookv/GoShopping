@@ -16,7 +16,7 @@
     <ul>
       <router-link v-for="(good,index) in allGoods" :to="{name:'GoodDetails',params:{bid:good.goodId}}" :key="index" tag="li" style="list-style:none;">
         <div class="container1-1" >
-          <img :src="good.img">
+          <img :src="'http://localhost:8080/'+good.img">
           <div class="container1-2">
             <h3><b>{{good.goodName}}</b></h3>
             <h2><b>￥{{good.goodPrice}}</b></h2>
@@ -55,7 +55,10 @@
       },
       search(){
         this.keyword=document.getElementById('searchTxt').value;
-        search(this.keyword).then((response)=> {
+        search({
+          keyword:this.keyword,
+          contentType: "application/json;charset=UTF-8",
+        }).then((response)=> {
           this.allGoods=response.data.data.goodlist;
         })
       },

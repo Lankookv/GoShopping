@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import {changePassword, checkOldPassword} from '../../api'
+  import {changeBuyerPassword, changeSellerPassword, checkSellerOldPassword,checkBuyerOldPassword} from '../../api'
   export default {
     name: "ChangePassword",
     data: function () {
@@ -73,7 +73,6 @@
         }
       };
       return {
-        a:{},
         oldPwdFlag: 0,
         newPwdFlag: 0,
         againPwdFlag: 0,
@@ -95,28 +94,52 @@
             {trigger: 'blur'},
             {validator: r_newPasswordcheck, trigger: 'blur'}
           ]
-        }
+        },
+        a:{},
       }
     },
     methods: {
       handleSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            changePassword({
-              userId: parseInt(sessionStorage.getItem("userId")),
-              password:  this.changePwdParam.oldPassword,
-              newPassword: this.changePwdParam.newPassword,
-              contentType: "application/json"
-            })
-              .then((response) => {
-                this.a=response;
-                if(response.data.code !== -1){
-                  this.$message.success('修改成功！');
-                  this.$router.push('/');
-                }else {
-                  this.$message.error('修改失败！');
-                }
+            alert("JSON.parse(sessionStorage.getItem(\"userId\")):"+JSON.parse(sessionStorage.getItem("userId")))
+            alert("JSON.parse(sessionStorage.getItem(\"buyerId\")):"+JSON.parse(sessionStorage.getItem("buyerId")))
+            if(JSON.parse(sessionStorage.getItem("userId"))!=null){
+              alert("a")
+              changeSellerPassword({
+                userId: parseInt(sessionStorage.getItem("userId")),
+                password:  this.changePwdParam.oldPassword,
+                newPassword: this.changePwdParam.newPassword,
+                contentType: "application/json"
               })
+                .then((response) => {
+                  this.a=response;
+                  if(response.data.code !== -1){
+                    this.$message.success('修改成功！');
+                    this.$router.push('/');
+                  }else {
+                    this.$message.error('修改失败！');
+                  }
+                })
+            }
+            else {
+              alert("b")
+              changeBuyerPassword({
+                userId: parseInt(sessionStorage.getItem("buyerId")),
+                password:  this.changePwdParam.oldPassword,
+                newPassword: this.changePwdParam.newPassword,
+                contentType: "application/json"
+              })
+                .then((response) => {
+                  this.a=response;
+                  if(response.data.code !== -1){
+                    this.$message.success('修改成功！');
+                    this.$router.push('/');
+                  }else {
+                    this.$message.error('修改失败！');
+                  }
+                })
+            }
           } else {
             this.$message.error('修改失败！');
           }
@@ -125,18 +148,38 @@
 
       getOldPassword(oldpwd) {//验证旧密码
         var str = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0';
-        checkOldPassword({
-          userId:parseInt(sessionStorage.getItem("userId")),
-          password:(oldpwd)})
-          .then((response) => {
-            if (response.data.code !== -1) {
-              this.oldPwdFlag=1;
-            } else {
-              // alert("旧密码错误")
-              this.oldPwdFlag=2;
-              return callback(new Error(str+"旧密码错误"));
-            }
+        if(JSON.parse(sessionStorage.getItem("userId"))!=null) {
+          alert("a1")
+          checkSellerOldPassword({
+            userId: parseInt(sessionStorage.getItem("userId")),
+            password: (oldpwd)
           })
+            .then((response) => {
+              if (response.data.code !== -1) {
+                this.oldPwdFlag = 1;
+              } else {
+                // alert("旧密码错误")
+                this.oldPwdFlag = 2;
+                return callback(new Error(str + "旧密码错误"));
+              }
+            })
+        }
+        else {
+          alert("b1")
+          checkBuyerOldPassword({
+            userId:parseInt(sessionStorage.getItem("buyerId")),
+            password:(oldpwd)})
+            .then((response) => {
+              if (response.data.code !== -1) {
+                this.oldPwdFlag=1;
+              } else {
+                // alert("旧密码错误")
+                this.oldPwdFlag=2;
+                return callback(new Error(str+"旧密码错误"));
+              }
+            })
+        }
+
       }
     }
   }

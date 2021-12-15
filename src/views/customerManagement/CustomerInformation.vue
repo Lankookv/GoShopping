@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="customers" border stripe style="margin:1% 4%;width: auto;background-color:#F4E5DC;">
+    <el-table :data="customers.slice((currentPage-1)*pagesize,currentPage*pagesize)" border stripe style="margin:1% 4%;width: auto;background-color:#F4E5DC;">
       <el-table-column prop="buyerId" label="ID" fixed width="200" align="center"></el-table-column>
       <el-table-column prop="buyerName" label="姓名" width="200" align="center"></el-table-column>
       <el-table-column prop="buyerPhone" label="联系方式" width="200" align="center"></el-table-column>
@@ -20,7 +20,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :page-sizes="[1,10,20, 50, 100,]"
-        :page-size="20"
+        :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
         style="margin-right: 20px">
@@ -28,14 +28,14 @@
     </div>
     <div class="all" v-show="dialogVisible"></div>
     <div class="PurchaseRecords" v-show="dialogVisible">
-      <div><span style="float: left;margin-top: 10px;margin-left: 10px;font-size: 20px">购买记录</span><img src="../../components/icon/关闭.png" class="iconfont" @click="dialogVisible=!dialogVisible"></div>
+      <div><span style="float: left;margin-top: 10px;margin-left: 10px;font-size: 20px"><b>购买记录</b></span><img src="../../components/icon/关闭.png" class="iconfont" @click="dialogVisible=!dialogVisible"></div>
       <el-table
           :data="customerPurchaseRecords"
           style="z-index: 999;">
-          <el-table-column prop="buyerName" label="姓名" width="80" align="center"></el-table-column>
-        <el-table-column prop="goodName" label="商品名" width="140" align="center"></el-table-column>
-          <el-table-column prop="time" label="购买时间" width="140" align="center"></el-table-column>
-          <el-table-column prop="buyerLocation" label="交易地点" align="center"></el-table-column>
+          <el-table-column prop="buyerName" label="姓名" width="170" align="center"></el-table-column>
+        <el-table-column prop="goodName" label="商品名" width="170" align="center"></el-table-column>
+          <el-table-column prop="date" label="购买时间" width="" align="center"></el-table-column>
+<!--          <el-table-column prop="buyerLocation" label="交易地点" align="center"></el-table-column>-->
       </el-table>
     </div>
   </div>
@@ -48,10 +48,12 @@
     name: "CustomerInformation",
     data() {
       return {
-        customers:[{ buyerId:1,},],
-        total: 1,
+        customers:[],
+        total: 0,
         dialogVisible:false,
         customerPurchaseRecords: [],
+        pagesize:10,
+        currentPage:1
       }
     },
     mounted() {
@@ -83,10 +85,10 @@
         this.dialogVisible=!this.dialogVisible;
       },
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.pagesize=val;
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.currentPage = val;
       }
     },
   }

@@ -36,7 +36,6 @@ export default new Router({
       path: '/ChangePassword',
       name: 'ChangePassword',
       component: ChangePassword,
-      meta:{isSeller:true},
     },
     {
       path: '/ReleaseGoods',
@@ -60,7 +59,7 @@ export default new Router({
       path: '/CustomerInformation',
       name: 'CustomerInformation',
       component: CustomerInformation,
-      //meta:{isSeller:true},
+      meta:{isSeller:true},
     },
     {
       path: '/GoodDetail/:bid',//bid:商品id

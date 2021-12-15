@@ -3,7 +3,7 @@ import axios from 'axios';    // 导入axios
 
 // // let host = 'http://10.61.196.17:2887/api';//苇苇学校
 // // let host = 'http://192.168.12.23:2887/api';//苇苇寝室
-let host = 'http://192.168.45.40:2887/api';//苇苇热点
+let host = 'http://192.168.241.40:2887/api';//苇苇热点
 // // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // // let host = 'http://192.168.43.104:2887/api';//杨柳热点
@@ -11,10 +11,10 @@ let host = 'http://192.168.45.40:2887/api';//苇苇热点
 // let host = "http://121.40.97.124:2887/api";
 
 // 登录
-export const login = params => { return axios.post(`${host}/seller/sellerLogin/`, params)};
+export const login = params => { return axios.post(`${host}/common/login/`, params)};
 
 // 注册   ==》未完成
-export const register = params => { return axios.post(`${host}/seller/sellerRegister`, params)};
+export const register = params => { return axios.post(`${host}/common/register`, params)};
 
 // 搜索
 export const search = params => { return axios.post(`${host}/buyer/searchGood`, params)};
@@ -45,10 +45,16 @@ export const deleteHistoricalGood = params => { return axios.post(`${host}/selle
 // export const updateSellerInfo = params => { return axios.post(`${host}/updateSellerInfo`, params)};
 
 // 拿取卖家密码
-export const checkOldPassword = params => {return axios.post(`${host}/seller/checkSellerPassword`,params)};
+export const checkSellerOldPassword = params => {return axios.post(`${host}/seller/checkSellerPassword`,params)};
+
+// 拿取卖家密码
+export const checkBuyerOldPassword = params => {return axios.post(`${host}/buyer/checkBuyerPassword`,params)};
 
 // 修改卖家密码
-export const changePassword = params => {return axios.post(`${host}/seller/updateSellerPassword`,params)};
+export const changeSellerPassword = params => {return axios.post(`${host}/seller/updateSellerPassword`,params)};
+
+// 修买家密码
+export const changeBuyerPassword = params => {return axios.post(`${host}/buyer/updateBuyerPassword`,params)};
 
 // 查看意向购买人 (查看该卖家有意向购买人的所有商品)
 export const showAllGoodsOfInterestedBuyers = params => { return axios.post(`${host}/seller/getWantedGoodListBySellerId`, params)};

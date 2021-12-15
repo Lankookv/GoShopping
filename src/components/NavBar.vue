@@ -11,7 +11,21 @@
         </button>
       </div>
       <div v-else class="hasLogin">
-        <el-submenu index="1" >
+        <el-submenu index="1" v-if="!isSeller">
+          <template slot="title" class="mine">我的</template>
+          <el-submenu index="2-1" :popper-append-to-body="true">
+            <template slot="title">账号管理</template>
+            <el-menu-item index="2-1-1" @click="toChangePassword">修改密码</el-menu-item>
+            <el-menu-item index="2-1-2" @click="toChangeInformation">编辑信息</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2-4" :popper-append-to-body="true">
+            <template slot="title">订单管理</template>
+            <el-menu-item index="2-3-1" @click="toPurchaseRecords">查看历史下单记录</el-menu-item>
+          </el-submenu>
+          <hr>
+          <el-menu-item index="2-6" @click="buyerLogout">退出登录</el-menu-item>
+        </el-submenu>
+        <el-submenu index="1" v-else>
           <template slot="title" class="mine">我的</template>
           <el-submenu index="2-1" :popper-append-to-body="true">
             <template slot="title">账号管理</template>
@@ -31,7 +45,7 @@
             <el-menu-item index="2-3-1" @click="toCustomerInformation">查看客户信息</el-menu-item>
           </el-submenu>
           <hr>
-          <el-menu-item index="2-6" @click="logout">退出登录</el-menu-item>
+          <el-menu-item index="2-6" @click="sellerLogout">退出登录</el-menu-item>
         </el-submenu>
         <img src="./icon/v.png" class="faces" height="50px">
       </div>
@@ -74,10 +88,10 @@
             <el-input v-model="registerParam.phone" placeholder="手机号码" prefix-icon="el-icon-message">
             </el-input>
           </el-form-item>
-<!--          <div style="margin-bottom: 15px;text-align:left;color: #606266;font-size: 14px;">身份选择：-->
-<!--            <el-radio v-model="registerParam.identity" label="buyer">买家</el-radio>-->
-<!--            <el-radio v-model="registerParam.identity" label="seller">卖家</el-radio>-->
-<!--          </div>-->
+          <div style="margin-bottom: 15px;text-align:left;color: #606266;font-size: 14px;">身份选择：
+            <el-radio v-model="registerParam.authority" label="2">买家</el-radio>
+            <el-radio v-model="registerParam.authority" label="1">卖家</el-radio>
+          </div>
           <div class="login-btn">
             <el-button type="primary" @click="submitRegisterForm('registerForm')">注册</el-button>
           </div>
@@ -109,10 +123,11 @@ export default {
       activeIndex: '1',
       activeIndex2: '1',
       isLogin:false,
+      isSeller:false,
       two: true,
       showModal:false,
       loginParam: {},
-      registerParam: {identity:"buyer",},
+      registerParam: {authority:"2",},
       rules: {
         account: [{ required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 3, max: 15, message: '请输入3-15位字符', trigger: 'blur'}],
@@ -121,7 +136,9 @@ export default {
         r_password: [{ required: true, message: '请输入确认密码', trigger: 'blur' },
           { validator: validatePass, trigger: 'blur' }],
         phone: [{ required: true, message: '请输入手机号码', trigger: 'blur' },
-          { type: "phone", message: '请输入正确的手机号码', trigger: 'blur' }]
+          { min: 11, max: 11, message: '请输入正确的11位手机号码', trigger: 'blur' }],
+        authority: [{ required: true, message: '请选择身份', trigger: 'blur' },
+          { trigger: 'blur' }],
       },
     };
   },
@@ -130,8 +147,7 @@ export default {
   },
   methods: {
     init(){
-     // alert("sessionStorage.getItem(\"userId\"):"+sessionStorage.getItem("userId"))
-      if(sessionStorage.getItem("userId")==null){
+      if(sessionStorage.getItem("userId")==null||sessionStorage.getItem("buyerId")){
         this.isLogin=false;
       }else {
         this.isLogin=true;
@@ -160,6 +176,8 @@ export default {
     },
     Login(){
       this.two=true;
+      sessionStorage.removeItem('buyerId');
+      sessionStorage.removeItem('userId');
       this.showModal=!this.showModal;
     },
     Register(){
@@ -183,7 +201,13 @@ export default {
                 this.$message.error('用户名或密码错误');
               }
               else{
-                sessionStorage.setItem('userId', response.data.data);
+                if(response.data.data>0){
+                  this.isSeller=true;
+                  sessionStorage.setItem('userId', response.data.data);
+                }else {
+                  this.isSeller=false;
+                  sessionStorage.setItem('buyerId', -response.data.data);
+                }
                 this.isLogin=!this.isLogin;
                 this.$message.success('登录成功');
                 this.showModal=!this.showModal;
@@ -196,7 +220,13 @@ export default {
         }
       });
     },
-    logout(){
+    buyerLogout(){
+      sessionStorage.removeItem('buyerId');
+      this.isLogin=!this.isLogin;
+      this.$message.success('退出登录成功');
+      this.$router.push('/');
+    },
+    sellerLogout(){
       sessionStorage.removeItem('userId');
       this.isLogin=!this.isLogin;
       this.$message.success('退出登录成功');
@@ -207,16 +237,15 @@ export default {
         if (valid) {
           register(this.registerParam)
             .then((response)=> {
-              this.$message.success('注册成功');
-              // this.loginParam.account = this.registerParam.account
-              // this.loginParam.password = this.registerParam.password
-              // this.two = true
-              this.showModal=!this.showModal;
+              if(response.data.code===-1){
+                this.$message.error('注册失败！');
+              }else {
+                this.$message.success('注册成功');
+                this.loginParam.account = this.registerParam.account
+                this.loginParam.password = this.registerParam.password
+                this.showModal=!this.showModal;
+              }
             })
-            .catch((error)=> {
-              var key = Object.keys(error.response.data.details)[0]
-              this.$message.error(error.response.data.details[key][0]);
-            });
         } else {
           this.$message.error('请根据提示输入必填项');
           return false;
