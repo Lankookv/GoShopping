@@ -39,8 +39,8 @@
       <div v-else>
         <ul :loading="loadings.table" id="allGood">
           <router-link :class="good.type" v-for="(good,index) in allGoods" :to="{name:good.toRouter,params:{bid:good.goodId}}" :key="index" tag="li">
-            <input type="checkbox" v-model='good.checked' @click.stop @change='chooseOne' style="float: left;margin-top: 7%;width:15px;height: 15px"></input>
-            <img :src="good.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+            <input type="checkbox" v-model='good.checked' @click.stop @change='chooseOne(good)' style="float:left;width:15px;height: 15px;margin-top: 8%"></input>
+            <img :src="good.img" style="width: 18%;height:93%;float: left;margin-left: 1%;margin-top: 1%;">
             <div class="container1-2" style="overflow:hidden;">
               <h2><b>{{good.goodName}}</b></h2>
               <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
@@ -50,16 +50,13 @@
             <span class="container1-3" v-if="good.type==='sold'">
               <img src="../../components/icon/已卖出.png" style="width: 10%;float: right">
               <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-              <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
             </span>
             <span class="container1-3" v-else-if="good.type==='frozen'">
               <img src="../../components/icon/冻结.png" style="width: 13%;float: right">
               <h1 style="color: black;font-size: 40px;margin-top: 10%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-              <!--        <button class="deleteOneGood" @click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
             </span>
             <span class="container1-3" v-else>
               <h1 style="color: black;font-size: 40px;margin-top: 8%;margin-right: 3%"><b>￥{{good.goodPrice}}</b></h1>
-              <!--        <button class="deleteOneGood"@click.stop @click="deleteGood(good.goodId)" style="margin-top: -70px;">删除</button>-->
             </span>
           </router-link>
         </ul>
@@ -212,13 +209,9 @@
         }
       },
       //单选
-      chooseOne() {
-        this.allChecked = this.allGoods.every(good => {
-          // alert("调用单选方法");
-          return good.checked === true;
-        })
+      chooseOne(good) {
+          good.checked = true;
       },
-
       //全选
       chooseAll() {
         this.allGoods.forEach((good) => {
@@ -227,74 +220,45 @@
       },
 
       //删除提示
-      // openDelConfirm() {
-      //   return this.$confirm(`是否删除所选商品？`, '提示', {
-      //     confirmButtonText: '确定',
-      //     cancelButtonText: '取消',
-      //     type: 'warning'
-      //   })
-      // },
-
-      //点击删除所选商品
-      //handleDelete(){
-      //  this.openDelConfirm().then(() => {
-      //   deleteHistoryGoods().then(res => {
-      //     this.$message({
-      //         type: 'success',
-      //         message: '删除成功!'
-      //       })
-      //        this.fetchTableData()
-      //     })
-      //    }).catch(() => {
-      //    })
-      // }
-      //},
-      // handleDelete() {
-      //   alert("调用按钮删除方法");
-      //   var i = 0;
-      //   this.allGoods = this.allGoods.filter((goodId) => {
-      //     if (good.checked == true) {
-      //       goodIdArr[i] = goodId;
-      //       i++;
-      //     }
-      //   })
-      //   deleteHistoricalGood({
-      //     goodId: JSON.stringify(goodIdArr),
-      //     contentType: "application/json"
-      //   })
-      //     .then((response) => {
-      //       alert("数据传给后端，删除商品方法调用成功");
-      //       if (response.data.code !== -1) {
-      //         this.$messagesuccess('删除成功');
-      //            } else {
-      //              this.$messagesuccess('删除失败');
-      //            }
-      //          })
-      // }
+      openDelConfirm() {
+        return this.$confirm(`是否删除所选商品？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+      },
 
       handleDelete() {
-        // alert("调用底部按钮删除方法");
-        // var i = 0;
-        deleteHistoricalGood({
-          goodId: JSON.stringify(6),
-          contentType: "application/json"
-        })
-          .then((response) => {
-            // alert("数据传给后端，删除商品方法调用成功");
-            if (response.data.code !== -1) {
-              this.$message.success('删除成功');
-            } else {
-              this.$message.error('删除失败');
+        this.openDelConfirm().then(() => {
+          var i = 0;
+          this.allGoods = this.allGoods.filter((good) => {
+            if (good.checked === true) {
+              this.goodIdArr[i] = good.goodId;
+              i++;
             }
           })
+          deleteHistoricalGood({
+            goodIds: this.goodIdArr,
+            contentType: "application/json"
+          })
+            .then((response) =>{
+              if (response.data.code !== -1) {
+                this.$message.success('删除成功');
+                this.$router.push({name:'HistoricalGoods'});
+              } else {
+                this.$message.success('删除失败');
+              }
+            })
+        })
       },
-      // watch: {
-      //   '$route'(newVal, oldVal) {
-      //     if (newVal !== oldVal) {
-      //       this.init(true)
-      //     }
-      //   }
-      // },
+
+      watch: {
+        '$route'(newVal, oldVal) {
+          if (newVal !== oldVal) {
+            this.init(true)
+          }
+        }
+      },
     }
   }
 </script>

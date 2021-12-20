@@ -11,6 +11,10 @@ import goodDetailSold from "../views/goodManagement/goodDetail-sold"
 import goodDetailFrozen from "../views/goodManagement/goodDetail-frozen"
 import buyerDetails from "../views/buyerDetails"
 import CustomerInformation from "../views/customerManagement/CustomerInformation"
+import digitalGoods from "../views/digitalGoods";
+import phoneGoods from "../views/phoneGoods";
+import nothing from "../views/nothing";
+import editInformation from "../views/accountManagement/editInformation"
 
 Vue.use(Router)
 
@@ -78,6 +82,26 @@ export default new Router({
       name: 'goodDetail-frozen',
       component: goodDetailFrozen,
       meta:{isSeller:true},
+    },
+    {
+      path: '/digitalGoods/',
+      name: 'digitalGoods',
+      component: digitalGoods,
+    },
+    {
+      path: '/phoneGoods/',
+      name: 'phoneGoods',
+      component: phoneGoods,
+    },
+    {
+      path: '/nothing/',
+      name: 'nothing',
+      component: nothing,
+    },
+    {
+      path: '/editInformation/',
+      name: 'editInformation',
+      component: editInformation,
     },
   ]
 })

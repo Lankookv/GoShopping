@@ -16,7 +16,7 @@
           <el-submenu index="2-1" :popper-append-to-body="true">
             <template slot="title">账号管理</template>
             <el-menu-item index="2-1-1" @click="toChangePassword">修改密码</el-menu-item>
-            <el-menu-item index="2-1-2" @click="toChangeInformation">编辑信息</el-menu-item>
+            <el-menu-item index="2-1-2" @click="toEditInformation">编辑信息</el-menu-item>
           </el-submenu>
           <el-submenu index="2-4" :popper-append-to-body="true">
             <template slot="title">订单管理</template>
@@ -30,6 +30,7 @@
           <el-submenu index="2-1" :popper-append-to-body="true">
             <template slot="title">账号管理</template>
             <el-menu-item index="2-1-1" @click="toChangePassword">修改密码</el-menu-item>
+<!--            <el-menu-item index="2-1-2" @click="toEditInformation">编辑信息</el-menu-item>-->
           </el-submenu>
           <el-submenu index="2-2" :popper-append-to-body="true">
             <template slot="title">商品管理</template>
@@ -147,10 +148,16 @@ export default {
   },
   methods: {
     init(){
-      if(sessionStorage.getItem("userId")==null||sessionStorage.getItem("buyerId")){
+      //alert("userId:"+sessionStorage.getItem("userId")+"buyerId:"+sessionStorage.getItem("buyerId")+"isSeller:"+sessionStorage.getItem("isSeller"))
+      if(sessionStorage.getItem("userId")==null&&sessionStorage.getItem("buyerId")==null){
         this.isLogin=false;
       }else {
         this.isLogin=true;
+      }
+      if(sessionStorage.getItem("isSeller")==="false"){
+        this.isSeller=false;
+      }else {
+        this.isSeller=true;
       }
     },
     handleSelect(key, keyPath) {
@@ -167,6 +174,9 @@ export default {
     },
     toChangePassword(){
       this.$router.push({name:'ChangePassword',})
+    },
+    toEditInformation(){
+      this.$router.push({name:'editInformation',})
     },
     toProspectiveBuyers(){
       this.$router.push({name:'ProspectiveBuyers',})
@@ -202,9 +212,11 @@ export default {
               }
               else{
                 if(response.data.data>0){
+                  sessionStorage.setItem('isSeller', true);
                   this.isSeller=true;
                   sessionStorage.setItem('userId', response.data.data);
                 }else {
+                  sessionStorage.setItem('isSeller', false);
                   this.isSeller=false;
                   sessionStorage.setItem('buyerId', -response.data.data);
                 }
@@ -222,12 +234,14 @@ export default {
     },
     buyerLogout(){
       sessionStorage.removeItem('buyerId');
+      sessionStorage.removeItem('isSeller');
       this.isLogin=!this.isLogin;
       this.$message.success('退出登录成功');
       this.$router.push('/');
     },
     sellerLogout(){
       sessionStorage.removeItem('userId');
+      sessionStorage.removeItem('isSeller');
       this.isLogin=!this.isLogin;
       this.$message.success('退出登录成功');
       this.$router.push('/');

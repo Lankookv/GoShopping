@@ -9,6 +9,9 @@
         <el-form-item label="商品价格：">
           <el-input v-model="form.price"></el-input>
         </el-form-item>
+        <el-form-item label="商品库存：">
+          <el-input v-model="form.storage"></el-input>
+        </el-form-item>
         <el-form-item label="封面图片上传：" label-width="140px" >
 <!--                    //action 如果是手动上传 action随便填一下就好了，自动上传填接口地址就行-->
           <span style="float: left">请上传一张jpg、jpeg、png、bmp形式的图片</span><br>
@@ -54,8 +57,24 @@
             <img width="90%" :src="dialogImageUrl" alt="" />
           </el-dialog>
         </el-form-item>
-        <el-form-item label="商品详情视频上传：" label-width="140px">
-          <input type="file" id="myfile" name="myfile" @change="handleFile" style="float:left;vertical-align:middle; line-height:40px;"/> <br />　　
+        <el-form-item label="商品类别：" >
+          <el-select v-model="class1" @change="selectGoodClass1($event)" clearable filterable style="float: left">
+            <el-option
+              v-for="(item,index) in class1List"
+              :key="index"
+              :label="item.class1Name"
+              :value="index">
+            </el-option>
+          </el-select>
+          <img src="../../components/icon/箭头.png" style="float: left;margin-top: 10px">
+          <el-select v-model="class2" @change="selectGoodClass2($event)" clearable filterable style="float: left">
+            <el-option
+              v-for="(item,index) in class2List"
+              :key="index"
+              :label="item.class2Name"
+              :value="index">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item style="margin-right: 140px;">
           <el-button type="primary" @click="onSubmit">立即发布</el-button>
@@ -67,7 +86,8 @@
 </template>
 
 <script>
-  import {releaseGood} from "../../api";
+  import {releaseGood, showGoodClass1, showGoodClass2} from "../../api";
+  import { uploadImgToBase64 } from '../../utils/utils'
 
   export default {
     data() {
@@ -79,12 +99,31 @@
           name: "",
           price: "",
           description: "",
+          storage:0,
+        },
+        rules: {
+          name: [{ required: true, message: '请输入商品名', trigger: 'blur' },
+            { min: 0, max: 15, message: '请输入0-15位字符', trigger: 'blur'}],
+          price: [{ required: true, message: '请输入价格', trigger: 'blur',type:'number' },
+            { min: 0,message: '请输入数字0以上', trigger: 'blur'}],
+          storage: [{ required: true, message: '请输入库存', trigger: 'blur',type:'number', },
+            { min: 0, max: 10000, message: '请输入数字0-10000', trigger: 'blur' }],
         },
         fileList: [],
         SignBase64:[],
         fileForm:true,
-        resource:['mp4'],
+        class1:"",
+        class1Id:0,
+        class2:"",
+        class2Id:0,
+        class1List:[],
+        class2List:[],
       };
+    },
+    mounted() {
+      showGoodClass1().then((response)=> {
+          this.class1List=response.data.data;
+        })
     },
     methods: {
       async onSubmit() {
@@ -92,48 +131,48 @@
         let _this = this;
         this.$refs.upload0.submit();
         this.$refs.upload.submit();
+        const imgBroadcastListBase64 = []
+        // if (this.IsReupload) {
+        // 并发 转码轮播图片list => base64
+        const filePromises = this.fileList.map(async file => {
+          var name = file.name;
+          var fileName = name.substring(name.lastIndexOf(".")+1).toLowerCase();
+          if(fileName !=="jpg" && fileName !=="jpeg" && fileName !=="png" && fileName !=="bmp"){
+            this.$message.error('图片格式不正确！请上传jpg、jpeg、png、bmp形式的图片');
+            this.fileForm=false;
+            return false;
+          }
+          const response = await uploadImgToBase64(file)
+          return response.result;
+          // return response.result.replace(/.*;base64,/, '') // 去掉data:image/jpeg;base64,
+        })
         if(this.fileForm) {
-          let form_data = new FormData()
-          form_data=this.fileList;
-          let form_data0 = new FormData()
-          form_data0=this.formdata0;
-          const index = this.fileName0.lastIndexOf('.');
-          const type=this.fileName0.substring(index+1);
-          alert("type:"+type);
-          console.log("form_data:"+form_data);
-          console.log("form_data0:"+form_data0);
-          if(this.resource.indexOf(type) > -1){
-              releaseGood({
-                sellerId: parseInt(sessionStorage.getItem("userId")),
-                goodName: _this.form.name,
-                goodPrice: _this.form.price,
-                description: _this.form.description,
-                img: form_data,
-                file: form_data0,
-                contentType: "application/json",
-              })
-                .then((response) => {
-                  if (response.data.code === -1) {
-                    this.$message.error('发布失败！');
-                  } else
-                    this.$message.success('发布成功！');
-                })
+          // 按次序输出 base64图片
+          for (const textPromise of filePromises) {
+            imgBroadcastListBase64.push(await textPromise)
           }
-          else {
-            his.$message.error('视频格式不正确！请上传mp4形式的视频');
-          }
+          this.SignBase64 = imgBroadcastListBase64;
+          // this.SignBase64 = imgBroadcastListBase64.join()
+          //到这里，已经转换为base64编码了，此时直接调用后台接口，把参数传过去，后台进行保存即可
+          // this.SignBase64 即为所需上传图片的编码
+
+          releaseGood({
+            // Good:this.param,
+            sellerId: parseInt(sessionStorage.getItem("userId")),
+            goodName: _this.form.name,
+            goodPrice: _this.form.price,
+            description: _this.form.description,
+            storage:_this.form.storage,
+            class2:this.class2Id,
+            img: this.SignBase64,
+            contentType: "application/json",
+          }).then((response) => {
+            if (response.data.code === -1) {
+              this.$message.error('发布失败！');
+            } else
+              this.$message.success('发布成功！');
+          })
         }
-      },
-      handleFile(data) {
-        //此时data为上传文件后返回的数据, data.target.files[0]为一个file流;
-        this.fileBook0=data.target.files[0];
-        this.fileName0=data.target.files[0].name;
-        //此时new FormData()为new一个新的form表单对象，将拿到的file流通过append方法存进去
-        this.formdata0 = new FormData();
-        this.formdata0.append("resource_file", this.fileBook0) ;
-        // this.formdata.append("miniMchId", this.storeDetail.miniMchId);
-        // this.formdata.append("miniPayKey" , this.storeDetail. miniPayKey);
-        // this.formdata.append("miniSecret", this.storeDetail. miniSecret);
       },
       handleRemove0(file, fileList) {
         console.log(file, fileList);
@@ -143,15 +182,7 @@
         this.dialogVisible = true;
       },
       beforeUpload0(file) {
-        var name = file.name;
-        var fileName = name.substring(name.lastIndexOf(".")+1).toLowerCase();
-        if(fileName !=="jpg" && fileName !=="jpeg" && fileName !=="png" && fileName !=="bmp"){
-          this.$message.error('图片格式不正确！请上传jpg、jpeg、png、bmp形式的图片');
-          this.fileForm=false;
-          return false;
-        }
         this.fileList.push(file);
-        this.fileForm=true;
         return false;
       },
       handleRemove(file, fileList) {
@@ -162,16 +193,29 @@
         this.dialogVisible = true;
       },
       beforeUpload(file) {
-        var name = file.name;
-        var fileName = name.substring(name.lastIndexOf(".")+1).toLowerCase();
-        if(fileName !=="jpg" && fileName !=="jpeg" && fileName !=="png" && fileName !=="bmp"){
-          this.$message.error('图片格式不正确！请上传jpg、jpeg、png、bmp形式的图片');
-          this.fileForm=false;
-          return false;
-        }
         this.fileList.push(file);
         this.fileForm=true;
         return false;
+      },
+      selectGoodClass1(val){//根据设备组id获取相应的商品
+        if(val != null && val !== '' && val !== undefined){
+          this.class1=this.class1List[val].class1Name;
+          this.class1Id=this.class1List[val].class1;
+          showGoodClass2({
+            class1: this.class1Id,
+            contentType: "application/json",
+          }).then((response) => {
+            if (response.data.code === -1) {
+              this.$message.error('出现错误！');
+            } else{
+              this.class2List=response.data.data;
+            }
+          })
+        }
+      },
+      selectGoodClass2(val){
+        this.class2=this.class2List[val].class2Name;
+        this.class2Id=this.class2List[val].class2;
       },
     },
   };

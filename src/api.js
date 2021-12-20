@@ -2,8 +2,8 @@
 import axios from 'axios';    // 导入axios
 
 // // let host = 'http://10.61.196.17:2887/api';//苇苇学校
-// // let host = 'http://192.168.12.23:2887/api';//苇苇寝室
-let host = 'http://192.168.241.40:2887/api';//苇苇热点
+let host = 'http://192.168.12.23:2887/api';//苇苇寝室
+//let host = 'http://192.168.87.40:2887/api';//苇苇热点
 // // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // // let host = 'http://192.168.43.104:2887/api';//杨柳热点
@@ -89,8 +89,23 @@ export const putOffGood = params => { return axios.post(`${host}/seller/finishDe
 // 发布商品---上架
 export const releaseGood = params => {return axios.post(`${host}/seller/raiseGood`, params)};
 
+// 发布商品---拿class1
+export const showGoodClass1 = params => {return axios.post(`${host}/seller/getAllClass1`, params)};
+
+// 发布商品---拿class2
+export const showGoodClass2 = params => {return axios.post(`${host}/seller/getClass2ByClass1Id`, params)};
+
 // 查看客户信息
 export const showAllBuyerInfo = params => { return axios.post(`${host}/admin/getAllBuyerInfo`, params)};
 
 // 查看客户购买记录
 export const showPurchaseRecords = params => { return axios.post(`${host}/admin/getBuyerHistoryByBuyerId`, params)};
+
+// 展示手机
+export const showAllPhoneGoods = params => { return axios.post(`${host}/buyer/getClass2GoodListByClassId`, params)};
+
+//展示数码产品
+export const showAllDigitalGoods = params => { return axios.post(`${host}/buyer/getClass1GoodListByClassId`, params)};
+
+//买家编辑信息
+export const editInformation = params => { return axios.post(`${host}/buyer/changeBuyerInfo`, params)};
