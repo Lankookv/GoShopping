@@ -153,6 +153,7 @@
     },
     methods: {
       init() {
+        alert("a")
         showAllHistoricalGoods({
           sellerId:parseInt(sessionStorage.getItem("userId")),
           contentType: "application/json",
@@ -244,7 +245,7 @@
             .then((response) =>{
               if (response.data.code !== -1) {
                 this.$message.success('删除成功');
-                this.$router.push({name:'HistoricalGoods'});
+                this.init();
               } else {
                 this.$message.success('删除失败');
               }

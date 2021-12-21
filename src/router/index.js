@@ -15,6 +15,7 @@ import digitalGoods from "../views/digitalGoods";
 import phoneGoods from "../views/phoneGoods";
 import nothing from "../views/nothing";
 import editInformation from "../views/accountManagement/editInformation"
+import PurchaseRecords from "../views/purchaseManagement/PurchaseRecords"
 
 Vue.use(Router)
 
@@ -102,6 +103,11 @@ export default new Router({
       path: '/editInformation/',
       name: 'editInformation',
       component: editInformation,
+    },
+    {
+      path: '/PurchaseRecords/',
+      name: 'PurchaseRecords',
+      component: PurchaseRecords,
     },
   ]
 })

@@ -66,7 +66,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             editInformation({
-              buyerId:parseInt(1),
+              buyerId:parseInt(sessionStorage.getItem("buyerId")),
               buyerName:this.form.name,
               buyerPhone:this.form.phone,
               buyerLocation:this.form.address,

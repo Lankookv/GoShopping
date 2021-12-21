@@ -7,7 +7,7 @@
         <img src="../components/icon/搜索.png" class="iconfont" @click="search">
       </div>
       <div style="z-index: auto"><goods-type></goods-type></div>
-      <div style="margin-top: -28.6%;margin-left: 22%;z-index: auto"><banner></banner></div>
+      <div style="margin-top: -387px;margin-left: 235px;z-index: auto"><banner></banner></div>
       <div v-if="allGoods.length===0">
         <center>
           <img  src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">

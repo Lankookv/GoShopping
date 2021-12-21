@@ -178,6 +178,9 @@ export default {
     toEditInformation(){
       this.$router.push({name:'editInformation',})
     },
+    toPurchaseRecords(){
+      this.$router.push({name:'PurchaseRecords',})
+    },
     toProspectiveBuyers(){
       this.$router.push({name:'ProspectiveBuyers',})
     },

@@ -1,8 +1,8 @@
 // src\api\api.js
 import axios from 'axios';    // 导入axios
 
-// // let host = 'http://10.61.196.17:2887/api';//苇苇学校
-let host = 'http://192.168.12.23:2887/api';//苇苇寝室
+let host = 'http://10.61.33.105:2887/api';//苇苇学校
+//let host = 'http://192.168.12.23:2887/api';//苇苇寝室
 //let host = 'http://192.168.87.40:2887/api';//苇苇热点
 // // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
@@ -39,7 +39,7 @@ export const createIntention = params => {
 export const showAllHistoricalGoods = params => { return axios.post(`${host}/seller/getUnremovedGoodListBySellerId`, params)};
 
 // 历史商品里面删除商品
-export const deleteHistoricalGood = params => { return axios.post(`${host}/seller/pullOffGood`, params)};
+export const deleteHistoricalGood = params => { return axios.post(`${host}/seller/pullOffMultipleGood`, params)};
 
 // // 更新卖家信息 seller  ==》未完成
 // export const updateSellerInfo = params => { return axios.post(`${host}/updateSellerInfo`, params)};
@@ -109,3 +109,6 @@ export const showAllDigitalGoods = params => { return axios.post(`${host}/buyer/
 
 //买家编辑信息
 export const editInformation = params => { return axios.post(`${host}/buyer/changeBuyerInfo`, params)};
+
+//显示买家购买记录
+export const showallPurchaseRecords = params => { return axios.post(`${host}/buyer/getBuyerHistoryByBuyerId`, params)};

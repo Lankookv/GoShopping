@@ -1,6 +1,5 @@
 <template>
     <div>
-      <div style="margin-top: 2%"><search></search></div>
       <div>
         <ul class="goodShow" >
           <router-link v-for="(good,index) in allPhoneGoods" :to="{name:'GoodDetails',params:{bid:good.goodId}}" :key="index" tag="li" style="list-style:none;">

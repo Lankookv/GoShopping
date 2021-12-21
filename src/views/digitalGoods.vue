@@ -1,7 +1,10 @@
 <template>
   <div style="white-space: nowrap;">
     <div>
-      <div style="margin-top: 2%"><search></search></div>
+      <div class="search">
+        <input type="text" class="input-search" v-model="keyword" id="searchTxt" ref="searchTxt" placeholder="ipad" filterable  value="">
+        <img src="../components/icon/搜索.png" class="iconfont" @click="search">
+      </div>
       <div class="nvzhuangNav" style="margin-top: 1%;">
         <ul>
           <li id="phone" value="phone" @click="change('phone')">手机</li>
@@ -106,13 +109,11 @@
 </template>
 
 <script>
-  import search from "../components/search";
-  import {showAllDigitalGoods} from "../api";
+  import {showAllDigitalGoods,search} from "../api";
 
   export default {
     name: "home",
     components: {
-      search
     },
     data() {
       return {
@@ -189,7 +190,15 @@
             this.elseGoods = elseArr;
           })
       },
-
+      search(){
+        this.keyword=document.getElementById('searchTxt').value;
+        search({
+          keyword:this.keyword,
+          contentType: "application/json;charset=UTF-8",
+        }).then((response)=> {
+          this.allDigitalGoods=response.data.data.goodlist;
+        })
+      },
       change(name){
         // alert(name);
         if (name === 'phone') {
@@ -255,6 +264,45 @@
 </script>
 
 <style scoped lang="less">
+  .search{
+    display:flex;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 400px;
+    margin:0 auto;
+    background-color: white;
+    margin-top: 10px;
+  }
+  .search:focus{
+    margin-top: 10px;
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+  }
+  .input-search{
+    border:none;
+    width: 340px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Microsoft soft";
+    padding: 8px 8px;
+    margin-left: 10px;
+    background-color:transparent;
+    outline:none;
+  }
+  .iconfont {
+    align-self:center;
+    font-family: "iconfont" !important;
+    width: 20px;
+    //font-size: 10px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .iconfont:hover{
+    cursor:Pointer;
+  }
   .goodShow {
     ul {
       display: flex;
