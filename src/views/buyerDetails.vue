@@ -4,12 +4,10 @@
       用户信息填写
     </h1>
     <h2>
-      姓名：
-      <input type="text" id="Account"></input>
+      姓名：<input type="text" id="Account"></input>
     </h2>
     <h2>
-      电话：
-      <input type="text" id="Phone"></input>
+      电话：<input type="text" id="Phone"></input>
     </h2>
     <h2>
       <div class="left">
@@ -24,16 +22,13 @@
     </button>
   </div>
 </template>
-
-<style></style>
-
 <script>
   import {buyerDetails, createIntention, login} from "../api";
   export default {
     name: "buyerDetails",
     data() {
       return {
-        goodId:{},
+        buyerId:{},
       }
     },
     methods: {
@@ -55,21 +50,13 @@
                     this.$message.error('地址不能为空');
                   else {
                     buyerDetails({
-                      name: Account.value,
-                      phone: Phone.value,
-                      location: Address.value,
+                      buyerName: Account.value,
+                      buyerPhone: Phone.value,
+                      buyerLocation: Address.value,
                       contentType: "application/json"
                       }).then((response)=> {
                       this.$message.success('填写成功');
-                      this.goodId=response.data.data;
-                      createIntention({
-                        buyerId: this.goodId,
-                        goodId:this.$route.params.bid,
-                        contentType: "application/json"
-                      })
-                        .then((response)=> {
-                          alert("生成意向")
-                        })
+                      this.buyerId=response.data.data;
                       })
                     }
                   }
@@ -98,8 +85,9 @@
     border-radius: 10px;
   }
   textarea{
-    width: 35%;
-    height: 80px;
+    resize: none;
+    width: 45%;
+    height: 120px;
     border-radius: 10px;
     padding:8px;
     border: 1px solid;

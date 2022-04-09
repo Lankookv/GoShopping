@@ -2,16 +2,32 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from "../views/home";
 import goodDetails from "../views/goodDetails";
-import ReleaseGoods from "../views/ReleaseGoods";
-import HistoricalGoods from "../views/HistoricalGoods"
-import ChangePassword from "../views/ChangePassword"
-import ProspectiveBuyers from "../views/ProspectiveBuyers"
-import goodDetailOnSale from "../views/goodDetail-onSale"
-import goodDetailSold from "../views/goodDetail-sold"
-import goodDetailFrozen from "../views/goodDetail-frozen"
+import ReleaseGoods from "../views/goodManagement/ReleaseGoods";
+import HistoricalGoods from "../views/goodManagement/HistoricalGoods"
+import ChangePassword from "../views/accountManagement/ChangePassword"
+import goodDetailOnSale from "../views/goodManagement/goodDetail-onSale"
 import buyerDetails from "../views/buyerDetails"
+import CustomerInformation from "../views/customerManagement/CustomerInformation"
+import digitalGoods from "../views/digitalGoods";
+import phoneGoods from "../views/phoneGoods";
+import nothing from "../views/nothing";
+import editInformation from "../views/accountManagement/editInformation"
 
-import c from "../views/c"
+//升级包B
+import StateOne from "../views/orderManagement/StateOne"
+import StateTwo from "../views/orderManagement/StateTwo"
+import StateThree from "../views/orderManagement/StateThree"
+import StateFour from "../views/orderManagement/StateFour"
+import StateFive from "../views/orderManagement/StateFive"
+import StateSix from "../views/orderManagement/StateSix"
+import buyerStateOne from "../views/buyerOrderManagement/StateOne"
+import buyerStateTwo from "../views/buyerOrderManagement/StateTwo"
+import buyerStateThree from "../views/buyerOrderManagement/StateThree"
+import buyerStateFour from "../views/buyerOrderManagement/StateFour"
+import buyerStateFive from "../views/buyerOrderManagement/StateFive"
+import ShoppingCart from "../views/ShoppingCart"
+import myFavorites from "../views/myFavorites"
+
 
 Vue.use(Router)
 
@@ -37,7 +53,6 @@ export default new Router({
       path: '/ChangePassword',
       name: 'ChangePassword',
       component: ChangePassword,
-      meta:{isSeller:true},
     },
     {
       path: '/ReleaseGoods',
@@ -52,9 +67,9 @@ export default new Router({
       meta:{isSeller:true},
     },
     {
-      path: '/ProspectiveBuyers',
-      name: 'ProspectiveBuyers',
-      component: ProspectiveBuyers,
+      path: '/CustomerInformation',
+      name: 'CustomerInformation',
+      component: CustomerInformation,
       meta:{isSeller:true},
     },
     {
@@ -64,21 +79,95 @@ export default new Router({
       meta:{isSeller:true},
     },
     {
-      path: '/GoodDetail/:bid',//bid:商品id
-      name: 'goodDetail-sold',
-      component: goodDetailSold,
+      path: '/digitalGoods/',
+      name: 'digitalGoods',
+      component: digitalGoods,
+    },
+    {
+      path: '/phoneGoods/',
+      name: 'phoneGoods',
+      component: phoneGoods,
+    },
+    {
+      path: '/nothing/',
+      name: 'nothing',
+      component: nothing,
+    },
+    {
+      path: '/editInformation/',
+      name: 'editInformation',
+      component: editInformation,
+    },
+
+    //升级包B
+    {
+      path: '/ViewOrders/2',//sid:订单状态id
+      name: 'StateOne',
+      component: StateOne,
       meta:{isSeller:true},
     },
     {
-      path: '/GoodDetail/:bid',//bid:商品id
-      name: 'goodDetail-frozen',
-      component: goodDetailFrozen,
+      path: '/ViewOrders/3',//sid:订单状态id
+      name: 'StateTwo',
+      component: StateTwo,
       meta:{isSeller:true},
     },
     {
-      path: '/c',//bid:商品id
-      name: 'c',
-      component: c,
+      path: '/ViewOrders/4',//sid:订单状态id
+      name: 'StateThree',
+      component: StateThree,
+      meta:{isSeller:true},
+    },{
+      path: '/ViewOrders/5',//sid:订单状态id
+      name: 'StateFour',
+      component: StateFour,
+      meta:{isSeller:true},
+    },
+    {
+      path: '/ViewOrders/6',//sid:订单状态id
+      name: 'StateFive',
+      component: StateFive,
+      meta:{isSeller:true},
+    },
+    {
+      path: '/ViewOrders/-1',//sid:订单状态id
+      name: 'StateSix',
+      component: StateSix,
+      meta:{isSeller:true},
+    },
+    {
+      path: '/buyerViewOrders/1',//sid:订单状态id
+      name: 'buyerStateOne',
+      component: buyerStateOne,
+    },
+    {
+      path: '/buyerViewOrders/4',//sid:订单状态id
+      name: 'buyerStateTwo',
+      component: buyerStateTwo,
+    },
+    {
+      path: '/buyerViewOrders/5',//sid:订单状态id
+      name: 'buyerStateThree',
+      component: buyerStateThree,
+    },{
+      path: '/buyerViewOrders/6',//sid:订单状态id
+      name: 'buyerStateFour',
+      component: buyerStateFour,
+    },
+    {
+      path: '/buyerViewOrders/-1',//sid:订单状态id
+      name: 'buyerStateFive',
+      component: buyerStateFive,
+    },
+    {
+      path: '/ShoppingCart/',
+      name: 'ShoppingCart',
+      component: ShoppingCart,
+    },
+    {
+      path: '/myFavorites/',
+      name: 'myFavorites',
+      component: myFavorites,
     },
   ]
 })

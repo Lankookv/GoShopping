@@ -16,7 +16,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
   .el-carousel{
     margin-top: 20px;
     margin-left: 20px;
@@ -30,7 +30,7 @@
     margin: 0;
   }
   .el-carousel__item:nth-child(3n) {
-    background-image: url(./icon/首页1.jpg);
+    background-image: url('./icon/首页1.jpg');
     background-size: 100% 100%;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -38,7 +38,7 @@
     border-bottom-right-radius: 20px;
   }
   .el-carousel__item:nth-child(3n+1) {
-    background-image: url(./icon/首页2.jpg);
+    background-image: url('./icon/首页2.jpg');
     background-size: 100% 100%;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -46,7 +46,7 @@
     border-bottom-right-radius: 20px;
   }
   .el-carousel__item:nth-child(3n+2) {
-    background-image: url(./icon/首页3.jpg);
+    background-image: url('./icon/首页3.jpg');
     background-size: 100% 100%;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;

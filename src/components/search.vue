@@ -2,7 +2,7 @@
   <div class="search">
     <input type="text" class="input-search" v-model="keyword" id="searchTxt" ref="searchTxt" placeholder="bts周边" filterable  value="">
 <!--    <link rel="preload" href="//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff2" as="font" type="font/woff2" crossorigin="anonymous">-->
-    <i class="iconfont" @click="search">&#xe635;</i>
+    <img src="./icon/搜索.png" class="iconfont" @click="search">
 <!--    <header class="page-header">-->
 <!--      <div class="searchwrap border-bottom">-->
 <!--        <div class="searchbox">-->
@@ -33,11 +33,24 @@
 </template>
 
 <script>
+  import {search} from "../api";
+
   export default {
     name: "search",
+    data() {
+      return {
+        goods:[],
+      }
+    },
     methods:{
       search(){
-
+        search({
+          keyword:JSON.stringify(document.getElementById('searchTxt').value),
+          contentType: "application/json;charset=UTF-8",
+        }).then((response)=> {
+          alert(JSON.stringify(document.getElementById('searchTxt').value))
+          this.goods=response;
+        })
       },
     }
   }
@@ -45,6 +58,7 @@
 
 <style scoped lang="less">
 .search{
+  display:flex;
   border: 1px solid #ccc;
   border-radius: 20px;
   width: 400px;
@@ -65,27 +79,23 @@
 //}
 .input-search{
   border:none;
-  width: 330px;
+  width: 340px;
   font-size: 14px;
   font-weight: 700;
   font-family: "Microsoft soft";
   padding: 8px 8px;
+  margin-left: 10px;
   background-color:transparent;
   outline:none;
 }
-@font-face {
-  font-family: 'iconfont';  /* Project id 2810508 */
-  src: url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff2?t=1631580008886') format('woff2'),
-  url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.woff?t=1631580008886') format('woff'),
-  url('//at.alicdn.com/t/font_2810508_kqxwrf1giz.ttf?t=1631580008886') format('truetype');
-}
 .iconfont {
+  align-self:center;
   font-family: "iconfont" !important;
-  font-size: 20px;
+  width: 20px;
+  //font-size: 10px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-right: 10px;
 }
 .iconfont:hover{
   cursor:Pointer;

@@ -1,18 +1,41 @@
 <template>
   <div class="container">
     <div class="container1">
+      <!--            {{a}}-->
       <img :src="good.img[0].imagine" alt="这里是封面">
       <div class="container2">
-        <h1><b>{{good.good.name}}</b></h1>
+        <h1 class="goodName"><b>{{good.good.goodName}}</b></h1>
+        <div class="like">
+          <span class="iconfont" >
+              <div @click="Collect(good.good.goodId)">
+                <img src="../components/icon/未收藏.png" v-if = "collectionState == 0" >
+                <img src="../components/icon/收藏.png" v-if = "collectionState == 1" >
+              </div>
+          </span>
+        </div>
         <div style="overflow:hidden;width:95%;">
           <div class="info">
             <small v-html="good.good.description"></small>
           </div>
+          <span style="vertical-align:middle; line-height:50px;float: right;margin-right: 50px;margin-top: 0.5%">
+                        库存：{{good.good.storage}}
+          </span>
         </div>
-        <h1 style="color: red;font-size: 40px"><b>￥{{good.good.price}}</b></h1>
-        <button @click="toWriteBuyerInfo">
-          需要购买
-        </button>
+        <h1 class="goodPrice" style="color: red;font-size: 40px"><b>￥{{good.good.goodPrice}}</b></h1>
+        <div>
+          <span>
+            <button  @click="addToCart()" v-if = "storage == 1">加入购物车</button>
+            <addToCartInformation v-show="showModal1" v-on:closeme="closeme1" :goodId="good.good.goodId" style="z-index: 999;"></addToCartInformation>
+            <button @click="tips()" v-if = "storage == 0" style="background-color: #aaaaaa">
+            加入购物车
+            </button>
+         </span>
+          <span>
+            <button  @click="toBuy()" v-if = "storage == 1">立即购买</button>
+            <purchaseInformation v-show="showModal2" v-on:closeme="closeme2" :goodId="good.good.goodId" style="z-index: 999;"></purchaseInformation>
+            <button @click="tips()" v-if = "storage == 0" style="background-color: #aaaaaa">立即购买</button>
+          </span>
+        </div>
       </div>
       <div class="container4">
         <span>
@@ -31,34 +54,123 @@
 
 <script>
   import card from "../components/card";
-  import {showGoodDetail} from '../api';
-
+  import {showGoodDetail, showCollectionState,collectGoods} from '../api';
+  import addToCartInformation from "../components/addToCartInformationModal";
+  import purchaseInformation from "../components/purchaseInformationModal"
   export default {
     name: "goodDetails",
     components: {
-      card
+      card,
+      addToCartInformation,
+      purchaseInformation
     },
     data() {
       return {
         good:{},
+        collectionState:0,
+        a:{},
+        b:{},
+        isCollected:false,
+        showModal1:false,
+        showModal2:false,
+        storage:0,
       }
     },
     created() {
       this.getGoodDetail();
+      this.getCollectionState();
     },
     methods:{
       getGoodDetail(){
         showGoodDetail({
-          goodId:JSON.stringify(this.$route.params.bid),
+          goodId:this.$route.params.bid,
           contentType: "application/json"
-      })
+        })
           .then((response)=> {
-            //alert(JSON.stringify(this.$route.params.bid))
             this.good=response.data.data;
+            this.a = response;
+            if(this.good.good.storage === 0){
+              this.storage = 0;
+            }else{
+              this.storage = 1;
+            }
           })
       },
-      toWriteBuyerInfo(){
-        this.$router.push({name:'buyerDetails',params:{bid:this.$route.params.bid}});
+
+      getCollectionState(){//获取收藏状态
+        // alert(this.$route.params.bid);
+        showCollectionState({
+          buyerId:parseInt(sessionStorage.getItem("buyerId")),
+          goodId:parseInt(this.$route.params.bid),
+        }).then((response)=> {
+          // this.a = response.data;
+          if(response.data.data == true){
+            this.collectionState = 1;//显示收藏
+            // alert("初始显示已收藏该商品"+this.collectionState);
+          }else{
+            this.collectionState = 0;//显示未收藏
+            // alert("初始显示未收藏该商品"+this.collectionState);
+          }
+        })
+      },
+
+      Collect(goodsId){
+        if(sessionStorage.getItem("buyerId") == null){
+          this.$message.error("请先登录");
+        }else{
+          if(this.collectionState == 1){
+            alert(this.collectionState+"您已收藏该商品");
+          }else{
+            collectGoods({
+              buyerId:parseInt(sessionStorage.getItem("buyerId")),
+              goodId:parseInt(goodsId),
+              contentType: "application/json"
+            }).then((response)=> {
+              // alert(response.data.data);
+              if(response.data.data == "successful"){
+                this.b = response.data.data;
+                console.log(this.b);
+                this.$message.success('收藏成功！');
+                this.collectionState = 1;
+              }else{
+                // this.a = response.data.code;
+                this.$message.error('收藏失败！');
+                this.collectionState = 0;
+              }
+            })
+          }
+        }
+      },
+
+      addToCart(){
+        if(sessionStorage.getItem("buyerId") == null){
+          this.$message.error("请先登录");
+        }else{
+          this.showModal1=!this.showModal1;
+        }
+
+      },
+      toBuy(){if(sessionStorage.getItem("buyerId") == null){
+        this.$message.error("请先登录");
+      }else {
+        // alert(this.showModal2)
+        this.showModal2 = !this.showModal2;
+        // alert(this.showModal2)
+      }
+      },
+      tips(){
+        this.$message("宝贝没有库存了哦")
+      },
+
+      closeme1(){
+        // alert(this.showModal1)
+        this.showModal1=!this.showModal1;
+        // alert(this.showModal1)
+      },
+      closeme2(){
+        // alert(this.showModal2)
+        this.showModal2=!this.showModal2;
+        // alert(this.showModal2)
       }
     }
   }
@@ -83,12 +195,27 @@
         float: left;
         margin-top: 2%;
       }
+      span{
+        img{
+          width: 6%;
+          margin-left: 20%;
+          margin-top: 4%;
+          cursor:pointer;
+        }
+      }
       .container2 {
         width: 60%;
         height: 85%;
         float:right;
-        h1{
+        .goodName{
           margin-left: 10%;
+          margin-bottom: 2%;
+          float: left;
+          display: inline;
+          margin-top: 4%;
+        }
+        .goodPrice{
+          margin-left: 5%;
           margin-bottom: 2%;
           float: left;
           display: inline;
@@ -125,10 +252,10 @@
     }
     button{
       width: 25%;
-      height: 50px;
-      float: right;
+      height: 45px;
+      float: left;
+      margin-left: 7%;
       margin-top: 5%;
-      margin-right: 15%;
       font-size: 20px;
       background-color: #F56E1C;
       border: 1px solid;
@@ -136,11 +263,10 @@
     }
     button:hover{
       width: 25%;
-      height: 50px;
-      float: right;
-      margin-top: 5%;
+      height: 45px;
+      float: left;
       font-size: 20px;
-      margin-right: 15%;
+      /*margin-right: 15%;*/
       background-color: #F56E1C;
       border: 1px solid #cccccc;
       border-radius: 10px;
