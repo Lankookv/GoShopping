@@ -236,7 +236,7 @@ export default {
       this.$router.push({name:'StateOne',})
     },
     toBuyerViewOrders(){
-      this.$router.push({name:'buyerStateTwo',})
+      this.$router.push({name:'buyerStateOne',})
     },
     toCustomerInformation(){
       this.$router.push({name:'CustomerInformation',})

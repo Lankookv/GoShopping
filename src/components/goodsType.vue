@@ -2,7 +2,7 @@
   <div class="main-nav">
     <div class="nav-first" @mouseenter="isNavEnter = true" @mouseleave=" isNavEnter = false">
       <ul>
-        <li v-for="(item,index) in navFirst" :key="index" :class="{active: item.type === selected}" @mouseenter="selected = item.type">
+        <li v-for="(item,index) in navFirst" :key="index" :class="{active: item.type === selected}" @mouseenter="selected = item.type" style="">
           <router-link :to="item.router">
           <p>
             <img :src="item.pic" >
@@ -120,8 +120,7 @@
   .main-nav{
     font-size: 14px;
     z-index: 1;
-    width: 90%;
-    margin: 0 auto;
+    margin-left: 3%;
     position: relative;
     display: flex;
     /*justify-content: flex-start;*/
@@ -139,7 +138,6 @@
         li{
           padding-left: 30px;
           height: 42px;
-          line-height: 42px;
           cursor: pointer;
           list-style-type: none;
           &:hover{
@@ -157,7 +155,6 @@
               margin-right: 10px;
               width:18px;
               height: 18px;
-              margin-top: 10px;
             }
           }
         }
@@ -165,9 +162,8 @@
     }
     .nav-sec{
       z-index: 1;
-      height: 400px;
+      height: 380px;
       width: 70%;
-      position: absolute;
       top: 0;
       right: 0;
       background: #fff;

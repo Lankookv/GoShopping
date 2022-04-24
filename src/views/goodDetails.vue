@@ -116,10 +116,26 @@
 
       Collect(goodsId){
         if(sessionStorage.getItem("buyerId") == null){
-          this.$message.error("请先登录");
+          this.$message.error("请登录或登录买家账号");
         }else{
           if(this.collectionState == 1){
-            alert(this.collectionState+"您已收藏该商品");
+            collectGoods({
+              buyerId:parseInt(sessionStorage.getItem("buyerId")),
+              goodId:parseInt(goodsId),
+              contentType: "application/json"
+            }).then((response)=> {
+              // alert(response.data.data);
+              if(response.data.data == "already"){
+                this.b = response.data.data;
+                // console.log(this.b);
+                this.$message.success('取消收藏成功！');
+                this.collectionState = 0;
+              }else{
+                // this.a = response.data.code;
+                this.$message.error('取消收藏失败！');
+                this.collectionState = 1;
+              }
+            })
           }else{
             collectGoods({
               buyerId:parseInt(sessionStorage.getItem("buyerId")),
@@ -129,7 +145,7 @@
               // alert(response.data.data);
               if(response.data.data == "successful"){
                 this.b = response.data.data;
-                console.log(this.b);
+                // console.log(this.b);
                 this.$message.success('收藏成功！');
                 this.collectionState = 1;
               }else{
@@ -144,14 +160,14 @@
 
       addToCart(){
         if(sessionStorage.getItem("buyerId") == null){
-          this.$message.error("请先登录");
+          this.$message.error("请登录或登录买家账号");
         }else{
           this.showModal1=!this.showModal1;
         }
 
       },
       toBuy(){if(sessionStorage.getItem("buyerId") == null){
-        this.$message.error("请先登录");
+        this.$message.error("请登录或登录买家账号");
       }else {
         // alert(this.showModal2)
         this.showModal2 = !this.showModal2;

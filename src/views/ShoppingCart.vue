@@ -9,7 +9,7 @@
     <div class="container1">
       <div v-if="allGoods.length===0">
         <center>
-          <img src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">
+          <img src="../components/icon/pic30.png" style="margin-top: 15px">
         </center>
         <div style="text-align: center;">
           <span style="text-align: center">暂无任何商品哦 /(ㄒoㄒ)/~~</span>
@@ -60,10 +60,13 @@
       </div>
     </div>
   </div>
+
+
+
 </template>
 
 <script>
-  import {shoppingCart, changecartnumber, collectGoodsFromCart, deleteCartgood, getAddressByBuyer} from '../api';
+  import {shoppingCart, changecartnumber, collectGoodsFromCart, deleteCartgood,getAddressByBuyer} from '../api';
   import ShoppingCartModal from "../components/ShoppingCartModal"
 
   export default {
@@ -113,28 +116,31 @@
           this.isbuy=true;
         }
       },
-      init(){
+      init() {
         shoppingCart({
-          buyerId:parseInt(sessionStorage.getItem("buyerId")),
-          contentType: "application/json",
-        }).then((response)=> {
-          console.log(response)
-          this.allGoods=response.data.data;
-          // console.log(this.allGoods)
-        }),
-        getAddressByBuyer({
           buyerId: parseInt(sessionStorage.getItem("buyerId")),
           contentType: "application/json",
-        }).then((response)=> {
-          this.intentionList=response.data.data;
-          this.goodList=this.goods;
-          this.Sum=this.sum;
-          this.Num=this.num;
-          this.goods=[];
-          this.sum=0;
-          this.num=0;
+        }).then((response) => {
+          console.log(response)
+          this.allGoods = response.data.data;
+          // console.log(this.allGoods)
         })
-      },
+          // var i=0;
+          // this.allGoods = this.allGoods.filter((good) => {
+          //   if (good.checked === true) {
+          //     this.goods[i] = good;
+          //     i++;
+          //     good.checked=false;
+          //   }
+          // })
+          // this.showModal=!this.showModal;
+          getAddressByBuyer({
+            buyerId: parseInt(sessionStorage.getItem("buyerId")),
+            contentType: "application/json",
+          }).then((response)=> {
+            this.intentionList=response.data.data;
+          })
+       },
       // shoppingCart(goodId){
       //   this.$router.push({name:'CartWithImg',params:{bid:goodId}})
       // },
@@ -171,8 +177,8 @@
           }
         })
           .then((response) => {
-            }
-            )
+
+            })
 
       },
 
@@ -215,17 +221,19 @@
         })
       },
 
+
       //加购物车数量
       add(num,good){
-        if(num===good.storage){
+        if(num==good.storage){
           this.$message.error('该宝贝不能再加了哟~');
         }else {
           num +=1;
           good.cartWithImg.cart.number = num;
         }
-        if(good.checked===true){
+        if(good.checked==true){
           this.sum += good.cartWithImg.cart.goodPrice;
         }
+
         changecartnumber({
           buyerId: good.cartWithImg.cart.buyerId,
           goodId: good.cartWithImg.goodImagine.goodId,
@@ -250,10 +258,8 @@
             contentType: "application/json"
           })
             .then((response) =>{
-              if (response.data.data === true) {
+              if (response.data.data == true) {
                 this.$message.success('收藏成功');
-                this.num=0;
-                this.sum=0;
                 this.init();
               } else {
                 this.$message.error('收藏失败');
@@ -265,16 +271,39 @@
       //购物车结算
       BuyGoods(){
         var i=0;
-        this.allChecked=false;
         this.allGoods = this.allGoods.filter((good) => {
           if (good.checked === true) {
             this.goods[i] = good;
             i++;
-            good.checked=false;
+            // good.checked=false;
           }
+          this.goodList = this.goods;
         })
-        this.showModal=!this.showModal;
-      },
+          this.goodList=this.goods;
+          this.Sum=this.sum;
+          this.Num=this.num;
+          this.goods=[];
+          this.sum=0;
+          this.num=0;
+          this.allChecked=false;
+          this.showModal=!this.showModal;
+        // getAddressByBuyer({
+        //   buyerId: parseInt(sessionStorage.getItem("buyerId")),
+        //   contentType: "application/json",
+        // }).then((response)=> {
+        //     this.intentionList=response.data.data;
+        //     this.goodList=this.goods;
+        //     this.Sum=this.sum;
+        //     this.Num=this.num;
+        //     this.goods=[];
+        //     this.sum=0;
+        //     this.num=0;
+        //   })
+
+       },
+
+
+
       //删除购物车商品
       deleteCartGood() {
         this.openDelConfirm().then(() => {
@@ -308,16 +337,17 @@
         })
       },
       closeme(){
-        this.init();
         this.showModal=!this.showModal;
+        this.init();
       },
-      // watch: {
-      //   '$route.path'(newVal, oldVal) {
-      //     if (newVal !== oldVal) {
-      //       this.init(true)
-      //     }
-      //   }
-      // },
+
+      watch: {
+        '$route'(newVal, oldVal) {
+          if (newVal !== oldVal) {
+            this.init(true)
+          }
+        }
+      },
     }
   }
 
@@ -325,17 +355,6 @@
 </script>
 
 <style scoped lang="less">
-  .iconfont {
-    font-family: "iconfont" !important;
-    font-size: 20px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    margin-right: 10px;
-  }
-  .iconfont:hover{
-    cursor:Pointer;
-  }
   .container0{
     height:auto;
     min-height:30px;
@@ -349,7 +368,7 @@
     .title{
       width: 10%;
       float: left;
-      margin-top: 1%;
+      margin-top: 2%;
       margin-left: 3%;
       font-size: 32px;
     }
@@ -357,9 +376,8 @@
       position:fixed;
       bottom: 0px;
       width: 89%;
-      height: 60px;
+      height: 70px;
       background-color: #F88E4E;
-      border: #FBBF9B 2px solid;
     }
     .container1 {
       width: 100%;
@@ -384,10 +402,10 @@
               margin-top: 2%;
               margin-left: 4%;
             }
-            p{
-              margin-left: 3%;
-              color: darkgray;
-            }
+            /*p{*/
+            /*  margin-left: 3%;*/
+            /*  color: darkgray;*/
+            /*}*/
             div{
               height: 140px;
               width: 100%;
@@ -423,7 +441,7 @@
   }
   .cutoff{
     float: left;
-    margin-top: 1.4%;
+    margin-top: 2.4%;
     background: transparent;
     border-width: 0px;
     outline: none;
@@ -458,31 +476,31 @@
     outline: none;
     cursor:pointer;
   }
-  .black_overlay{
-    display: none;
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    width: 100%;
-    height: 100%;
-    background-color: #696969;
-    z-index:1001;
-    -moz-opacity: 0.8;
-    opacity:.80;
-    filter: alpha(opacity=80);
-  }
-  .white_content {
-    display: none;
-    position: absolute;
-    top: 10%;
-    left: 20%;
-    width: 60%;
-    height: 80%;
-    background-color: white;
-    z-index:1002;
-    overflow: auto;
-    border: 2px solid #2c2c2cc9;
-  }
+  /*<!--.black_overlay{-->*/
+  /*<!--  display: none;-->*/
+  /*<!--  position: absolute;-->*/
+  /*<!--  top: 0%;-->*/
+  /*<!--  left: 0%;-->*/
+  /*<!--  width: 100%;-->*/
+  /*<!--  height: 100%;-->*/
+  /*<!--  background-color: #696969;-->*/
+  /*<!--  z-index:1001;-->*/
+  /*<!--  -moz-opacity: 0.8;-->*/
+  /*<!--  opacity:.80;-->*/
+  /*<!--  filter: alpha(opacity=80);-->*/
+  /*<!--}-->*/
+  /*.white_content {*/
+  /*  display: none;*/
+  /*  position: absolute;*/
+  /*  top: 10%;*/
+  /*  left: 20%;*/
+  /*  width: 60%;*/
+  /*  height: 80%;*/
+  /*  background-color: white;*/
+  /*  z-index:1002;*/
+  /*  overflow: auto;*/
+  /*  border: 2px solid #2c2c2cc9;*/
+  /*}*/
   .cutoffdeal,.adddeal{
     float: right;
     background: #b3d8ff;

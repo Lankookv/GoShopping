@@ -8,14 +8,14 @@
         </div>
         <div class="modal-body">
           <h3 style="margin:0 50% 1.5% 2%;float: left;font-size: 20px">收货地址：</h3>
-          <li class="address" style="list-style:none;font-weight: bold">
-            <span style="float: left;;margin-left: 2%">
-              <input type="radio" name="address" value="address" id="defaultaddress" checked="checked" @click="getValue()" ></input>
-              <label for="defaultaddress" class="chooseAddress">{{buyerAddress}} &nbsp;&nbsp; ({{buyerName}}&nbsp;收) &nbsp;&nbsp;{{buyerPhone}}&nbsp;</label>
-              <span style="margin-left:10px">默认地址</span>
-            </span>
-          </li>
-          <li v-for="(item,index) in isnDefaultArr" :key="index" style="list-style:none;">
+          <li class="address" style="list-style:none; font-weight: bold">
+              <span style="float: left;;margin-left: 2%">
+                <input type="radio" name="address" value="address" id="defaultaddress" checked="checked" @click="getValue()" ></input>
+                <label for="defaultaddress" class="chooseAddress">{{buyerAddress}} &nbsp;&nbsp; ({{buyerName}}&nbsp;收) &nbsp;&nbsp;{{buyerPhone}}&nbsp;</label>
+                <span style="margin-left:10px">默认地址</span>
+             </span>
+            </li>
+          <li v-for="(item) in isnDefaultArr" :key="index" style="list-style:none;">
             <span style="float: left;margin-left: 2%">
               <input type="radio" v-model='item.checked' name="address" value="address"  id="address" @click="getValue(item)" ></input>
               <label for="address" class="chooseAddress"> {{item.buyerAddress}} &nbsp;&nbsp; ({{item.buyerName}}&nbsp;收) &nbsp;&nbsp; {{item.buyerPhone}}</label>
@@ -26,7 +26,7 @@
           <h3 style="float: left;margin:1% 80% 0 3%;font-size: 20px">确认订单信息：</h3>
           <p>商品详情</p>
           <p>数量</p>
-          <p>总价 </p>
+          <p>单价</p>
         </div>
         <li class="container_1" v-for="(good,index) in goodList" :key="index">
           <img :src="good.cartWithImg.goodImagine.imagine" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
@@ -46,11 +46,11 @@
             <h1 style="color: black;font-size: 35px;margin-top: 4%;margin-right: 8%;float: right"><b>￥{{good.cartWithImg.cart.goodPrice}}</b></h1>
           </span>
          </li>
-        <div class="btn" style="border-top:1px solid #eee">
-          <button class="no" style="background-color: #00bf17" @click="Order()">确认</button>
-          <button class="yes" style="background-color: #ff0000" @click="closeSelf">取消</button>
-          <p style="margin-right: 0;width: 20%;margin-top: 2.8%;margin-left: 40%"><b>合计：￥{{this.Sum}}</b></p>
+        <div class="btn">
 
+          <button class="no" style="background-color: #00bf17;float: right" @click="Order()">确认</button>
+          <button class="yes" style="background-color: #ff0000;" @click="closeSelf">取消</button>
+          <p style="margin-right: 0;width: 20%;margin-top: 2.8%;margin-left: 40%"><b>合计：￥{{this.Sum}}</b></p>
         </div>
         </div>
       </div>
@@ -76,30 +76,35 @@
     },
     data() {
       return {
+        isnDefaultArr:[],
         AddId:0,
         items: [{checked: false}],
-        address:'',
+        addressid:'',
         goodIds:[],
         numberIds:[],
-        buyerName:"",
+        cartIds:[],
        }
       },
     created() {
       this.getAddress();
     },
+
     methods: {
+
       closeSelf() {
         this.$emit("closeme");
       },
+
       getAddress(){
         this.address = this.intentionList;
         let noisDefaultArr = [];
-        this.address.findIndex(item =>{
-          if(item.isDefault === 1){
+        var index = this.address.findIndex(item =>{
+          if(item.isDefault == 1){
             // alert("默认地址的id"+item.addressId)
             this.buyerAddress = item.buyerAddress;
             this.buyerName = item.buyerName;
-            this.buyerPhone = item.buyerPhone
+            this.buyerPhone = item.buyerPhone;
+            this.addressid = item.addressId;
             // this.purchasebuyerAddressId = item.addressId;
           }else{
             item.type = "noisDefault";
@@ -107,7 +112,10 @@
             this.isnDefaultArr= noisDefaultArr;
           }
         })
+
       },
+
+
       //减少购物车数量
       minus(num,good){
         if(num==1){
@@ -147,7 +155,7 @@
 
       //选择地址
       getValue(item){
-        this.address=item.addressId
+        this.addressid = item.addressId;
       },
 
 
@@ -158,15 +166,14 @@
           this.numberIds.push(this.goodList[i].cartWithImg.cart.number);
           this.cartIds.push(this.goodList[i].cartWithImg.cart.cartId);
         }
-        if (this.address === '') {
+        if (this.address == '') {
           this.$message.error('您还未选地址！');
-
         } else {
           OrderGoodsFromCart({
             buyerId: parseInt(sessionStorage.getItem("buyerId")),
             goodIds: this.goodIds,
             numbers: this.numberIds,
-            addressId: this.address,
+            addressId: this.addressid,
             cartIds: this.cartIds,
             contentType: "application/json",
           }).then((response) => {
@@ -177,7 +184,6 @@
           })
         }
       }
-
     },
   }
 </script>
@@ -260,16 +266,16 @@
   }
   .btn{
     min-height:70px;
+    border-top:1px solid #eee;
   }
   .yes,.no{
     color: white;
-    float: right;
     width: 15%;
     height: 36px;
     margin-right: 4%;
     margin-top: 1.8%;
-    border: 1px solid black;
     cursor:Pointer;
     border-radius: 10px;
+    border: 1px solid black;
   }
 </style>
