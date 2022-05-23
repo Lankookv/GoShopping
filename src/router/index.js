@@ -12,6 +12,7 @@ import digitalGoods from "../views/digitalGoods";
 import phoneGoods from "../views/phoneGoods";
 import nothing from "../views/nothing";
 import editInformation from "../views/accountManagement/editInformation"
+import sellerCentral from "../views/sellerCentral"
 
 //升级包B
 import StateOne from "../views/orderManagement/StateOne"
@@ -41,8 +42,7 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: home
-
+      component: home,
     },
     {
       path: '/goodDetails/:bid',//bid:商品id
