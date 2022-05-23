@@ -12,7 +12,6 @@ import digitalGoods from "../views/digitalGoods";
 import phoneGoods from "../views/phoneGoods";
 import nothing from "../views/nothing";
 import editInformation from "../views/accountManagement/editInformation"
-import sellerCentral from "../views/sellerCentral"
 
 //升级包B
 import StateOne from "../views/orderManagement/StateOne"
@@ -29,6 +28,11 @@ import buyerStateFive from "../views/buyerOrderManagement/StateFive"
 import ShoppingCart from "../views/ShoppingCart"
 import myFavorites from "../views/myFavorites"
 
+//升级包C
+import payView from "../views/payView"
+import payViewF from "../views/payViewF"
+import ReleasePosts from "../views/ReleasePosts"
+import sellerCentral from "../views/sellerCentral"
 
 Vue.use(Router)
 
@@ -175,6 +179,20 @@ export default new Router({
       name: 'sellerCentral',
       component: sellerCentral,
     },
-
+    {
+      path: '/payView',
+      name: 'payView',
+      component: payView,
+    },
+    {
+      path: '/payViewF',
+      name: 'payViewF',
+      component: payViewF,
+    },
+    {
+      path: '/ReleasePosts',
+      name: 'ReleasePosts',
+      component: ReleasePosts,
+    },
   ]
 })

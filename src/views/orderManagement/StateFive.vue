@@ -23,7 +23,7 @@
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateTwo">待备货</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateThree">待发货</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateFour">已发货</div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;" >交易完成</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;">交易完成<span style="display:inline-block;background: red;width: 26px;height: 26px;border-radius: 13px;margin-left: 5px;font-size: 15px;">{{allOrder.length}}</span></div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateSix">交易失败</div></el-col>
       </el-row>
     </div>
@@ -51,7 +51,7 @@
         <li class="container_1" v-for="(order,index) in allOrder" :key="index">
           <div style="background-color:rgb(246, 121, 46);height: 50px;border-bottom: 1px solid black;">
             <span style="font-size: 30px;line-height: 50px;float:left;margin-left: 20px">{{order[0].startDate.substring(0,10)+"   "+order[0].startDate.substring(11,16)}}</span>
-            <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;">详细信息</button>
+            <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;" @click="buyerInformation(order[0].orderId)">详细信息</button>
           </div>
           <ol>
             <li class="container_2" v-for="(goods,index) in order" :key="index">
@@ -69,7 +69,7 @@
           </ol>
         </li>
       </ul>
-
+      <buyerInformationModal v-show="showModal" :buyer="buyer" v-on:closeme="closeme"></buyerInformationModal>
     </div>
     <!--    <Pagination :total="total"-->
     <!--                :page-size.sync="limit"-->
@@ -81,12 +81,14 @@
 
 <script>
   import Pagination from '../../components/Pagination'
-  import {showOrders,} from "../../api";
+  import buyerInformationModal from "../../components/buyerInformationModal"
+  import {getBuyerInformation, showOrders,} from "../../api";
 
   export default {
     name: "StateFive",
     components: {
       Pagination,
+      buyerInformationModal,
     },
     data() {
       return {
@@ -103,6 +105,8 @@
         allOrder:[[]],
         k:0,
         type:0,
+        showModal:false,
+        buyer:[],
       }
     },
     mounted() {
@@ -117,24 +121,28 @@
         })
           .then((response)=> {
             this.allOrders=response.data.data.orderList;
-            let n=0;
-            let type0=this.allOrders[0].newOrderId;
-            let allOrder0=[[]];
-            allOrder0[n]=[];
-            this.allOrders.forEach(function (item) {
-              // alert("item.type："+item.type);
-              // alert("type0："+type0);
-              console.log(item.stmt);
-              if (!(item.newOrderId===type0)){
-                n++;
-                allOrder0[n]=[];
-              }
-              allOrder0[n].push(item);
-              type0=item.newOrderId;
-            });
-            this.k=n;
-            this.type=type0;
-            this.allOrder=allOrder0;
+            if(this.allOrders.length==0){
+              this.allOrder=[];
+            }
+            else {
+              let n = 0;
+              let type0 = this.allOrders[0].newOrderId;
+              let allOrder0 = [[]];
+              allOrder0[n] = [];
+              this.allOrders.forEach(function (item) {
+                // alert("item.type："+item.type);
+                // alert("type0："+type0);
+                if (!(item.newOrderId === type0)) {
+                  n++;
+                  allOrder0[n] = [];
+                }
+                allOrder0[n].push(item);
+                type0 = item.newOrderId;
+              });
+              this.k = n;
+              this.type = type0;
+              this.allOrder = allOrder0;
+            }
           })
       },
       toGoodDetail(orderId){
@@ -154,6 +162,18 @@
       },
       toStateSix(){
         this.$router.push({name:'StateSix',})
+      },
+      buyerInformation(orderId){
+        getBuyerInformation({
+          orderId: orderId,
+          contentType: "application/json",
+        }).then((response)=> {
+          this.buyer=response.data.data;
+        })
+        this.showModal=!this.showModal;
+      },
+      closeme(){
+        this.showModal=!this.showModal;
       },
     }
 

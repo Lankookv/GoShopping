@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import {changecartnumber, OrderGoodsFromCart} from "../api";
+  import {changecartnumber, finishOrder, OrderGoodsFromCart, payAnOrder} from "../api";
 
   export default {
     name: 'ShoppingCartModal',
@@ -83,6 +83,7 @@
         goodIds:[],
         numberIds:[],
         cartIds:[],
+        orderId:0,
        }
       },
     created() {
@@ -90,7 +91,6 @@
     },
 
     methods: {
-
       closeSelf() {
         this.$emit("closeme");
       },
@@ -115,7 +115,6 @@
 
       },
 
-
       //减少购物车数量
       minus(num,good){
         if(num==1){
@@ -133,7 +132,6 @@
         }).then((response)=> {
         })
       },
-
 
       //加购物车数量
       add(num,good){
@@ -158,7 +156,6 @@
         this.addressid = item.addressId;
       },
 
-
       //提交订单
       Order() {
         for (var i = 0; i < this.Num; i++) {
@@ -177,10 +174,35 @@
             cartIds: this.cartIds,
             contentType: "application/json",
           }).then((response) => {
+            this.orderId=response.data.data;
             this.goodIds = [];
             this.numberIds = [];
-            this.$emit("closeme");
             this.$message.success('下单成功！');
+            this.$confirm('即将跳转支付页面...','提示',{
+              confirmButtonText:'确定',
+              ancelButtonText:'取消',
+              type:"warning"
+            }).then(()=> {
+              payAnOrder({
+                amount:parseInt(1),
+                id:this.orderId,
+                info:this.goodList[0].cartWithImg.cart.goodName,
+                contentType: "application/json",
+              }).then((response) => {
+                const div = document.createElement('divPay');
+                div.innerHTML = response.data.data;
+                document.body.appendChild(div);
+                document.forms[1].submit();
+                finishOrder({
+                  buyerId: parseInt(sessionStorage.getItem("buyerId")),
+                  orderId:this.orderId,
+                  contentType: "application/json",
+                }).then((response) => {
+                  // this.$message.success('付款成功！');
+                })
+              })
+            });
+            this.$emit("closeme");
           })
         }
       }

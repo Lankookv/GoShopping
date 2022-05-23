@@ -68,7 +68,6 @@
       return {
         good:{},
         collectionState:0,
-        a:{},
         b:{},
         isCollected:false,
         showModal1:false,

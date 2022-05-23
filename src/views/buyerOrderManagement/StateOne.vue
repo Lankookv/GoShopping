@@ -19,7 +19,7 @@
     </div>
     <div class="container0-2">
       <el-row :gutter="30">
-        <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;">待支付</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;">待支付<span style="display:inline-block;background: red;width: 26px;height: 26px;border-radius: 13px;margin-left: 5px;font-size: 15px;">{{allOrder.length}}</span></div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateTwo">待发货</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateThree">已发货</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateFour">交易完成</div></el-col>
@@ -50,8 +50,7 @@
         <li class="container_1" v-for="(order,index) in allOrder" :key="index">
           <div style="background-color:rgb(246, 121, 46);height: 50px;border-bottom: 1px solid black;">
             <span style="font-size: 30px;line-height: 50px;float:left;margin-left: 20px">{{order[0].startDate.substring(0,10)+"   "+order[0].startDate.substring(11,16)}}</span>
-            <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;">详细信息</button>
-            <button class="button2" @click="payAnOrder(order[0].orderId)"><span style="line-height: 40px;">去付款</span></button>
+            <button class="button2" @click="payAnOrder(order[0].orderId,order[0].goodName)"><span style="line-height: 40px;">去付款</span></button>
             <button class="button1" @click="cancelAnOrder(order[0].orderId)"><span style="line-height: 40px;">取消订单</span></button>
           </div>
           <ol>
@@ -70,6 +69,22 @@
           </ol>
         </li>
       </ul>
+      <div class="modal-backdrop" v-show="showModal">
+        <div class="modal" >
+          <div class="modal-header">
+            <h2 style="margin-top: 0;margin-bottom: 0">支付方式</h2>
+          </div>
+          <div class="modal-body">
+            <input type="radio" id="1" value="支付宝支付" v-model="myVal"><label>支付宝支付</label>
+            <input type="radio" id="2" value="银行卡支付" v-model="myVal"><label>银行卡支付</label>
+            <input :value="myVal">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-close" @click="closeSelf">关闭</button>
+            <button type="button" class="btn-confirm" @click="submit">确认</button>
+          </div>
+        </div>
+      </div>
 
     </div>
     <!--    <Pagination :total="total"-->
@@ -82,7 +97,8 @@
 
 <script>
   import Pagination from '../../components/Pagination'
-  import {buyerCancelAnOrder, buyerShowOrders,payAnOrder} from "../../api";
+  import {buyerCancelAnOrder, buyerShowOrders, finishOrder, payAnOrder} from "../../api";
+  import axios from "axios";
 
   export default {
     name: "StateOne",
@@ -104,6 +120,10 @@
         allOrder:[[]],
         k:0,
         type:0,
+        showModal:false,
+        myVal:1,
+        orderId:0,
+        goodName:"",
       }
     },
     mounted() {
@@ -118,23 +138,28 @@
         })
           .then((response)=> {
             this.allOrders=response.data.data.orderList;
-            let n=0;
-            let type0=this.allOrders[0].newOrderId;
-            let allOrder0=[[]];
-            allOrder0[n]=[];
-            this.allOrders.forEach(function (item) {
-              // alert("item.type："+item.type);
-              // alert("type0："+type0);
-              if (!(item.newOrderId===type0)){
-                n++;
-                allOrder0[n]=[];
-              }
-              allOrder0[n].push(item);
-              type0=item.newOrderId;
-            });
-            this.k=n;
-            this.type=type0;
-            this.allOrder=allOrder0;
+            if(this.allOrders.length==0){
+              this.allOrder=[];
+            }
+            else {
+              let n = 0;
+              let type0 = this.allOrders[0].newOrderId;
+              let allOrder0 = [[]];
+              allOrder0[n] = [];
+              this.allOrders.forEach(function (item) {
+                // alert("item.type："+item.type);
+                // alert("type0："+type0);
+                if (!(item.newOrderId === type0)) {
+                  n++;
+                  allOrder0[n] = [];
+                }
+                allOrder0[n].push(item);
+                type0 = item.newOrderId;
+              });
+              this.k = n;
+              this.type = type0;
+              this.allOrder = allOrder0;
+            }
           })
       },
       toGoodDetail(orderId){
@@ -159,13 +184,7 @@
           type: 'warning'
         })
       },
-      openDelConfirm1() {
-        return this.$confirm(`确认开始交易吗？`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-      },
+
       cancelAnOrder(orderId){
         this.openDelConfirm0().then(() => {
           buyerCancelAnOrder({
@@ -178,18 +197,78 @@
             })
         })
       },
-      payAnOrder(orderId){
-        // this.openDelConfirm1().then(() => {
+      payAnOrder(orderId,goodName){
+        this.showModal=true;
+        this.orderId=orderId;
+        this.goodName=goodName;
+        // this.$confirm('即将跳转支付页面...','提示',{
+        //   confirmButtonText:'确定',
+        //   ancelButtonText:'取消',
+        //   type:"warning"
+        // }).then(()=> {
         //   payAnOrder({
-        //     sellerId: parseInt(sessionStorage.getItem("userId")),
-        //     orderId: orderId,
+        //     amount:parseInt(1),
+        //     id:orderId,
+        //     info:goodName+",...",
         //     contentType: "application/json",
         //   }).then((response) => {
-        //     this.init();
-        //     this.$message.success('开始交易！');
+        //     const div = document.createElement('divPay');
+        //     div.innerHTML = response.data.data;
+        //     document.body.appendChild(div);
+        //     document.forms[1].submit();
+        //     finishOrder({
+        //       buyerId: parseInt(sessionStorage.getItem("buyerId")),
+        //       orderId:orderId,
+        //       contentType: "application/json",
+        //     }).then((response) => {
+        //       // this.$message.success('付款成功！');
+        //     })
         //   })
         // })
       },
+      closeSelf(){
+        this.showModal=false;
+      },
+      submit(){
+        sessionStorage.setItem('payWay', 2);
+        sessionStorage.setItem('orderId', this.orderId);
+        if(myVal===1){
+          payAnOrder({
+            // amount:parseInt(this.total),
+            amount:parseInt(1),
+            id:this.orderId,
+            info:this.name,
+            contentType: "application/json",
+          }).then((response) => {
+            const div = document.createElement('divPay');
+            div.innerHTML = response.data.data;
+            document.body.appendChild(div);
+            document.forms[1].submit();
+          })
+        }
+        else if(myVal===2){
+          axios.get(`http://192.168.43.104:2887/api/buyer/unionPay?txnAmt=`+1*100).then((response) => {
+            //   this.a=response;
+            sessionStorage.setItem('orderId', this.orderId);
+            const div = document.createElement('div');
+            div.innerHTML = response.data;
+            document.body.appendChild(div);
+            document.forms[1].submit();
+
+            finishOrder({
+              buyerId: parseInt(sessionStorage.getItem("buyerId")),
+              orderId: parseInt(this.orderId),
+              contentType: "application/json",
+            }).then((response) => {
+              //this.$message.success('付款成功！');
+            })
+
+          })
+        }
+        else {
+          alert("请重新选择支付方式")
+        }
+      }
     }
 
   }
