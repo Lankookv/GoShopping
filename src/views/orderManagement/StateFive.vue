@@ -85,6 +85,7 @@
   import Pagination from '../../components/Pagination'
   import {showOrders, getPost,agreePost,notagreePost} from "../../api";
 
+
   export default {
     name: "StateFive",
     components: {
@@ -136,6 +137,7 @@
             this.allOrder=allOrder0;
           })
       },
+
 
       //拿到售后单
       showPost(val,stmt){
@@ -368,7 +370,7 @@
       width: 10%;
       height: 36px;
       margin-right: 3%;
-      margin-top: 1.5%;
+      margin-bottom: 2%;
       background-color: orangered;
       border: 1px solid black;
       cursor:Pointer;
