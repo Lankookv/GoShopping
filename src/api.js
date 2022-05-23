@@ -177,7 +177,6 @@ export const showAddress = params => { return axios.post(`${host}/buyer/getAddre
 //详情页下单
 export const purchaseInfo = params => { return axios.post(`${host}/buyer/placeAnOrder`, params)};
 
-
 //买家提出申请
 export const submitApplication = params => { return axios.post(`${host}/buyer/putForwardPostSaleRequest`, params)};
 
