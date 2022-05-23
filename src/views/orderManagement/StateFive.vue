@@ -77,7 +77,6 @@
           </ol>
         </li>
       </ul>
-
     </div>
   </div>
 </template>
