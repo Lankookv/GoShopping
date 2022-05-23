@@ -17,6 +17,7 @@
             <template slot="title">账号管理</template>
             <el-menu-item index="2-1-1" @click="toChangePassword">修改密码</el-menu-item>
             <el-menu-item index="2-1-2" @click="toEditInformation">编辑信息</el-menu-item>
+            <el-menu-item index="2-1-2" @click="toAdminAddress">管理地址</el-menu-item>
           </el-submenu>
           <el-submenu index="2-4" :popper-append-to-body="true">
             <template slot="title">订单管理</template>
@@ -50,7 +51,10 @@
         </el-submenu>
         <img src="./icon/v.png" class="faces" height="50px">
         <button class="cart" @click="tomyFavorites"><img src="../components/icon/首页收藏.png" style="height: 35px;margin-right: 20px"></button>
-        <button class="cart" @click="toShoppingCart"><img src="../components/icon/购物车.png" style="height: 35px;margin-right: 10px"></button>
+        <button class="cart" @click="toShoppingCart"><img src="../components/icon/购物车1.png" style="height: 36px;margin-right: 10px">
+          <span style="position: absolute; top: 25%; right: 17.1%;color: white">{{this.sum}}</span>
+        </button>
+
       </div>
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'" style="padding: 30px 30px 10px 30px">
@@ -114,7 +118,7 @@
 </template>
 
 <script>
-import { login, register } from '../api'
+  import {login, register, getCartNumber} from '../api'
 
 export default {
   components: {
@@ -141,6 +145,7 @@ export default {
       }
     };
     return {
+      sum:0,//购物车里商品数量
       activeIndex: '1',
       activeIndex2: '1',
       isLogin:false,
@@ -184,6 +189,13 @@ export default {
       }else {
         this.isSeller=true;
       }
+      getCartNumber({
+        buyerId: parseInt(sessionStorage.getItem("buyerId")),
+        contentType: "application/json"
+      })
+        .then((response) =>{
+          this.sum = response.data.data;
+        })
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
@@ -240,6 +252,9 @@ export default {
     },
     toCustomerInformation(){
       this.$router.push({name:'CustomerInformation',})
+    },
+    toAdminAddress(){
+      this.$router.push({name:'AdminAddress',})
     },
     Login(){
       this.two=true;

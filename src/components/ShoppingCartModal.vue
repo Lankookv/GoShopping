@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import {changecartnumber, OrderGoodsFromCart} from "../api";
+  import {changecartnumber, OrderGoodsFromCart, showAddress,} from "../api";
 
   export default {
     name: 'ShoppingCartModal',
@@ -96,23 +96,29 @@
       },
 
       getAddress(){
-        this.address = this.intentionList;
-        let noisDefaultArr = [];
-        var index = this.address.findIndex(item =>{
-          if(item.isDefault == 1){
-            // alert("默认地址的id"+item.addressId)
-            this.buyerAddress = item.buyerAddress;
-            this.buyerName = item.buyerName;
-            this.buyerPhone = item.buyerPhone;
-            this.addressid = item.addressId;
-            // this.purchasebuyerAddressId = item.addressId;
-          }else{
-            item.type = "noisDefault";
-            noisDefaultArr.push(item);
-            this.isnDefaultArr= noisDefaultArr;
-          }
+        showAddress({
+          buyerId:parseInt(sessionStorage.getItem("buyerId")),
+          contentType: "application/json"
         })
-
+          .then((response)=> {
+            this.address = response.data.data;
+            this.myAddressData = this.address
+            console.log(this.address);
+            let noisDefaultArr = [];
+            var index = this.address.findIndex(item =>{
+              if(item.isDefault == 1){
+                // alert("默认地址的id"+item.addressId)
+                this.buyerAddress = item.buyerAddress;
+                this.buyerName = item.buyerName;
+                this.buyerPhone = item.buyerPhone
+                this.purchasebuyerAddressId = item.addressId;
+              }else{
+                item.type = "noisDefault";
+                noisDefaultArr.push(item);
+                this.isnDefaultArr= noisDefaultArr;
+              }
+            })
+          })
       },
 
 
@@ -180,7 +186,11 @@
             this.goodIds = [];
             this.numberIds = [];
             this.$emit("closeme");
-            this.$message.success('下单成功！');
+            if(response.data.data === true) {
+              this.$message.success('下单成功！');
+            }else{
+              this.$message.error('您未选择商品');
+            }
           })
         }
       }

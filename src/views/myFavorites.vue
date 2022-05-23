@@ -96,7 +96,7 @@
       //单选
       chooseOne(good) {
         good.checked = true;
-        alert(good.favoriteGood.favoriteId);
+        // alert(good.favoriteGood.favoriteId);
       },
       //全选
       chooseAll() {
@@ -131,7 +131,7 @@
               // alert("给后端了");
               if (response.data.data == true) {
                 this.$message.success('取消收藏成功');
-                // this.init();
+                this.init();
               } else {
                 this.$message.error('取消收藏失败');
               }

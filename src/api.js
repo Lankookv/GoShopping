@@ -1,15 +1,14 @@
 // src\api\api.js
 import axios from 'axios';    // 导入axios
 
-//let host = 'http://10.61.33.105:2887/api';//苇苇学校
-
-// let host = 'http://192.168.12.23:2887/api';//苇苇寝室
-let host = 'http://192.168.24.40:2887/api';//苇苇热点
+//let host = 'http://10.61.231.94:2887/api';//苇苇学校
+//let host = 'http://192.168.12.23:2887/api';//苇苇寝室
+//let host = 'http://10.61.2.9:2887/api';//苇苇热点
 // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // let host = 'http://192.168.43.104:2887/api';//杨柳热点
 // // let host = 'http://192.168.43.104:2887/api';//我热点
-// let host = "http://121.40.97.124:2887/api";//云端
+let host = "http://121.40.97.124:2887/api";//云端
 // let host = "http://localhost:2888/api";
 
 // 登录
@@ -150,9 +149,6 @@ export const collectGoodsFromCart = params => { return axios.post(`${host}/buyer
 //删除购物车商品
 export const  deleteCartgood = params => { return axios.post(`${host}/buyer/deleteCartGood`, params)};
 
-//拿到买家地址信息
-export const  getAddressByBuyer = params => { return axios.post(`${host}/buyer/getAddressByBuyer`, params)};
-
 //购物车下单
 export const  OrderGoodsFromCart = params => { return axios.post(`${host}/buyer/orderGoodsFromCart`, params)};
 
@@ -176,3 +172,24 @@ export const showAddress = params => { return axios.post(`${host}/buyer/getAddre
 
 //详情页下单
 export const purchaseInfo = params => { return axios.post(`${host}/buyer/placeAnOrder`, params)};
+
+//得到购物车数量
+export const getCartNumber = params => { return axios.post(`${host}/buyer/getNumberOfGoodsFromCart`, params)};
+
+//添加地址
+export const addAddress = params => { return axios.post(`${host}/buyer/addNotDefaultAddress`, params)};
+
+//设为默认地址
+export const alterdefault = params => { return axios.post(`${host}/buyer/alterDefaultAddressByBuyer`, params)};
+
+//删除地址
+export const deleteAddress = params => { return axios.post(`${host}/buyer/deleteAddress`, params)};
+
+//卖家取售后单
+export const getPost = params => { return axios.post(`${host}/buyer/getPostSaleByOrderId`, params)};
+
+//卖家同意售后
+export const agreePost = params => { return axios.post(`${host}/seller/agreePostSale`, params)};
+
+//卖家拒绝售后
+export const notagreePost = params => { return axios.post(`${host}/seller/notAgreePostSale`, params)};

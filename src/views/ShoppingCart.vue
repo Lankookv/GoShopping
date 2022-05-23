@@ -66,7 +66,7 @@
 </template>
 
 <script>
-  import {shoppingCart, changecartnumber, collectGoodsFromCart, deleteCartgood,getAddressByBuyer} from '../api';
+  import {shoppingCart, changecartnumber, collectGoodsFromCart, deleteCartgood} from '../api';
   import ShoppingCartModal from "../components/ShoppingCartModal"
 
   export default {
@@ -123,23 +123,7 @@
         }).then((response) => {
           console.log(response)
           this.allGoods = response.data.data;
-          // console.log(this.allGoods)
         })
-          // var i=0;
-          // this.allGoods = this.allGoods.filter((good) => {
-          //   if (good.checked === true) {
-          //     this.goods[i] = good;
-          //     i++;
-          //     good.checked=false;
-          //   }
-          // })
-          // this.showModal=!this.showModal;
-          getAddressByBuyer({
-            buyerId: parseInt(sessionStorage.getItem("buyerId")),
-            contentType: "application/json",
-          }).then((response)=> {
-            this.intentionList=response.data.data;
-          })
        },
       // shoppingCart(goodId){
       //   this.$router.push({name:'CartWithImg',params:{bid:goodId}})
@@ -279,27 +263,19 @@
           }
           this.goodList = this.goods;
         })
-          this.goodList=this.goods;
-          this.Sum=this.sum;
-          this.Num=this.num;
-          this.goods=[];
-          this.sum=0;
-          this.num=0;
-          this.allChecked=false;
-          this.showModal=!this.showModal;
-        // getAddressByBuyer({
-        //   buyerId: parseInt(sessionStorage.getItem("buyerId")),
-        //   contentType: "application/json",
-        // }).then((response)=> {
-        //     this.intentionList=response.data.data;
-        //     this.goodList=this.goods;
-        //     this.Sum=this.sum;
-        //     this.Num=this.num;
-        //     this.goods=[];
-        //     this.sum=0;
-        //     this.num=0;
-        //   })
-
+        if(i==0){
+          this.init();
+          this.$message.error('您还未选择商品');
+        }else {
+          this.goodList = this.goods;
+          this.Sum = this.sum;
+          this.Num = this.num;
+          this.goods = [];
+          this.sum = 0;
+          this.num = 0;
+          this.allChecked = false;
+          this.showModal = !this.showModal;
+        }
        },
 
 

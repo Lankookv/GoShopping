@@ -17,14 +17,14 @@
     </el-table>
     <div style="display: flex;justify-content: flex-end">
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :page-sizes="[1,10,20, 50, 100,]"
-        :page-size="10"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        style="margin-right: 20px">
-      </el-pagination>
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :page-sizes="[1,10,20, 50, 100,]"
+      :page-size="10"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      style="margin-right: 20px">
+    </el-pagination>
     </div>
     <div class="all" v-show="dialogVisible"></div>
     <div class="PurchaseRecords" v-show="dialogVisible">
