@@ -173,7 +173,6 @@ export const intoCart = params => { return axios.post(`${host}/buyer/addGoodInto
 
 //拿买家收货信息
 export const showAddress = params => { return axios.post(`${host}/buyer/getAddressByBuyer`, params)};
-
 //详情页下单
 export const purchaseInfo = params => { return axios.post(`${host}/buyer/placeAnOrder`, params)};
 
