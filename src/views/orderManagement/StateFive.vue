@@ -14,6 +14,7 @@
         <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;">交易完成</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateSix">交易失败</div></el-col>
       </el-row>
+
     </div>
     <div class="container1">
       <div v-if="allOrders.length===0">
