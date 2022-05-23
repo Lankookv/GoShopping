@@ -56,7 +56,6 @@
                     <img class="agree" src="../../components/icon/已拒绝.png" v-if="post.stmt == 3">
 <!--                  </div>-->
                 <el-form label-width="140px" style="position: relative">
-
                   <el-form-item label="申请人"><span style="float: left">{{post.buyerName}}</span></el-form-item>
                   <el-form-item label="电话"><span style="float: left">{{post.phone}}</span></el-form-item>
                   <el-form-item label="地址"><span style="float: left">{{post.buyerAddress}}</span></el-form-item>
