@@ -124,6 +124,7 @@
             this.allOrders.forEach(function (item) {
               // alert("item.type："+item.type);
               // alert("type0："+type0);
+              console.log(item.stmt);
               if (!(item.newOrderId===type0)){
                 n++;
                 allOrder0[n]=[];

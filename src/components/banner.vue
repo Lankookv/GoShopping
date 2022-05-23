@@ -8,14 +8,14 @@
 
 <style>
   #banner{
-    width: 96%;
+    width: 1000px;
     height: 400px;
     position: relative;
     /*z-index: 0;*/
   }
   #pic{
     z-index: 0;
-    width: 100%;
+    width: 1000px;
     height: 358px;
   }
   #left{

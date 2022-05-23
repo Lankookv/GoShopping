@@ -79,6 +79,7 @@
     data() {
       return {
         a:{},
+        index: 0,
         addToCartList:[],
         tableData: [],
         myData:[],
@@ -91,22 +92,26 @@
     created() {
       this.getGoodDetail();
     },
+
     methods: {
       getGoodDetail(){
+        // alert("详情")
         showGoodDetail({
-          goodId:JSON.stringify(this.$route.params.bid),
+          goodId:this.goodId,
           contentType: "application/json"
         })
           .then((response)=> {
             //alert(JSON.stringify(this.$route.params.bid))
             // alert("model1");
+            // alert("response")
             this.addToCartList=[response.data.data];
             this.myData = response.data.data;
             this.price = this.myData.good.goodPrice;
+            this.total = this.price;
             this.addToCartList.forEach((item, index) => {
               this.$set(item, 'num', index+1)  // 这是新添加得属性，后期如果要修改一定要使用this.$set添加；
-              this.total = this.price;
             })
+            // alert(this.total)
             // console.log(this.addToCartList);
             // console.log(this.myData)
             // console.log(this.myData.good.goodPrice)

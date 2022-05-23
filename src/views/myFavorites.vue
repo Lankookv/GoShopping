@@ -61,6 +61,7 @@
         total: 0,
         page: 1,
         a:{},
+        flag:0,
         loadings: {
           table: true,
         },
@@ -85,7 +86,7 @@
     methods: {
       init() {
         showCollection({
-          buyerId:parseInt(sessionStorage.getItem("buyerId")),
+          buyerId: parseInt(sessionStorage.getItem("buyerId")),
           contentType: "application/json",
         })
           .then((response) => {
@@ -124,20 +125,21 @@
             }
           })
           deleteCollectedGoods({
-            favoriteIds:this.goodIdArr,
+            favoriteIds: this.goodIdArr,
             contentType: "application/json"
           })
-            .then((response) =>{
+            .then((response) => {
               // alert("给后端了");
               if (response.data.data == true) {
                 this.$message.success('取消收藏成功');
-                // this.init();
+                this.init();
               } else {
                 this.$message.error('取消收藏失败');
               }
             })
         })
-      },
+      }
+    }
       // watch: {
       //   '$route'(newVal, oldVal) {
       //     if (newVal !== oldVal) {
@@ -145,7 +147,6 @@
       //     }
       //   }
       // },
-    }
   }
 </script>
 

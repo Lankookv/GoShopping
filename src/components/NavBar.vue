@@ -275,6 +275,7 @@ export default {
               // sessionStorage.setItem('token', response.data.details.token);
               // sessionStorage.setItem('id', response.data.details.id);
               // sessionStorage.setItem('account',response.data.details.account);
+              console.log("1"+response.data.data)
               if(response.data.code===-1){
                 this.$message.error('用户名或密码错误');
               }
@@ -288,11 +289,25 @@ export default {
                   this.isSeller=false;
                   sessionStorage.setItem('buyerId', -response.data.data);
                 }
+                // this.isLogin=!this.isLogin;
+                // this.$message.success('登录成功');
+                // this.showModal=!this.showModal;
+                // this.$router.push('/');
+                // location.reload();
                 this.isLogin=!this.isLogin;
                 this.$message.success('登录成功');
                 this.showModal=!this.showModal;
-                this.$router.push('/');
-                location.reload();
+                if(response.data.data>0){
+                  this.$router.push({
+                    path: '/sellerCentral/',
+                    name: 'sellerCentral',
+                    query: {acount: this.loginParam.account},
+                  });
+                  // location.reload();
+                }else{
+                  this.$router.push('/');
+                  // location.reload();
+                }
               }
             })
         } else {

@@ -1,16 +1,16 @@
 // src\api\api.js
 import axios from 'axios';    // 导入axios
-
-//let host = 'http://10.61.33.105:2887/api';//苇苇学校
+// let host = 'http://121.40.97.124:2887/api';//苇苇学校
 
 // let host = 'http://192.168.12.23:2887/api';//苇苇寝室
-let host = 'http://192.168.24.40:2887/api';//苇苇热点
+// let host = 'http://192.168.24.40:2887/api';//苇苇热点
+let host = 'http://10.61.2.9:2887/api';//苇苇学校
 // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // let host = 'http://192.168.43.104:2887/api';//杨柳热点
 // // let host = 'http://192.168.43.104:2887/api';//我热点
-// let host = "http://121.40.97.124:2887/api";//云端
-// let host = "http://localhost:2888/api";
+// let host = "http://121.40.97.124:2887/api";
+//let host = "http://localhost:2888/api";
 
 // 登录
 export const login = params => { return axios.post(`${host}/common/login/`, params)};
@@ -176,3 +176,28 @@ export const showAddress = params => { return axios.post(`${host}/buyer/getAddre
 
 //详情页下单
 export const purchaseInfo = params => { return axios.post(`${host}/buyer/placeAnOrder`, params)};
+
+
+//买家提出申请
+export const submitApplication = params => { return axios.post(`${host}/buyer/putForwardPostSaleRequest`, params)};
+
+//买家查看申请
+export const showApplicationContent = params => { return axios.post(`${host}/buyer/getPostSaleByOrderId`, params)};
+
+//是否有售后
+export const getApplicationExist = params => { return axios.post(`${host}/buyer/seeWhetherThereIsPostSale`, params)};
+
+
+//买家撤销售后
+export const cancelApplication = params => { return axios.post(`${host}/buyer/cancelPostSale`, params)};
+
+//卖家取售后单
+export const getPost = params => { return axios.post(`${host}/buyer/getPostSaleByOrderId`, params)};
+
+//卖家同意售后
+export const agreePost = params => { return axios.post(`${host}/seller/agreePostSale`, params)};
+
+//卖家拒绝售后
+export const notagreePost = params => { return axios.post(`${host}/seller/notAgreePostSale`, params)};
+
+export const showAllOrders = params => { return axios.post(`${host}/seller/getAllOrderBySeller`, params)};

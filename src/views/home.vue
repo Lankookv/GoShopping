@@ -51,7 +51,7 @@
     components: {
       carousel,
       goodsType,
-      banner
+      banner,
     },
     data() {
       return {

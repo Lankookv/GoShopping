@@ -203,7 +203,6 @@
         }
       },
       handleRemove0(file, fileList) {
-
         console.log(file, fileList);
       },
       handlePictureCardPreview0(file) {

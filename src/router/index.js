@@ -12,6 +12,7 @@ import digitalGoods from "../views/digitalGoods";
 import phoneGoods from "../views/phoneGoods";
 import nothing from "../views/nothing";
 import editInformation from "../views/accountManagement/editInformation"
+import sellerCentral from "../views/sellerCentral"
 
 //升级包B
 import StateOne from "../views/orderManagement/StateOne"
@@ -169,5 +170,11 @@ export default new Router({
       name: 'myFavorites',
       component: myFavorites,
     },
+    {
+      path: '/sellerCentral/',
+      name: 'sellerCentral',
+      component: sellerCentral,
+    },
+
   ]
 })

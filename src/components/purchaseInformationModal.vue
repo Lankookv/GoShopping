@@ -112,12 +112,12 @@
       this.getAddress();
     },
     mounted() {
-      // alert("b")
     },
+
     methods: {
       getGoodDetail(){
         showGoodDetail({
-          goodId:JSON.stringify(this.$route.params.bid),
+          goodId:this.goodId,
           contentType: "application/json"
         })
           .then((response)=> {
@@ -214,6 +214,7 @@
 
       getValue(item){
         this.purchasebuyerName = item.buyerName;
+        alert(this.purchasebuyerName)
         this.purchasebuyerPhone = item.buyerPhone;
         this.purchasebuyerAddress = item.buyerAddress;
         this.purchasebuyerAddressId = item.addressId;

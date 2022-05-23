@@ -23,7 +23,7 @@
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateTwo">待备货</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateThree">待发货</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateFour">已发货</div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;">交易完成</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;" >交易完成</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateSix">交易失败</div></el-col>
       </el-row>
     </div>
@@ -124,6 +124,7 @@
             this.allOrders.forEach(function (item) {
               // alert("item.type："+item.type);
               // alert("type0："+type0);
+              console.log(item.stmt);
               if (!(item.newOrderId===type0)){
                 n++;
                 allOrder0[n]=[];
