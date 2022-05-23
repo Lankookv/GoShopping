@@ -69,11 +69,6 @@
           <!--                        <small>xxx</small>-->
           <!--                      </div>-->
           <!--                    </div>-->
-          <!--                    <span>-->
-          <!--                        <h1 style="color: black;font-size: 40px;margin-top:74px;"><b>5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥99</b></h1>-->
-          <!--                      <el-button class="service"  @click="showPost(goods.orderId,goods.stmt)">售后处理</el-button>-->
-          <!--                      </span>-->
-          <!--                    <div class="all" v-show="dialogVisible"></div>-->
           <!--                    <div class="post" v-show="dialogVisible">-->
           <!--                      <div style="height:15%;border-bottom: 1px solid #eee;">-->
           <!--                        <span style="float: left;margin: 2% -15% 3% 3%;font-size: 20px"><b>售后处理</b></span>-->
@@ -157,19 +152,20 @@
                     </div>
                     <span>
               <h1 style="color: black;font-size: 40px;margin-top:74px;"><b>{{goods.number}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥{{goods.goodPrice}}</b></h1>
-              <el-button class="service"  @click="showPost(goods.orderId,goods.stmt)">售后处理</el-button>                    </span>
+              <el-button class="service"  @click="showPost(goods.orderId,goods.stmt)" style="">售后处理</el-button>                    </span>
                     <div class="all" v-show="dialogVisible"></div>
                     <div class="post" v-show="dialogVisible">
                       <div style="height:15%;border-bottom: 1px solid #eee;">
                         <span style="float: left;margin: 2% -15% 3% 3%;font-size: 20px"><b>售后处理</b></span>
-                        <img src="../components/icon/关闭.png" class="iconfont" @click="dialogVisible=!dialogVisible" style="margin-right: 3%;margin-top: 3%">
+                        <img src=".././components/icon/关闭.png" class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;width:25px;height: 25px">
                       </div>
                       <div>
-                        <div style="float:right">
-                          <img class="agree" src="../components/icon/同意.png" v-if="post.stmt == 2">
+                        <div style="float: right;position: absolute;right: 0">
+                          <img class="agree" src=".././components/icon/同意.png" v-if="post.stmt == 2"  style="width: 55%;transform:rotate(330deg);" >
+                          <img class="agree" src=".././components/icon/拒绝.png" v-if="post.stmt == 3"  style="width: 55%;transform:rotate(330deg);" >
+
                         </div>
                         <el-form label-width="140px" style="position: relative">
-
                           <el-form-item label="申请人"><span style="float: left">{{post.buyerName}}</span></el-form-item>
                           <el-form-item label="电话"><span style="float: left">{{post.phone}}</span></el-form-item>
                           <el-form-item label="地址"><span style="float: left">{{post.buyerAddress}}</span></el-form-item>
@@ -203,6 +199,18 @@
   #HandsomeWu > * {
     border: 0;
   }
+  .service{
+    color: black;
+    float: right;
+    width: 10%;
+    height: 36px;
+    margin-right: 3%;
+    margin-bottom: 2%;
+    background-color: orangered;
+    border: 1px solid black;
+    cursor:Pointer;
+    border-radius: 10px;
+  }
   .grid-content {
     cursor:pointer;
   }
@@ -222,10 +230,10 @@
     bottom:0;
     left:0;
     width: 50%;
-    height:400px;
+    height:550px;
     margin:auto;
     background-color:#fff;
-    overflow:auto;
+    overflow:hidden;
     z-index:100;
   }
   .container2{
@@ -281,7 +289,7 @@
   .container-1{
     margin: auto;
     width: 90%;
-    height: 180px;
+    height: 150px;
     background-color: #F88E4E;
     border-radius: 5px;
     .faces{
@@ -322,6 +330,7 @@
         post:[],
         allOrder:[[]],
         Orders:[],
+        afterSaleOrders:[],
         dialogVisible:false,
         stmt2: 0,//待处理
         stmt3: 0,//待备货
@@ -367,6 +376,14 @@
             this.k=n;
             this.type=type0;
             this.allOrder=allOrder0;
+            console.log(this.allOrder)
+            let afterSaleOrders = [];
+            this.allOrder.forEach(function (item) {
+              if(item.stmt === 7){
+                afterSaleOrders.push(item);
+              }
+            });
+            this.afterSaleOrders = afterSaleOrders;
           })
       },
       init2(){
@@ -464,7 +481,10 @@
           this.init();
         })
       },
-
+      closeSelf() {
+        this.dialogVisible = !this.dialogVisible;
+        this.$emit("closeme");
+      },
       toChangePassword(){
         this.$router.push({name:'ChangePassword',})
       },

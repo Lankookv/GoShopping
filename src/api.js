@@ -2,9 +2,9 @@
 import axios from 'axios';    // 导入axios
 // let host = 'http://121.40.97.124:2887/api';//苇苇学校
 
-// let host = 'http://192.168.12.23:2887/api';//苇苇寝室
+let host = 'http://192.168.12.23:2887/api';//苇苇寝室
 // let host = 'http://192.168.24.40:2887/api';//苇苇热点
-let host = 'http://10.61.2.9:2887/api';//苇苇学校
+// let host = 'http://10.61.2.9:2887/api';//苇苇学校
 // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // let host = 'http://192.168.43.104:2887/api';//杨柳热点
@@ -173,6 +173,7 @@ export const intoCart = params => { return axios.post(`${host}/buyer/addGoodInto
 
 //拿买家收货信息
 export const showAddress = params => { return axios.post(`${host}/buyer/getAddressByBuyer`, params)};
+
 //详情页下单
 export const purchaseInfo = params => { return axios.post(`${host}/buyer/placeAnOrder`, params)};
 

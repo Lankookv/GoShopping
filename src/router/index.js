@@ -13,6 +13,7 @@ import phoneGoods from "../views/phoneGoods";
 import nothing from "../views/nothing";
 import editInformation from "../views/accountManagement/editInformation"
 import sellerCentral from "../views/sellerCentral"
+import myPosts from "../views/myPosts"
 
 //升级包B
 import StateOne from "../views/orderManagement/StateOne"
@@ -37,8 +38,7 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: home
-
+      component: home,
     },
     {
       path: '/goodDetails/:bid',//bid:商品id
@@ -175,6 +175,10 @@ export default new Router({
       name: 'sellerCentral',
       component: sellerCentral,
     },
-
+    {
+      path: '/myPosts/',
+      name: 'myPosts',
+      component: myPosts,
+    },
   ]
 })
