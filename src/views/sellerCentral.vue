@@ -53,79 +53,6 @@
               </div>
             </div>
           </div>
-          <!--          <div class="container2">-->
-          <!--            <ul >-->
-          <!--              <li class="container_1">-->
-          <!--                <div style="background-color:rgb(246, 121, 46);height: 50px;border-bottom: 1px solid black;">-->
-          <!--&lt;!&ndash;                                              <span style="font-size: 30px;line-height: 50px;float:left;margin-left: 20px">{{order[0].startDate.substring(0,10)+"   "+order[0].startDate.substring(11,16)}}</span>&ndash;&gt;-->
-          <!--                  <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;">详细信息</button>-->
-          <!--                </div>-->
-          <!--                <ol>-->
-          <!--                  <li class="container_2">-->
-          <!--                    <img src="../components/icon/v.png" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">-->
-          <!--                    <div class="container1-2" style="overflow:hidden;">-->
-          <!--                      <h2><b>xxx</b></h2>-->
-          <!--                      <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">-->
-          <!--                        <small>xxx</small>-->
-          <!--                      </div>-->
-          <!--                    </div>-->
-          <!--                    <div class="post" v-show="dialogVisible">-->
-          <!--                      <div style="height:15%;border-bottom: 1px solid #eee;">-->
-          <!--                        <span style="float: left;margin: 2% -15% 3% 3%;font-size: 20px"><b>售后处理</b></span>-->
-          <!--                        <img src="../../components/icon/关闭.png" class="iconfont" @click="dialogVisible=!dialogVisible" style="margin-right: 3%;margin-top: 3%">-->
-          <!--                      </div>-->
-          <!--                      <div>-->
-          <!--                        <div style="float:right">-->
-          <!--                          <img class="agree" src="../../components/icon/已同意.png" v-if="post.stmt == 2">-->
-          <!--                        </div>-->
-          <!--                        <el-form label-width="140px" style="position: relative">-->
-
-          <!--                          <el-form-item label="申请人"><span style="float: left">{{post.buyerName}}</span></el-form-item>-->
-          <!--                          <el-form-item label="电话"><span style="float: left">{{post.phone}}</span></el-form-item>-->
-          <!--                          <el-form-item label="地址"><span style="float: left">{{post.buyerAddress}}</span></el-form-item>-->
-          <!--                          <el-form-item label="售后内容"><span style="float: left">{{post.postSaleType}}</span></el-form-item>-->
-          <!--                          <el-form-item label="具体原因描述"><span style="float: left">{{post.reasons}}</span></el-form-item>-->
-          <!--                          <el-form-item label="图片">-->
-          <!--                            <div v-for="(img) in post.images">-->
-          <!--                              <img :src="img" style="float: left;width: 130px;height: 100px;;padding-right:10px ">-->
-          <!--                            </div>-->
-          <!--                          </el-form-item>-->
-          <!--                        </el-form>-->
-          <!--                        <div class="footer" style="margin-bottom: 2%;" v-if="post.stmt == 1 ">-->
-          <!--                          <el-button style="background-color: red;width: 15%" @click="notagree(post)">拒绝</el-button>-->
-          <!--                          <el-button style="background-color: #00bf17;width: 15%" @click="agree(post)">同意</el-button>-->
-          <!--                        </div>-->
-          <!--                      </div>-->
-          <!--                    </div>-->
-          <!--                  </li>-->
-          <!--                </ol>-->
-          <!--              </li>-->
-          <!--            </ul>-->
-          <!--          </div>-->
-          <!--        <div class="container2">-->
-          <!--          <ul >-->
-          <!--            <li class="container_1">-->
-          <!--              <div style="background-color:rgb(246, 121, 46);height: 50px;border-bottom: 1px solid black;">-->
-          <!--                                            <span style="font-size: 30px;line-height: 50px;float:left;margin-left: 20px">{{order[0].startDate.substring(0,10)+"   "+order[0].startDate.substring(11,16)}}</span>-->
-          <!--                <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;">详细信息</button>-->
-          <!--              </div>-->
-          <!--              <ol>-->
-          <!--                <li class="container_2">-->
-          <!--                  <img src="../components/icon/v.png" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">-->
-          <!--                  <div class="container1-2" style="overflow:hidden;">-->
-          <!--                    <h2><b>xxx</b></h2>-->
-          <!--                    <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">-->
-          <!--                      <small>xxx</small>-->
-          <!--                    </div>-->
-          <!--                  </div>-->
-          <!--                  <span>-->
-          <!--                        <h1 style="color: black;font-size: 40px;margin-top:74px;"><b>5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥99</b></h1>-->
-          <!--                      </span>-->
-          <!--                </li>-->
-          <!--              </ol>-->
-          <!--            </li>-->
-          <!--          </ul>-->
-          <!--        </div>-->
           <div v-if="allOrders.length===0">
             <center>
 <!--              <img src="../components/icon/pic30.png" style="width:90%;margin-top: 15px">-->
@@ -135,56 +62,120 @@
             </div>
           </div>
           <div class="container2" v-else>
-            <ul :loading="loadings.table" >
-              <li class="container_1" v-for="(order,index) in allOrder" :key="index">
-                <div style="background-color:rgb(246, 121, 46);height: 50px;border-bottom: 1px solid black;">
-                  <span style="font-size: 30px;line-height: 50px;float:left;margin-left: 20px">{{order[0].startDate.substring(0,10)+"   "+order[0].startDate.substring(11,16)}}</span>
-                  <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;">详细信息</button>
-                </div>
-                <ol>
-                  <li class="container_2" v-for="(goods,index) in order" :key="index">
-                    <img :src="goods.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
-                    <div class="container1-2" style="overflow:hidden;">
-                      <h2><b>{{goods.goodName}}</b></h2>
-                      <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
-                        <small v-html="goods.description"></small>
-                      </div>
-                    </div>
-                    <span>
-              <h1 style="color: black;font-size: 40px;margin-top:74px;"><b>{{goods.number}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥{{goods.goodPrice}}</b></h1>
-              <el-button class="service"  @click="showPost(goods.orderId,goods.stmt)" style="">售后处理</el-button>                    </span>
-                    <div class="all" v-show="dialogVisible"></div>
-                    <div class="post" v-show="dialogVisible">
-                      <div style="height:15%;border-bottom: 1px solid #eee;">
-                        <span style="float: left;margin: 2% -15% 3% 3%;font-size: 20px"><b>售后处理</b></span>
-                        <img src=".././components/icon/关闭.png" class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;width:25px;height: 25px">
-                      </div>
-                      <div>
-                        <div style="float: right;position: absolute;right: 0">
-                          <img class="agree" src=".././components/icon/同意.png" v-if="post.stmt == 2"  style="width: 55%;transform:rotate(330deg);" >
-                          <img class="agree" src=".././components/icon/拒绝.png" v-if="post.stmt == 3"  style="width: 55%;transform:rotate(330deg);" >
+<!--            <ul :loading="loadings.table" >-->
+<!--              <li class="container_1" v-for="(order,index) in after1" :key="index">-->
+<!--                <div style="background-color:rgb(246, 121, 46);height: 50px;border-bottom: 1px solid black;">-->
+<!--                  <span style="font-size: 30px;line-height: 50px;float:left;margin-left: 20px">{{order[0].startDate.substring(0,10)+"   "+order[0].startDate.substring(11,16)}}</span>-->
+<!--                  <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;">详细信息</button>-->
+<!--                </div>-->
+<!--                <ol>-->
+<!--                  <li class="container_2" v-for="(goods,index) in order" :key="index">-->
+<!--                    <img :src="goods.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">-->
+<!--                    <div class="container1-2" style="overflow:hidden;">-->
+<!--                      <h2><b>{{goods.goodName}}</b></h2>-->
+<!--                      <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">-->
+<!--                        <small v-html="goods.description"></small>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                    <span>-->
+<!--                <h1 style="color: black;font-size: 40px;margin-top:74px;"><b>{{goods.number}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥{{goods.goodPrice}}</b></h1>-->
+<!--                  <el-button class="service"  @click="showPost(goods.orderId,goods.stmt)" style="">售后处理</el-button>-->
+<!--                    </span>-->
+<!--                    <div class="all" v-show="dialogVisible"></div>-->
+<!--                    <div class="post" v-show="dialogVisible">-->
+<!--                      <div style="height:15%;border-bottom: 1px solid #eee;">-->
+<!--                        <span style="float: left;margin: 2% -15% 3% 3%;font-size: 20px"><b>售后处理</b></span>-->
+<!--                        <img src=".././components/icon/关闭.png" class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;width:25px;height: 25px">-->
+<!--                      </div>-->
+<!--                      <div>-->
+<!--                        <div style="float: right;position: absolute;right: 0">-->
+<!--                          <img class="agree" src=".././components/icon/同意.png" v-if="post.stmt == 2"  style="width: 55%;transform:rotate(330deg);" >-->
+<!--                          <img class="agree" src=".././components/icon/拒绝.png" v-if="post.stmt == 3"  style="width: 55%;transform:rotate(330deg);" >-->
 
-                        </div>
-                        <el-form label-width="140px" style="position: relative">
-                          <el-form-item label="申请人"><span style="float: left">{{post.buyerName}}</span></el-form-item>
-                          <el-form-item label="电话"><span style="float: left">{{post.phone}}</span></el-form-item>
-                          <el-form-item label="地址"><span style="float: left">{{post.buyerAddress}}</span></el-form-item>
-                          <el-form-item label="售后内容"><span style="float: left">{{post.postSaleType}}</span></el-form-item>
-                          <el-form-item label="具体原因描述"><span style="float: left">{{post.reasons}}</span></el-form-item>
-                          <el-form-item label="图片">
-                            <div v-for="(img) in post.images">
-                              <img :src="img" style="float: left;width: 130px;height: 100px;;padding-right:10px ">
-                            </div>
-                          </el-form-item>
-                        </el-form>
-                        <div class="footer" style="margin-bottom: 2%;" v-if="post.stmt == 1 ">
-                          <el-button style="background-color: red;width: 15%" @click="notagree(post)">拒绝</el-button>
-                          <el-button style="background-color: #00bf17;width: 15%" @click="agree(post)">同意</el-button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ol>
+<!--                        </div>-->
+<!--                        <el-form label-width="140px" style="position: relative">-->
+<!--                          <el-form-item label="申请人"><span style="float: left">{{post.buyerName}}</span></el-form-item>-->
+<!--                          <el-form-item label="电话"><span style="float: left">{{post.phone}}</span></el-form-item>-->
+<!--                          <el-form-item label="地址"><span style="float: left">{{post.buyerAddress}}</span></el-form-item>-->
+<!--                          <el-form-item label="售后内容"><span style="float: left">{{post.postSaleType}}</span></el-form-item>-->
+<!--                          <el-form-item label="具体原因描述"><span style="float: left">{{post.reasons}}</span></el-form-item>-->
+<!--                          <el-form-item label="图片">-->
+<!--                            <div v-for="(img) in post.images">-->
+<!--                              <img :src="img" style="float: left;width: 130px;height: 100px;;padding-right:10px ">-->
+<!--                            </div>-->
+<!--                          </el-form-item>-->
+<!--                        </el-form>-->
+<!--                        <div class="footer" style="margin-bottom: 2%;" v-if="post.stmt == 1 ">-->
+<!--                          <el-button style="background-color: red;width: 15%" @click="notagree(post)">拒绝</el-button>-->
+<!--                          <el-button style="background-color: #00bf17;width: 15%" @click="agree(post)">同意</el-button>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </li>-->
+<!--                </ol>-->
+<!--              </li>-->
+<!--            </ul>-->
+            <ul    :loading="loadings.table" >
+              <li class="container_1" style="cursor: pointer;
+      padding:0px 0px 10px 10px;
+      background-color:  #F88E4E;
+      border-radius: 10px;
+      border: 1px solid black;
+      height:auto;
+      min-height:200px;
+      overflow: hidden;" v-for="(order,index) in afterOrders1" :key="index">
+                <img :src="order.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+                <div class="container1-2" style="overflow:hidden;">
+                  <h2><b>{{order.goodName}}</b></h2>
+                  <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+                    <small v-html="order.description"></small>
+                  </div>
+                </div>
+                <span class="container1-3">
+            <h1 style="color: black;font-size: 40px;margin-top: 7%;"><b>{{order.number}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥{{order.goodPrice}}</b></h1>
+                  <button @click="showPost(order.orderId,order.stmt)" style="color: black;
+  float: right;
+  width: 10%;
+  height: 36px;
+  margin-right: 3%;
+  margin-bottom: 2%;
+  background-color: orangered;
+  border: 1px solid black;
+  cursor:Pointer;
+  border-radius: 10px;">售后处理</button>
+          </span>
+                <div class="all" v-show="dialogVisible"></div>
+                              <div class="post" v-show="dialogVisible">
+                                <div style="height:15%;border-bottom: 1px solid #eee;">
+                                  <span style="float: left;margin: 2% -15% 3% 3%;font-size: 20px"><b>售后处理</b>
+
+                                  </span>
+                                  <img src=".././components/icon/关闭.png" class="iconfont" @click="closeSelf" style="float: right;margin-right: 3%;cursor: pointer;width:25px;height: 25px">
+                                </div>
+                                <div>
+                                  <div style="float: right;position: absolute;right: 0">
+                                    <img class="agree" src=".././components/icon/同意.png" v-if="post.stmt == 2"  style="width: 55%;transform:rotate(330deg);" >
+                                    <img class="agree" src=".././components/icon/拒绝.png" v-if="post.stmt == 3"  style="width: 55%;transform:rotate(330deg);" >
+
+                                  </div>
+                                  <el-form label-width="140px" style="position: relative">
+                                    <el-form-item label="申请人"><span style="float: left">{{post.buyerName}}</span></el-form-item>
+                                    <el-form-item label="电话"><span style="float: left">{{post.phone}}</span></el-form-item>
+                                    <el-form-item label="地址"><span style="float: left">{{post.buyerAddress}}</span></el-form-item>
+                                    <el-form-item label="售后内容"><span style="float: left">{{post.postSaleType}}</span></el-form-item>
+                                    <el-form-item label="具体原因描述"><span style="float: left">{{post.reasons}}</span></el-form-item>
+                                    <el-form-item label="图片">
+                                      <div v-for="(img) in post.images">
+                                        <img :src="img" style="float: left;width: 130px;height: 100px;;padding-right:10px ">
+                                      </div>
+                                    </el-form-item>
+                                  </el-form>
+                                  <div class="footer" style="margin-bottom: 2%;" v-if="post.stmt == 1 ">
+                                    <el-button style="background-color: red;width: 15%" @click="notagree(post)">拒绝</el-button>
+                                    <el-button style="background-color: #00bf17;width: 15%" @click="agree(post)">同意</el-button>
+                                  </div>
+                                </div>
+                              </div>
               </li>
             </ul>
           </div>
@@ -198,6 +189,38 @@
 <style  scoped lang="less">
   #HandsomeWu > * {
     border: 0;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;//默认不换行
+    padding-bottom: 10px;
+    padding-inline-start:0;
+    margin-top: 0;
+    li{
+      width: 100%;
+      margin:1% 4%;
+      list-style: none;
+      .container1-2 {
+        width: 45%;
+        float:left;
+        margin-left: 1%;
+        text-align: left;
+        h2{
+          margin-bottom: 1%;
+          margin-top: 2%;
+          margin-left: 4%;
+        }
+        p{
+          margin-left: 3%;
+          color: darkgray;
+        }
+        div{
+          height: 140px;
+          width: 101%;
+          margin:1% 5% 0px 3%;
+        }
+      }
+    }
   }
   .service{
     color: black;
@@ -339,12 +362,12 @@
         stmt67: 0,//交易完成
         stmt0102: 0,//交易失败
         acount:"",
+        afterOrders1:[],
       }
     },
     mounted() {
       this.init1();
       this.init2();
-      console.log(this.$route.query.acount);
       var acount = this.$route.query.acount;
       this.acount = acount;
     },
@@ -363,27 +386,27 @@
             let type0=this.allOrders[0].newOrderId;
             let allOrder0=[[]];
             allOrder0[n]=[];
+            let after1 = []
             this.allOrders.forEach(function (item) {
-              // alert("item.type："+item.type);
-              // alert("type0："+type0);
+              if(item.stmt === 7){
+                after1.push(item)
+              }
+            });
+            this.afterOrders1 = after1;
+            console.log(this.afterOrders1);
+            this.afterOrders1.forEach(function (item) {
               if (!(item.newOrderId===type0)){
                 n++;
                 allOrder0[n]=[];
               }
+
               allOrder0[n].push(item);
               type0=item.newOrderId;
             });
             this.k=n;
             this.type=type0;
             this.allOrder=allOrder0;
-            console.log(this.allOrder)
             let afterSaleOrders = [];
-            this.allOrder.forEach(function (item) {
-              if(item.stmt === 7){
-                afterSaleOrders.push(item);
-              }
-            });
-            this.afterSaleOrders = afterSaleOrders;
           })
       },
       init2(){
@@ -394,7 +417,7 @@
         })
           .then((response)=> {
             this.Orders=response.data.data.orderList;
-            console.log( this.Orders);
+            // console.log( this.Orders);
             let Ostmt2 = 0;//待处理
             let Ostmt3 = 0;//待备货
             let Ostmt4 = 0;//待发货
