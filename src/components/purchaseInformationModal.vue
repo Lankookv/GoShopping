@@ -11,14 +11,15 @@
         <li class="address" style="list-style:none; font-weight: bold">
 <span style="float: left;margin-left: 2%">
   <input type="radio" name="address" value="address" id="defaultaddress" checked="checked" @click="getValue()" ></input>
-  <label for="defaultaddress" class="chooseAddress">{{buyerAddress}} &nbsp;&nbsp; ({{buyerName}}&nbsp;收) &nbsp;&nbsp;{{buyerPhone}}</label>
+  <label class="chooseAddress">{{buyerAddress}} &nbsp;&nbsp; ({{buyerName}}&nbsp;收) &nbsp;&nbsp;{{buyerPhone}}</label>
   <span style="margin-left:10px">默认地址</span>
 </span>
+
         </li>
         <li v-for="(item) in isnDefaultArr" :key="index" style="list-style:none;">
     <span style="float: left;margin-left: 2%">
-      <input type="radio" v-model='item.checked' name="address" value="address"  id="address" @click="getValue(item)" ></input>
-      <label for="address" class="chooseAddress"> {{item.buyerAddress}} &nbsp;&nbsp; ({{item.buyerName}}&nbsp;收) &nbsp;&nbsp; {{item.buyerPhone}}</label>
+      <input type="radio" v-model='item.checked' name="address" value="address"  :id="index" @click="getValue(item)" ></input>
+      <label :for="index" class="chooseAddress"> {{item.buyerAddress}} &nbsp;&nbsp; ({{item.buyerName}}&nbsp;收) &nbsp;&nbsp; {{item.buyerPhone}}</label>
     </span>
         </li>
         <div class="modal-body">
