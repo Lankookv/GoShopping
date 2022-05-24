@@ -30,7 +30,6 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-
       <el-container>
         <el-main>
           <div style="height: 50px">嗨~欢迎来到购小拼在线购物平台</div>
