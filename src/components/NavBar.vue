@@ -50,7 +50,9 @@
         </el-submenu>
         <img src="./icon/v.png" class="faces" height="50px">
         <button class="cart" @click="tomyFavorites"><img src="../components/icon/首页收藏.png" style="height: 35px;margin-right: 20px"></button>
-        <button class="cart" @click="toShoppingCart"><img src="../components/icon/购物车.png" style="height: 35px;margin-right: 10px"></button>
+        <button class="cart" @click="toShoppingCart"><img src="../components/icon/购物车1.png" style="height: 36px;margin-right: 10px">
+          <span style="position: absolute; top: 24%; right: 20.6%;color: white">{{this.sum}}</span>
+        </button>
       </div>
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'" style="padding: 30px 30px 10px 30px">
@@ -114,7 +116,7 @@
 </template>
 
 <script>
-import { login, register } from '../api'
+import { login, register,getCartNumber } from '../api'
 
 export default {
   components: {
@@ -147,6 +149,7 @@ export default {
       isSeller:false,
       two: true,
       showModal:false,
+      sum:0,
       loginParam: {},
       registerParam: {authority:"2",},
       rules: {
@@ -184,12 +187,24 @@ export default {
       }else {
         this.isSeller=true;
       }
+      getCartNumber({
+        buyerId: parseInt(sessionStorage.getItem("buyerId")),
+        contentType: "application/json"
+      })
+        .then((response) =>{
+          this.sum = response.data.data;
+        })
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
     toHome(){
-      this.$router.push({name:'Home',});
+      if(this.isSeller){
+        this.$router.push({name:'sellerCentral',});
+      }
+      else {
+        this.$router.push({name:'Home',});
+      }
     },
     toShoppingCart(){
       if(this.isLogin===false){
@@ -284,10 +299,16 @@ export default {
                   sessionStorage.setItem('isSeller', true);
                   this.isSeller=true;
                   sessionStorage.setItem('userId', response.data.data);
+                  sessionStorage.setItem('account', this.loginParam.account);
+                  this.$router.push({
+                    path: '/sellerCentral/',
+                    name: 'sellerCentral',
+                  });
                 }else {
                   sessionStorage.setItem('isSeller', false);
                   this.isSeller=false;
                   sessionStorage.setItem('buyerId', -response.data.data);
+                  this.$router.push('/');
                 }
                 // this.isLogin=!this.isLogin;
                 // this.$message.success('登录成功');
@@ -297,17 +318,6 @@ export default {
                 this.isLogin=!this.isLogin;
                 this.$message.success('登录成功');
                 this.showModal=!this.showModal;
-                if(response.data.data>0){
-                  this.$router.push({
-                    path: '/sellerCentral/',
-                    name: 'sellerCentral',
-                    query: {acount: this.loginParam.account},
-                  });
-                  // location.reload();
-                }else{
-                  this.$router.push('/');
-                  // location.reload();
-                }
               }
             })
         } else {

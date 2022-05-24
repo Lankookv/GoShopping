@@ -302,8 +302,6 @@
 
        },
 
-
-
       //删除购物车商品
       deleteCartGood() {
         this.openDelConfirm().then(() => {

@@ -1,16 +1,16 @@
 // src\api\api.js
 import axios from 'axios';    // 导入axios
-// let host = 'http://121.40.97.124:2887/api';//苇苇学校
 
-let host = 'http://192.168.12.23:2887/api';//苇苇寝室
-// let host = 'http://192.168.24.40:2887/api';//苇苇热点
-// let host = 'http://10.61.2.9:2887/api';//苇苇学校
+//let host = 'http://10.61.33.105:2887/api';//苇苇学校
+
+// let host = 'http://192.168.12.23:2887/api';//苇苇寝室
+// let host = 'http://192.168.193.40:2887/api';//苇苇热点
 // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // let host = 'http://192.168.43.104:2887/api';//杨柳热点
-// // let host = 'http://192.168.43.104:2887/api';//我热点
-// let host = "http://121.40.97.124:2887/api";
-//let host = "http://localhost:2888/api";
+let host = 'http://192.168.43.133:2887/api';//我热点
+// let host = "http://121.40.97.124:2887/api";//云端
+// let host = "http://localhost:2888/api";
 
 // 登录
 export const login = params => { return axios.post(`${host}/common/login/`, params)};
@@ -108,73 +108,73 @@ export const editInformation = params => { return axios.post(`${host}/buyer/chan
 export const showallPurchaseRecords = params => { return axios.post(`${host}/buyer/getBuyerHistoryByBuyerId`, params)};
 
 //升级包B
-// 买家查看订单(各种状态)
+// 买家查看订单(各种状态)1
 export const buyerShowOrders = params => { return axios.post(`${host}/buyer/getOrderListOfStatement`, params)};
 
-// 卖家查看订单(各种状态)
+// 卖家查看订单(各种状态)1
 export const showOrders = params => { return axios.post(`${host}/seller/getOrderListOfStatement`, params)};
 
-//buyerCancelAnOrder
+//buyerCancelAnOrder1
 export const buyerCancelAnOrder = params => { return axios.post(`${host}/buyer/buyerCancelOrder`, params)};
 
-//sellerCancelAnOrder
+//sellerCancelAnOrder1
 export const sellerCancelAnOrder = params => { return axios.post(`${host}/seller/cancelTheOrder`, params)};
 
-//confirmAnOrder
+//confirmAnOrder1
 export const confirmAnOrder = params => { return axios.post(`${host}/seller/acceptTheOrder`, params)};
 
-//preparedGoods
+//preparedGoods1
 export const preparedGoods = params => { return axios.post(`${host}/seller/completeStocking`, params)};
 
-//deliverGoods
+//deliverGoods1
 export const deliverGoods = params => { return axios.post(`${host}/seller/deliverTheGoods`, params)};
 
-//getBuyerAddressByOrder
+//getBuyerAddressByOrder1
 export const getBuyerInformation = params => { return axios.post(`${host}/seller/getBuyerAddressByOrder`, params)};
 
-//buyerConfirmReceipt
+//buyerConfirmReceipt1
 export const buyerConfirmReceipt = params => { return axios.post(`${host}/buyer/ConfirmReceipt`, params)};
 
-//afterSalesService
+//afterSalesService1
 export const afterSalesService = params => { return axios.post(`${host}/seller/getWantedGoodListBySellerId`, params)};
 
-//显示买家购物车内容
+//显示买家购物车内容1
 export const shoppingCart = params => { return axios.post(`${host}/buyer/getCartByBuyerId`, params)};
 
-//改变购物车商品数量
+//改变购物车商品数量1
 export const changecartnumber = params => { return axios.post(`${host}/buyer/changeCartNumber`, params)};
 
-//从购物车加入收藏夹
+//从购物车加入收藏夹1
 export const collectGoodsFromCart = params => { return axios.post(`${host}/buyer/getCartGoodIntoFavorite`, params)};
 
-//删除购物车商品
+//删除购物车商品1
 export const  deleteCartgood = params => { return axios.post(`${host}/buyer/deleteCartGood`, params)};
 
-//拿到买家地址信息
+//拿到买家地址信息1
 export const  getAddressByBuyer = params => { return axios.post(`${host}/buyer/getAddressByBuyer`, params)};
 
-//购物车下单
+//购物车下单1
 export const  OrderGoodsFromCart = params => { return axios.post(`${host}/buyer/orderGoodsFromCart`, params)};
 
-//收藏商品
+//收藏商品1
 export const collectGoods = params => { return axios.post(`${host}/buyer/favoriteGood`, params)};
 
-//查询该商品有没有收藏
+//查询该商品有没有收藏1
 export const showCollectionState = params => { return axios.post(`${host}/buyer/checkFavorite`, params)};
 
-//查看收藏夹
+//查看收藏夹1
 export const showCollection = params => { return axios.post(`${host}/buyer/getFavoriteByBuyer`, params)};
 
-//取消收藏
+//取消收藏1
 export const deleteCollectedGoods = params => { return axios.post(`${host}/buyer/deleteFavoriteGood`, params)};
 
-//从详情页加入购物车
+//从详情页加入购物车1
 export const intoCart = params => { return axios.post(`${host}/buyer/addGoodIntoCart`, params)};
 
-//拿买家收货信息
+//拿买家收货信息1
 export const showAddress = params => { return axios.post(`${host}/buyer/getAddressByBuyer`, params)};
 
-//详情页下单
+//详情页下单1
 export const purchaseInfo = params => { return axios.post(`${host}/buyer/placeAnOrder`, params)};
 
 //升级包C
@@ -186,7 +186,6 @@ export const showApplicationContent = params => { return axios.post(`${host}/buy
 
 //是否有售后
 export const getApplicationExist = params => { return axios.post(`${host}/buyer/seeWhetherThereIsPostSale`, params)};
-
 
 //买家撤销售后
 export const cancelApplication = params => { return axios.post(`${host}/buyer/cancelPostSale`, params)};
@@ -205,10 +204,24 @@ export const showAllOrders = params => { return axios.post(`${host}/seller/getAl
 //payAnOrder(支付宝)
 export const payAnOrder = params => { return axios.post(`${host}/buyer/payForIt`, params)};
 
-//finishOrder
+//finishOrder1
 export const finishOrder = params => { return axios.post(`${host}/buyer/finishThePayment`, params)};
 
 //银行卡支付
 export const payAnOrderByCard = params => { return axios.get(`${host}/buyer/unionPay?txnAmt=1000` )};
 
-//发帖
+// //发帖releasePost
+// export const releasePost = params => { return axios.post(`${host}/buyer/finishThePayment`, params)};
+
+//得到购物车数量
+export const getCartNumber = params => { return axios.post(`${host}/buyer/getNumberOfGoodsFromCart`,params)};
+
+//添加地址
+export const addAddress = params => { return axios.post(`${host}/buyer/addNotDefaultAddress`, params)};
+
+//设为默认地址
+export const alterdefault = params => { return axios.post(`${host}/buyer/alterDefaultAddressByBuyer`,params)};
+
+//删除地址
+export const deleteAddress = params => { return axios.post(`${host}/buyer/deleteAddress`, params)};
+

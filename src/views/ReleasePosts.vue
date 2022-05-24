@@ -51,7 +51,7 @@
         </el-form-item>
         <el-form-item style="margin-right: 140px;">
           <el-button type="primary" @click="onSubmit">立即发布</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="exit">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -135,7 +135,7 @@
             postName: _this.post.name,
             description: _this.post.description,
             img: this.SignBase64,
-            relatedGoods:[],
+            relatedGoods:this.relatedGoods,
             contentType: "application/json",
           }).then((response) => {
             if (response.data.code === -1) {
@@ -144,6 +144,9 @@
               this.$message.success('发布成功！');
           })
         }
+      },
+      exit(){
+        this.$router.push({name:'Home',})
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);

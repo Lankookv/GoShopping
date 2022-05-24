@@ -46,6 +46,10 @@
             <h1 style="color: black;font-size: 35px;margin-top: 4%;margin-right: 8%;float: right"><b>￥{{good.cartWithImg.cart.goodPrice}}</b></h1>
           </span>
          </li>
+        <h3 style="float: left;margin:1% 80% 0 3%;font-size: 20px">选择支付方式：</h3>
+        <input type="radio" name="radios" value="1" v-model="myVal"/><label>支付宝支付</label>
+        <br>
+        <input type="radio" name="radios" value="2" v-model="myVal"><label>银行卡支付</label>
         <div class="btn">
 
           <button class="no" style="background-color: #00bf17;float: right" @click="Order()">确认</button>
@@ -59,6 +63,7 @@
 
 <script>
   import {changecartnumber, finishOrder, OrderGoodsFromCart, payAnOrder} from "../api";
+  import axios from "axios";
 
   export default {
     name: 'ShoppingCartModal',
@@ -84,6 +89,8 @@
         numberIds:[],
         cartIds:[],
         orderId:0,
+        orderIds:[],
+        myVal:"1",
        }
       },
     created() {
@@ -174,7 +181,7 @@
             cartIds: this.cartIds,
             contentType: "application/json",
           }).then((response) => {
-            this.orderId=response.data.data;
+            this.orderIds=response.data.data;
             this.goodIds = [];
             this.numberIds = [];
             this.$message.success('下单成功！');
@@ -183,29 +190,57 @@
               ancelButtonText:'取消',
               type:"warning"
             }).then(()=> {
-              payAnOrder({
-                amount:parseInt(1),
-                id:this.orderId,
-                info:this.goodList[0].cartWithImg.cart.goodName,
-                contentType: "application/json",
-              }).then((response) => {
-                const div = document.createElement('divPay');
-                div.innerHTML = response.data.data;
-                document.body.appendChild(div);
-                document.forms[1].submit();
-                finishOrder({
-                  buyerId: parseInt(sessionStorage.getItem("buyerId")),
-                  orderId:this.orderId,
-                  contentType: "application/json",
-                }).then((response) => {
-                  // this.$message.success('付款成功！');
-                })
-              })
+              this.payOrders();
             });
             this.$emit("closeme");
           })
         }
-      }
+      },
+
+      payOrders(){
+        sessionStorage.setItem('payWay', 3);
+        sessionStorage.setItem('orderIds', JSON.stringify(this.orderIds));
+        if(this.myVal==="1"){
+          payAnOrder({
+            amount:parseInt(this.Sum),
+            id:this.orderId,  //!!
+            info:this.name,
+            contentType: "application/json",
+          }).then((response) => {
+            const div = document.createElement('divPay');
+            div.innerHTML = response.data.data;
+            document.body.appendChild(div);
+            document.forms[1].submit();
+          })
+        }
+        else if(this.myVal==="2"){
+          axios.get(`http://192.168.43.133:2887/api/buyer/unionPay?txnAmt=`+this.Sum*1).then((response) => {
+            // payAnOrderByCard({
+            //   contentType: "application/json",
+            // }).then((response) => {
+
+            //   this.a=response;
+            const div = document.createElement('div');
+            div.innerHTML = response.data;
+            document.body.appendChild(div);
+            document.forms[1].submit();
+          })
+
+          this.orderIds.forEach(function (item) {
+            finishOrder({
+              buyerId: parseInt(sessionStorage.getItem("buyerId")),
+              orderId: parseInt(item),
+              contentType: "application/json",
+            }).then((response) => {
+              //this.$message.success('付款成功！');
+            })
+          });
+
+        }
+        else{
+          alert("请重新选择支付方式");
+        }
+      },
     },
   }
 </script>

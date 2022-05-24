@@ -124,47 +124,12 @@
   #HandsomeWu > * {
     border: 0;
   }
-  /*.container2{*/
-  /*  ul {*/
-  /*    display: flex;*/
-  /*    flex-wrap: wrap;//默认不换行*/
-  /*    padding-bottom: 10px;*/
-  /*    padding-inline-start:0;*/
-  /*    margin-top: 0;*/
-  /*    li{*/
-  /*      width: 100%;*/
-  /*      margin:1% 4%;*/
-  /*      list-style: none;*/
-  /*      .container1-2 {*/
-  /*        width: 45%;*/
-  /*        float:left;*/
-  /*        margin-left: 1%;*/
-  /*        text-align: left;*/
-  /*        h2{*/
-  /*          margin-bottom: 1%;*/
-  /*          margin-top: 2%;*/
-  /*          margin-left: 4%;*/
-  /*        }*/
-  /*        p{*/
-  /*          margin-left: 3%;*/
-  /*          color: darkgray;*/
-  /*        }*/
-  /*        div{*/
-  /*          height: 140px;*/
-  /*          width: 101%;*/
-  /*          margin:1% 5% 0px 3%;*/
-  /*        }*/
-  /*      }*/
-  /*    }*/
-  /*  }*/
-  /*}*/
-
   .service{
     color: black;
     float: right;
-    width: 10%;
+    align:center;
     height: 36px;
-    margin-right: 3%;
+    margin-right: 4%;
     margin-bottom: 2%;
     background-color: orangered;
     border: 1px solid black;
@@ -305,8 +270,7 @@
     mounted() {
       this.init1();
       this.init2();
-      var acount = this.$route.query.acount;
-      this.acount = acount;
+      this.acount = sessionStorage.getItem("account");
     },
 
     methods:{
@@ -354,7 +318,7 @@
         })
           .then((response)=> {
             this.Orders=response.data.data.orderList;
-            // console.log( this.Orders);
+            console.log( this.Orders);
             let Ostmt2 = 0;//待处理
             let Ostmt3 = 0;//待备货
             let Ostmt4 = 0;//待发货
