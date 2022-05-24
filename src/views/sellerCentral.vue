@@ -144,6 +144,7 @@
   cursor:Pointer;
   border-radius: 10px;">售后处理</button>
           </span>
+
                 <div class="all" v-show="dialogVisible"></div>
                               <div class="post" v-show="dialogVisible">
                                 <div style="height:15%;border-bottom: 1px solid #eee;">

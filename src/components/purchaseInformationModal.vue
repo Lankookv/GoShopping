@@ -14,6 +14,7 @@
   <label class="chooseAddress">{{buyerAddress}} &nbsp;&nbsp; ({{buyerName}}&nbsp;收) &nbsp;&nbsp;{{buyerPhone}}</label>
   <span style="margin-left:10px">默认地址</span>
 </span>
+
         </li>
         <li v-for="(item) in isnDefaultArr" :key="index" style="list-style:none;">
     <span style="float: left;margin-left: 2%">
