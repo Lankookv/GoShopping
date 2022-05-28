@@ -59,7 +59,7 @@
 </template>
 
 <script>
-  import {showAllGoods,} from "../api";
+  import {showAllGoods,releasePost} from "../api";
   import { uploadImgToBase64 } from '../utils/utils'
 
   export default {
@@ -80,6 +80,7 @@
         fileForm:true,
         keyword:"",
         relatedGoods:[],
+        idLi:[],
         allGoods:[],
       };
     },
@@ -112,7 +113,7 @@
           var name = file.name;
           var fileName = name.substring(name.lastIndexOf(".")+1).toLowerCase();
           if(fileName !=="jpg" && fileName !=="jpeg" && fileName !=="png" && fileName !=="bmp"){
-            this.$message.error('图片格式不正确！请上传jpg、jpeg、png、bmp形式的图片');
+            this.$message.error('图片格式不正确！请上传jpg、jpeg、png、bmp形式的图片'+fileName);
             this.fileForm=false;
             return false;
           }
@@ -132,10 +133,10 @@
           releasePost({
             // Good:this.param,
             buyerId:parseInt(sessionStorage.getItem("buyerId")),
-            postName: _this.post.name,
+            name: _this.post.name,
             description: _this.post.description,
             img: this.SignBase64,
-            relatedGoods:this.relatedGoods,
+            idLi:this.idLi,
             contentType: "application/json",
           }).then((response) => {
             if (response.data.code === -1) {
@@ -162,6 +163,7 @@
       },
       change(good){
         this.relatedGoods.push(good);
+        this.idLi.push(good.goodId);
       }
     },
   };
