@@ -228,3 +228,6 @@ export const deleteAddress = params => { return axios.post(`${host}/buyer/delete
 //特色
 //发帖releasePost
 export const releasePost = params => { return axios.post(`${host}/platform/uploadForum`, params)};
+
+//升级包e
+export const getPrices = params => { return axios.post(`${host}/buyer/getPriceChangeByGoodId`, params)};

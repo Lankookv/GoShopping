@@ -176,16 +176,16 @@ export default {
   },
   methods: {
     init(){
-      //alert("userId:"+sessionStorage.getItem("userId")+"buyerId:"+sessionStorage.getItem("buyerId")+"isSeller:"+sessionStorage.getItem("isSeller"))
+      // alert("userId:"+sessionStorage.getItem("userId")+"buyerId:"+sessionStorage.getItem("buyerId")+"isSeller:"+sessionStorage.getItem("isSeller"))
       if(sessionStorage.getItem("userId")==null&&sessionStorage.getItem("buyerId")==null){
         this.isLogin=false;
       }else {
         this.isLogin=true;
       }
-      if(sessionStorage.getItem("isSeller")==="false"){
-        this.isSeller=false;
-      }else {
+      if(sessionStorage.getItem("isSeller")==="true"){
         this.isSeller=true;
+      }else {
+        this.isSeller=false;
       }
       getCartNumber({
         buyerId: parseInt(sessionStorage.getItem("buyerId")),
@@ -300,10 +300,7 @@ export default {
                   this.isSeller=true;
                   sessionStorage.setItem('userId', response.data.data);
                   sessionStorage.setItem('account', this.loginParam.account);
-                  this.$router.push({
-                    path: '/sellerCentral/',
-                    name: 'sellerCentral',
-                  });
+                  this.$router.push('/sellerCentral/');
                 }else {
                   sessionStorage.setItem('isSeller', false);
                   this.isSeller=false;

@@ -48,7 +48,9 @@
     </div>
     <div class="container3">
       <card></card>
+      <button style="width: 85%;margin-top: 20%;" @click="showModal3=!showModal3;">查看历史价格</button>
     </div>
+    <showPricesModal v-show="showModal3" v-on:closeme="closeme3" :goodId="good.good.goodId"></showPricesModal>
   </div>
 </template>
 
@@ -56,13 +58,16 @@
   import card from "../components/card";
   import {showGoodDetail, showCollectionState,collectGoods} from '../api';
   import addToCartInformation from "../components/addToCartInformationModal";
-  import purchaseInformation from "../components/purchaseInformationModal"
+  import purchaseInformation from "../components/purchaseInformationModal";
+  import showPricesModal from "../components/showPricesModal";
+
   export default {
     name: "goodDetails",
     components: {
       card,
       addToCartInformation,
-      purchaseInformation
+      purchaseInformation,
+      showPricesModal
     },
     data() {
       return {
@@ -73,6 +78,7 @@
         showModal1:false,
         showModal2:false,
         storage:0,
+        showModal3:false,
       }
     },
     created() {
@@ -149,6 +155,7 @@
         }
 
       },
+
       toBuy(){if(sessionStorage.getItem("buyerId") == null){
         this.$message.error("请先登录");
       }else {
@@ -157,20 +164,23 @@
         // alert(this.showModal2)
       }
       },
+
       tips(){
         this.$message("宝贝没有库存了哦")
       },
 
       closeme1(){
-        // alert(this.showModal1)
         this.showModal1=!this.showModal1;
-        // alert(this.showModal1)
       },
+
       closeme2(){
-        // alert(this.showModal2)
         this.showModal2=!this.showModal2;
-        // alert(this.showModal2)
-      }
+      },
+
+      closeme3(){
+        this.showModal3=!this.showModal3;
+      },
+
     }
   }
 </script>
