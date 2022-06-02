@@ -311,6 +311,7 @@
             let afterSaleOrders = [];
           })
       },
+
       init2(){
         showAllOrders({
           // sellerId:parseInt(sessionStorage.getItem("userId")),

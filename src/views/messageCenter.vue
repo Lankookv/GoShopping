@@ -224,6 +224,7 @@
     mounted() {
       this.init()
     },
+
     methods: {
       init() {
         showMessages({

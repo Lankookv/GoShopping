@@ -65,6 +65,7 @@
     mounted() {
       this.init()
     },
+
     methods: {
       init(){
         if(JSON.parse(sessionStorage.getItem("userId"))!=null){

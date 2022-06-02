@@ -100,6 +100,7 @@
             this.Posts = this.myPost.reverse();
           })
       },
+
       //单选
       chooseOne(post) {
         this.deleteFlag2 = !this.deleteFlag2;
