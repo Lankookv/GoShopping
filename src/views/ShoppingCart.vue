@@ -245,27 +245,36 @@
 
       //购物车收藏
       handleCollection() {
-        this.collectionDelConfirm().then(() => {
-          var i = 0;
-          this.allGoods = this.allGoods.filter((good) => {
-            if (good.checked === true) {
-              this.goodIdArr[i] = good.cartWithImg.cart.cartId;
-              i++;
-            }
-          })
-          collectGoodsFromCart({
-            cartIds: this.goodIdArr,
-            contentType: "application/json"
-          })
-            .then((response) =>{
-              if (response.data.data == true) {
-                this.$message.success('收藏成功');
-                this.init();
-              } else {
-                this.$message.error('收藏失败');
-              }
+        var i = 0;
+        let temporary = [];
+        temporary = this.allGoods;
+        temporary = temporary.forEach((good) => {
+          if (good.checked === true) {
+            this.goodIdArr[i] = good.cartWithImg.cart.cartId;
+            i++;
+          }
+        });
+        if (this.goodIdArr.length > 0) {
+          this.collectionDelConfirm().then(() => {
+            collectGoodsFromCart({
+              cartIds: this.goodIdArr,
+              contentType: "application/json"
             })
-        })
+              .then((response) => {
+                if (response.data.data == true) {
+                  this.$message.success('收藏成功');
+                  this.init();
+                } else {
+                  this.$message.error('收藏失败');
+                }
+              })
+          }).catch((err) => {
+            this.goodIdArr = [];
+          });
+        } else {
+          this.$message.warning("您还未选择要收藏的商品")
+          this.init();
+        }
       },
 
       //购物车结算

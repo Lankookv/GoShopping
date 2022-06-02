@@ -7,6 +7,7 @@
             <template slot="title"><i class="el-icon-message"></i>账号管理</template>
             <el-menu-item-group class="firstItems">
               <el-menu-item index="1-1" class="items" @click="toChangePassword">修改密码</el-menu-item>
+              <el-menu-item index="1-2" class="items" @click="toChangeInfo">修改信息</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
@@ -423,6 +424,9 @@
       },
       toBuyers(){
         this.$router.push({name:'CustomerInformation',})
+      },
+      toChangeInfo(){
+        this.$router.push({name:'editInformation',})
       },
       toStateOne(){
         this.$router.push({name:'StateOne',})

@@ -7,10 +7,10 @@
 <!--        <div style="padding: 40px;">-->
         <div>
           <marquee>欢迎来到安利广场~</marquee >
-<!--          <div class="bottom clearfix">-->
-<!--            <time class="time">{{ currentDate }}</time>-->
-<!--            <el-button type="text" class="button">操作按钮</el-button>-->
-<!--          </div>-->
+          <!--          <div class="bottom clearfix">-->
+          <!--            <time class="time">{{ currentDate }}</time>-->
+          <!--            <el-button type="text" class="button">操作按钮</el-button>-->
+          <!--          </div>-->
         </div>
       </el-card>
     </el-col>

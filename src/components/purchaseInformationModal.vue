@@ -209,7 +209,7 @@
           buyerId:parseInt(sessionStorage.getItem("buyerId")),
           goodId:this.myData.good.goodId,
           number:this.purchaseNumber,
-          phone:this.purchasebuyerPhoneg,
+          phone:this.purchasebuyerPhone,
           addressId:this.purchasebuyerAddressId,
           contentType: "application/json",
         }).then((response) => {

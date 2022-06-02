@@ -3,9 +3,9 @@ import axios from 'axios';    // 导入axios
 
 //let host = 'http://10.61.33.105:2887/api';//苇苇学校
 
-let host = 'http://192.168.12.23:2887/api';//苇苇寝室
+//let host = 'http://192.168.12.23:2887/api';//苇苇寝室
 // let host = 'http://192.168.193.40:2887/api';//苇苇热点
-// let host = 'http://10.61.180.170:2887/api';//杨柳学校
+let host = 'http://10.61.2.9:2887/api';//苇苇学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // let host = 'http://192.168.43.104:2887/api';//杨柳热点
 // let host = 'http://192.168.43.133:2887/api';//我热点
@@ -231,3 +231,30 @@ export const releasePost = params => { return axios.post(`${host}/platform/uploa
 
 //升级包e
 export const getPrices = params => { return axios.post(`${host}/buyer/getPriceChangeByGoodId`, params)};
+
+//查看自己的帖子
+export const showMyPosts = params => { return axios.post(`${host}/platform/getPostByBuyerId`, params)};
+
+//删除自己一个帖子
+export const deleteOnePost = params => { return axios.post(`${host}/platform/deletePost`, params)};
+
+//删除自己所有帖子
+export const deleteAllPost = params => { return axios.post(`${host}/platform/deletePosts`, params)};
+
+//升级包D 卖家修改信息
+export const editSellerInformation = params => { return axios.post(`${host}/seller/updateSellerInfo`, params)};
+
+//升级包D 获取卖家信息
+export const showSellerInfo = params => { return axios.post(`${host}/seller/getSellerInfo`, params)};
+
+//获取消息中心未读消息数量
+export const getMessageNumber = params => { return axios.post(`${host}/buyer/getChangeMessageNumber`, params)};
+
+//获取消息中心所有消息
+export const showMessages = params => { return axios.post(`${host}/buyer/getChangeMessage`, params)};
+
+//将一条消息设置为已读
+export const setOneRead = params => { return axios.post(`${host}/buyer/readMessage`, params)};
+
+//将所有消息设置为已读
+export const setAllRead = params => { return axios.post(`${host}/buyer/readMessages`, params)};

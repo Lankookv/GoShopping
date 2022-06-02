@@ -35,6 +35,10 @@ import payViewF from "../views/payViewF"
 import ReleasePosts from "../views/ReleasePosts"
 import sellerCentral from "../views/sellerCentral"
 
+//特色商城
+import myPosts from "../views/myPosts"
+import messageCenter from "../views/messageCenter"
+
 Vue.use(Router)
 
 export default new Router({
@@ -198,6 +202,21 @@ export default new Router({
       path: '/AdminAddress/',
       name: 'AdminAddress',
       component: AdminAddress,
+    },
+    {
+      path: '/myPosts/',
+      name: 'myPosts',
+      component: myPosts,
+    },
+    {
+      path: '/myPosts/',
+      name: 'myPosts',
+      component: myPosts,
+    },
+    {
+      path: '/messageCenter/',
+      name: 'messageCenter',
+      component: messageCenter,
     },
   ]
 })

@@ -22,6 +22,7 @@
             <template slot="title">订单管理</template>
             <el-menu-item index="2-3-1" @click="toBuyerViewOrders">查看历史下单记录</el-menu-item>
           </el-submenu>
+          <el-menu-item index="2-8" @click="toMyPosts">查看我的帖子</el-menu-item>
           <hr>
           <el-menu-item index="2-6" @click="buyerLogout">退出登录</el-menu-item>
         </el-submenu>
@@ -48,11 +49,29 @@
           <hr>
           <el-menu-item index="2-6" @click="sellerLogout">退出登录</el-menu-item>
         </el-submenu>
-        <img src="./icon/v.png" class="faces" height="50px">
-        <button class="cart" @click="tomyFavorites"><img src="../components/icon/首页收藏.png" style="height: 35px;margin-right: 20px"></button>
-        <button class="cart" @click="toShoppingCart"><img src="../components/icon/购物车1.png" style="height: 36px;margin-right: 10px">
-          <span style="position: absolute; top: 24%; right: 20.6%;color: white">{{this.sum}}</span>
-        </button>
+        <div style="width: 25%;float: right">
+          <div style="width: 18%;float: right">
+            <img src="./icon/v.png" class="faces" height="50px">
+          </div>
+          <div  style="width: 18%;float: right;margin-top: 3%">
+            <button class="cart" @click="tomyFavorites"><img src="../components/icon/首页收藏.png" style="height: 35px;">
+            </button>
+          </div>
+          <div  style="width: 18%;float: right;margin-top: 3%">
+            <button class="cart" @click="toShoppingCart">
+                <span style="color: white;float: left;margin-left: 4px;margin-top: 2px;position: absolute;z-index: 999">{{this.sum}} </span>
+                  <img src="../components/icon/购物车1.png" style="height: 35px;position: relative">
+            </button>
+          </div>
+          <div  style="width: 18%;float: right;margin-top: 3%">
+            <button class="cart" @click="toMessage">
+                 <span style="color: white;float: left;margin-left: 2px;margin-top: 3px;position: absolute;z-index: 999">{{this.messageSum}}</span>
+                  <img src="../components/icon/消息.png" style="height: 35px;position: relative">
+
+          </button>
+          </div>
+        </div>
+
       </div>
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'" style="padding: 30px 30px 10px 30px">
@@ -116,7 +135,7 @@
 </template>
 
 <script>
-import { login, register,getCartNumber } from '../api'
+import { login, register, getCartNumber, getMessageNumber } from '../api'
 
 export default {
   components: {
@@ -150,6 +169,7 @@ export default {
       two: true,
       showModal:false,
       sum:0,
+      messageSum:0,
       loginParam: {},
       registerParam: {authority:"2",},
       rules: {
@@ -172,11 +192,19 @@ export default {
     };
   },
   created () {
-    this.init();
+    this.init1();
+    this.init2();
+    setInterval(() => {
+      setTimeout(() => {
+        ///调取接口
+        this.init2();
+      }, 0);
+    }, 2000); //
   },
+
   methods: {
-    init(){
-      // alert("userId:"+sessionStorage.getItem("userId")+"buyerId:"+sessionStorage.getItem("buyerId")+"isSeller:"+sessionStorage.getItem("isSeller"))
+    init1(){
+      //alert("userId:"+sessionStorage.getItem("userId")+"buyerId:"+sessionStorage.getItem("buyerId")+"isSeller:"+sessionStorage.getItem("isSeller"))
       if(sessionStorage.getItem("userId")==null&&sessionStorage.getItem("buyerId")==null){
         this.isLogin=false;
       }else {
@@ -187,6 +215,9 @@ export default {
       }else {
         this.isSeller=false;
       }
+    },
+
+    init2(){
       getCartNumber({
         buyerId: parseInt(sessionStorage.getItem("buyerId")),
         contentType: "application/json"
@@ -194,7 +225,16 @@ export default {
         .then((response) =>{
           this.sum = response.data.data;
         })
+
+      getMessageNumber({
+        buyerId: parseInt(sessionStorage.getItem("buyerId")),
+        contentType: "application/json"
+      })
+        .then((response) =>{
+          this.messageSum = response.data.data;
+        })
     },
+
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -219,6 +259,21 @@ export default {
         }
       }
     },
+
+    toMessage(){
+      if(this.isLogin===false){
+        this.$message.error('请登录~');
+      }
+      else {
+        if(sessionStorage.getItem("buyerId")==null){
+          this.$message.error('请登录买家账号~');
+        }
+        else {
+          this.$router.push({name:'messageCenter',})
+        }
+      }
+    },
+
     tomyFavorites(){
       if(this.isLogin===false){
         this.$message.error('请登录~');
@@ -256,6 +311,10 @@ export default {
     toCustomerInformation(){
       this.$router.push({name:'CustomerInformation',})
     },
+    toMyPosts(){
+      this.$router.push({name:'myPosts',})
+    },
+
     Login(){
       this.two=true;
       sessionStorage.removeItem('buyerId');
@@ -315,6 +374,8 @@ export default {
                 this.isLogin=!this.isLogin;
                 this.$message.success('登录成功');
                 this.showModal=!this.showModal;
+                this.init2()
+                // location.reload();
               }
             })
         } else {
