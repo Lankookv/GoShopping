@@ -27,6 +27,7 @@
             <img :src="post.img[0].imagine" style="width: 25%;float: left;margin-left: 1%;margin-top: 1%;height: 200px">
             <div class="container2-3" style="float: left;width: 50%">
               <h2 style="text-align: left;margin-left: 5%">{{post.description}}</h2>
+              
               <h2 style="text-align: left;margin-top: 25%;margin-left: 5%;color:#696969">{{post.postDate.substring(0,10)+"    "+post.postDate.substring(11,16)}}</h2>
            </div>
           </div>
