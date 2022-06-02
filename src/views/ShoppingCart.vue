@@ -382,6 +382,7 @@
               margin-left: 3%;
               color: darkgray;
             }
+
             div{
               height: 140px;
               width: 101%;
