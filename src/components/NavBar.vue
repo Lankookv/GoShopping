@@ -53,7 +53,7 @@
           <div style="width: 18%;float: right">
             <img src="./icon/v.png" class="faces" height="50px">
           </div>
-          <div  style="width: 18%;float: right;margin-top: 3%">
+          <div  style="width: 18%;float: right;margin-top: 3%;margin-right: 1.5%">
             <button class="cart" @click="tomyFavorites"><img src="../components/icon/首页收藏.png" style="height: 35px;">
             </button>
           </div>

@@ -13,7 +13,7 @@
 
         <input type="checkbox" v-model='allChecked' @change='chooseAll'style="float:left;width:15px;height: 15px;margin-left: 4.5%">
         <span style="float: left"><b>全选</b></span>
-        <span style="padding-left: 51%"><button style="width: 7.5%;height: 40px;background-color: #F88E4E;border-style: solid;border-radius: 5px" @click="handleDeleteAllPosts">全部删除</button></span>
+        <span style="padding-left: 51%"><button style="width: 8%;height: 40px;background-color: #F88E4E;border-style: solid;border-radius: 5px" @click="handleDeleteAllPosts">全部删除</button></span>
       </div>
       <div v-if="myPost.length===0">
         <center>

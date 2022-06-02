@@ -9,7 +9,7 @@
       <div>
         <input type="checkbox" v-model='allChecked' @change='chooseAll'style="float:left;width:15px;height: 15px;margin-left: 4.5%">
         <span style="float: left"><b>全选</b></span>
-        <span style="padding-left: 60%"><button style="width: 10%;height: 40px;background-color: #85d0e4;border-style: solid;border-radius: 3px;border-color: black" @click="handleSetAllMessageRead">全部设为已读</button></span>
+        <span style="padding-left: 60%"><button style="width: 12%;height: 40px;background-color: #85d0e4;border-style: solid;border-radius: 3px;border-color: black" @click="handleSetAllMessageRead">全部设为已读</button></span>
       </div>
       <div v-if="myPost.length===0">
         <center>
@@ -45,7 +45,7 @@
               </div>
             </div>
             <span v-if="message.readOrNot===0" class="container2-3" style="color: black;font-size: 40px;margin-top: 0%;margin-right: 3%">
-                <button  @click.stop @click="handleReadOneMessage(message.messageId)" style="width: 8%;height: 30px;background-color: #85d0e4;border-style: solid;border-radius: 3px">设为已读</button>
+                <button  @click.stop @click="handleReadOneMessage(message.messageId)" style="width: 10%;height: 30px;background-color: #85d0e4;border-style: solid;border-radius: 3px">设为已读</button>
             </span>
           </router-link>
         </ul>

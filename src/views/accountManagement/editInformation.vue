@@ -14,7 +14,7 @@
         </el-form-item>
         <el-form-item style="margin-right: 140px;">
           <el-button type="primary" @click="onSubmit('form')">修改</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="toMycenter">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -83,7 +83,9 @@
         }
 
       },
-
+      toMycenter(){
+        this.$router.push('sellerCentral');
+      },
       onSubmit(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -97,7 +99,7 @@
               .then((response) => {
                 if(response.data.code !== -1){
                   this.$message.success('修改成功！');
-                  // this.$router.push('sellerCentral');
+                  this.$router.push('sellerCentral');
                   this.init()
                 }else {
                   this.$message.error('修改失败！');

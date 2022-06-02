@@ -2,7 +2,8 @@
   <div class="modal-backdrop">
     <div class="modal" >
       <div class="modal-header"><h2 style="margin-top: 0;margin-bottom: 0;" >商品历史价格</h2></div>
-      <div class="modal-body" id="main" style="width: 94%;height: 300px;">
+      <div class="modal-body" style="width:auto;min-width:650px;height: 300px;">
+        <div id="main" style="width: 600px;height: 300px;"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-confirm" @click="closeSelf">确认</button>
@@ -46,7 +47,7 @@
             data: ['历史价格']
           },
           grid: {
-            left: '5%',
+            left: '4%',
             right: '10%',
             bottom: '3%',
             containLabel: true
@@ -77,7 +78,7 @@
         })
       },
       showPrices(){
-        let that=this;
+        // let that=this;
         getPrices({
           goodId:this.$route.params.bid,
           contentType: "application/json"
@@ -91,7 +92,7 @@
             }
             this.opinionDataF=opinionDataF;
             this.opinionData=opinionData;
-            that.charts.setOption({
+            this.charts.setOption({
               xAxis: {
                 data: opinionDataF
               },
