@@ -52,9 +52,8 @@
         <img src="./icon/v.png" class="faces" height="50px">
         <button class="cart" @click="tomyFavorites"><img src="../components/icon/首页收藏.png" style="height: 35px;margin-right: 20px"></button>
         <button class="cart" @click="toShoppingCart"><img src="../components/icon/购物车1.png" style="height: 36px;margin-right: 10px">
-          <span style="position: absolute; top: 25%; right: 17.1%;color: white">{{this.sum}}</span>
+          <span style="position: absolute; top: 15px; right: 232px;color: white">{{this.sum}}</span>
         </button>
-
       </div>
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'" style="padding: 30px 30px 10px 30px">

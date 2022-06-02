@@ -15,16 +15,15 @@
           <span style="text-align: center">暂无任何商品哦 /(ㄒoㄒ)/~~</span>
         </div>
       </div>
-      <ul    :loading="loadings.table" >
-        <li class="container_1" v-for="(good,index) in allGoods"
-                     @click="shoppingCart(good.cartWithImg.cart.goodId)" :key="index" >
+      <ul    :loading="loadings.table" id="allGoods">
+        <router-link class="container_1" v-for="(good,index) in allGoods" :to="{name:'GoodDetails',params:{bid:good.cartWithImg.cart.goodId}}" :key="index" tag="li">
           <input type="checkbox" v-model='good.checked' @click.stop @change='chooseOne(good)' style="float:left;width:15px;height: 15px;margin-top: 8%"></input>
           <img :src="good.cartWithImg.goodImagine.imagine" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="overflow:hidden;width: 35%">
-            <h2 style="float:left"><b>{{good.cartWithImg.cart.goodName}}</b></h2>
-            <small  style="font-size:13px;white-space: pre-line;float: left;margin-top: 1%;margin-left: 4%" v-html="good.cartWithImg.cart.description"></small>
-<!--            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;float: left">-->
-<!--            </div>-->
+            <h2><b>{{good.cartWithImg.cart.goodName}}</b></h2>
+            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
+              <small v-html="good.cartWithImg.cart.description"></small>
+            </div>
           </div>
           <div class="box">
             <button class="minus" style="margin-left: 7%" @click.stop @click="minus(good.cartWithImg.cart.number,good)">
@@ -39,7 +38,7 @@
             <h1 style="color: black;font-size: 40px;margin-top: 7%;margin-right: 5%;float: right"><b>￥{{good.cartWithImg.cart.goodPrice}}</b></h1>
           </span>
 
-        </li>
+        </router-link>
       </ul>
       <div class="footer">
         <div class="container1-1">
@@ -50,7 +49,7 @@
         <button id="buyGoods" @click="BuyGoods()">结算</button>
           <ShoppingCartModal @click.stop v-show="showModal" v-on:closeme="closeme" :intentionList="intentionList":goodList="goodList":Sum="Sum":Num="Num"></ShoppingCartModal>
         <button id="collectGoods" @click="handleCollection">收藏</button>
-        <p style="float: right;margin-top: 1.8%;margin-right: 2%">合计:￥{{this.sum}}</p>
+        <p style="float: right;margin-top: 1.8%;margin-right: 2%">合计:￥{{this.sum.toFixed(2)}}</p>
           <p style="float: right;margin-top: 1.8%;margin-right: 2%">已选中{{this.num}}件</p>
         </div>
         <div v-else>
@@ -132,13 +131,13 @@
       choosetrue(good){
         good.checked = true;
         // console.log(good.cartWithImg.cart.goodId);
-          this.sum += good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice;
+        this.sum = this.sum + good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice ;
         this.num += 1;
       },
 
       choosefalse(good){
         good.checked=false;
-          this.sum -= good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice;
+        this.sum = this.sum - good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice ;
         this.num -= 1;
       },
       chooseOne(good) {
@@ -158,6 +157,7 @@
               this.num += 1;
           }else{
             this.sum=0;
+            this.num=0;
           }
         })
           .then((response) => {
@@ -369,7 +369,7 @@
           margin:1% 4%;
           list-style: none;
           .container1-2 {
-            width: 55%;
+            width: 50%;
             float:left;
             margin-left: 1%;
             text-align: left;
@@ -378,14 +378,14 @@
               margin-top: 2%;
               margin-left: 4%;
             }
-            /*p{*/
-            /*  margin-left: 3%;*/
-            /*  color: darkgray;*/
-            /*}*/
+            p{
+              margin-left: 3%;
+              color: darkgray;
+            }
             div{
               height: 140px;
-              width: 100%;
-              margin:1% 5% 0px 3%;
+              width: 101%;
+              margin:1% 0% 0px 3%;
             }
           }
         }

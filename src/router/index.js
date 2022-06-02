@@ -14,6 +14,8 @@ import nothing from "../views/nothing";
 import editInformation from "../views/accountManagement/editInformation"
 import AdminAddress from "../views/accountManagement/AdminAddress"
 import sellerCentral from "../views/sellerCentral";
+import showSquare from "../views/showSquare";
+import postDetails from "../views/postDetails";
 
 //升级包B
 import StateOne from "../views/orderManagement/StateOne"
@@ -180,6 +182,16 @@ export default new Router({
       path: '/sellerCentral/',
       name: 'sellerCentral',
       component: sellerCentral,
+    },
+    {
+      path: '/showSquare/',
+      name: 'showsquare',
+      component: showSquare,
+    },
+    {
+      path: '/postDetails/:post',//帖子id
+      name: 'postDetails',
+      component: postDetails,
     },
   ]
 })

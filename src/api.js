@@ -1,14 +1,14 @@
 // src\api\api.js
 import axios from 'axios';    // 导入axios
 
-//let host = 'http://10.61.231.94:2887/api';//苇苇学校
-//let host = 'http://192.168.12.23:2887/api';//苇苇寝室
-//let host = 'http://10.61.2.9:2887/api';//苇苇热点
+//let host = 'http://10.61.2.9:2887/api';//苇苇学校
+let host = 'http://192.168.12.23:2887/api';//苇苇寝室
+//let host = 'http://192.168.193.40:2887/api';//苇苇热点
 // let host = 'http://10.61.180.170:2887/api';//杨柳学校
 // // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // let host = 'http://192.168.43.104:2887/api';//杨柳热点
 // // let host = 'http://192.168.43.104:2887/api';//我热点
-let host = "http://121.40.97.124:2887/api";//云端
+//let host = "http://121.40.97.124:2887/api";//云端
 // let host = "http://localhost:2888/api";
 
 // 登录
@@ -193,3 +193,12 @@ export const agreePost = params => { return axios.post(`${host}/seller/agreePost
 
 //卖家拒绝售后
 export const notagreePost = params => { return axios.post(`${host}/seller/notAgreePostSale`, params)};
+
+//拿取所有帖子
+export const getAllPosts = params => { return axios.post(`${host}/platform/getAllPosts`, params)};
+
+//拿帖子内容
+export const getPostDetail = params => { return axios.post(`${host}/platform/getPostDetail`, params)};
+
+//修改价格
+export const changePrice = params => { return axios.post(`${host}/seller/changePrice`, params)};

@@ -381,6 +381,6 @@
     float: right;
     position: absolute;
     right: 0;
-  }
+   }
   }
 </style>
