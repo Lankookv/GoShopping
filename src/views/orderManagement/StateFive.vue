@@ -51,6 +51,7 @@
                   <img src="../../components/icon/关闭.png" class="iconfont" @click="dialogVisible=!dialogVisible" style="margin-right: 3%;margin-top: 3%">
                 </div>
                 <div>
+
 <!--                  <div style="float:right">-->
                     <img class="agree" src="../../components/icon/已同意.png" v-if="post.stmt == 2">
                     <img class="agree" src="../../components/icon/已拒绝.png" v-if="post.stmt == 3">

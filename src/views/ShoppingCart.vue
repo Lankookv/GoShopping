@@ -400,6 +400,7 @@
       }
     }
   }
+
   #collectGoods,#buyGoods,#delete{
     color: white;
     float: right;

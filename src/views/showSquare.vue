@@ -31,7 +31,6 @@
            </div>
           </div>
         </router-link>
-
       </ul>
     </div>
   </div>
