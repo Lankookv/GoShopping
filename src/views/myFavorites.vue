@@ -60,7 +60,8 @@
       return {
         total: 0,
         page: 1,
-        a:{},
+        a: {},
+        flag: 0,
         loadings: {
           table: true,
         },
@@ -72,11 +73,13 @@
         limit: 2,
         routeName: '',
         allChecked: false,
-        goodIdArr:[],
+        goodIdArr: [],
         query: {
           keywords: '',
           page: 1,
         },
+        deleteFlag2: false,
+        deleteFlag1: false,
       }
     },
     mounted() {
@@ -85,7 +88,7 @@
     methods: {
       init() {
         showCollection({
-          buyerId:parseInt(sessionStorage.getItem("buyerId")),
+          buyerId: parseInt(sessionStorage.getItem("buyerId")),
           contentType: "application/json",
         })
           .then((response) => {
@@ -95,14 +98,29 @@
       },
       //单选
       chooseOne(good) {
-        good.checked = true;
-        // alert(good.favoriteGood.favoriteId);
+        this.deleteFlag2 = !this.deleteFlag2;
+        if (this.deleteFlag2 === true) {
+          good.checked = true;
+        } else {
+          good.checked = false;
+        }
       },
+
+
       //全选
       chooseAll() {
-        this.allGoods.forEach((good) => {
-          good.checked = this.allChecked;
-        })
+        let all1 = [];
+        all1 = this.allGoods;
+        this.deleteFlag1 = !this.deleteFlag1;
+        if (this.deleteFlag1 === true) {
+          all1.forEach((good) => {
+            good.checked = true;
+          })
+        } else {
+          all1.forEach((good) => {
+            good.checked = false;
+          })
+        }
       },
 
       //删除提示
@@ -115,37 +133,46 @@
       },
 
       handleDelete() {
-        this.openDelConfirm().then(() => {
-          var i = 0;
-          this.allGoods = this.allGoods.filter((good) => {
-            if (good.checked === true) {
-              this.goodIdArr[i] = good.favoriteGood.favoriteId;
-              i++;
-            }
-          })
-          deleteCollectedGoods({
-            favoriteIds:this.goodIdArr,
-            contentType: "application/json"
-          })
-            .then((response) =>{
-              // alert("给后端了");
-              if (response.data.data == true) {
-                this.$message.success('取消收藏成功');
-                this.init();
-              } else {
-                this.$message.error('取消收藏失败');
-              }
+        var i = 0;
+        let temporary = [];
+        temporary = this.allGoods;
+        temporary = temporary.forEach((good) => {
+          if (good.checked === true) {
+            this.goodIdArr[i] = good.favoriteGood.favoriteId;
+            i++;
+          }
+        });
+        if (this.goodIdArr.length > 0) {
+          this.openDelConfirm().then(() => {
+            deleteCollectedGoods({
+              favoriteIds: this.goodIdArr,
+              contentType: "application/json"
             })
-        })
-      },
-      // watch: {
-      //   '$route'(newVal, oldVal) {
-      //     if (newVal !== oldVal) {
-      //       this.init(true)
-      //     }
-      //   }
-      // },
+              .then((response) => {
+                // alert("给后端了");
+                if (response.data.data == true) {
+                  this.$message.success('取消收藏成功');
+                  this.init();
+                } else {
+                  this.$message.error('取消收藏失败');
+                }
+              })
+          }).catch((err) => {
+            this.goodIdArr = [];
+          });
+        } else {
+          this.$message.warning("您还未选择要取消收藏的商品")
+          this.init()
+        }
+      }
     }
+    // watch: {
+    //   '$route'(newVal, oldVal) {
+    //     if (newVal !== oldVal) {
+    //       this.init(true)
+    //     }
+    //   }
+    // },
   }
 </script>
 

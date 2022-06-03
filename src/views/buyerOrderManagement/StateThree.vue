@@ -21,7 +21,7 @@
       <el-row :gutter="30">
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateOne">待支付</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateTwo">待发货</div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;">已发货</div></el-col>
+        <el-col :span="4"><div class="grid-content bg-purple-dark" style="font-size: 20px;line-height: 36px;">已发货<span style="display:inline-block;background: red;width: 26px;height: 26px;border-radius: 13px;margin-left: 5px;font-size: 15px;">{{allOrder.length}}</span></div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateFour">交易完成</div></el-col>
         <el-col :span="4"><div class="grid-content bg-purple" style="font-size: 20px;line-height: 36px;" @click="toStateFive">交易失败</div></el-col>
       </el-row>
@@ -50,7 +50,6 @@
         <li class="container_1" v-for="(order,index) in allOrder" :key="index">
           <div style="background-color:rgb(246, 121, 46);height: 50px;border-bottom: 1px solid black;">
             <span style="font-size: 30px;line-height: 50px;float:left;margin-left: 20px">{{order[0].startDate.substring(0,10)+"   "+order[0].startDate.substring(11,16)}}</span>
-            <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;">详细信息</button>
             <el-button class="button2" type="text" @click="buyerConfirmReceipt(order[0].orderId)"><span style="color: black;">确认收货</span></el-button>
             <button class="button1" @click="trackingInformation(order[0].trackingNumber)"><span style="line-height: 40px;">查看物流单号</span></button>
           </div>
@@ -118,23 +117,28 @@
         })
           .then((response)=> {
             this.allOrders=response.data.data.orderList;
-            let n=0;
-            let type0=this.allOrders[0].newOrderId;
-            let allOrder0=[[]];
-            allOrder0[n]=[];
-            this.allOrders.forEach(function (item) {
-              // alert("item.type："+item.type);
-              // alert("type0："+type0);
-              if (!(item.newOrderId===type0)){
-                n++;
-                allOrder0[n]=[];
-              }
-              allOrder0[n].push(item);
-              type0=item.newOrderId;
-            });
-            this.k=n;
-            this.type=type0;
-            this.allOrder=allOrder0;
+            if(this.allOrders.length==0){
+              this.allOrder=[];
+            }
+            else {
+              let n=0;
+              let type0=this.allOrders[0].newOrderId;
+              let allOrder0=[[]];
+              allOrder0[n]=[];
+              this.allOrders.forEach(function (item) {
+                // alert("item.type："+item.type);
+                // alert("type0："+type0);
+                if (!(item.newOrderId===type0)){
+                  n++;
+                  allOrder0[n]=[];
+                }
+                allOrder0[n].push(item);
+                type0=item.newOrderId;
+              });
+              this.k=n;
+              this.type=type0;
+              this.allOrder=allOrder0;
+            }
           })
       },
       toGoodDetail(orderId){

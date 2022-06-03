@@ -1,7 +1,8 @@
 <template>
   <div style="white-space: nowrap;">
     <div>
-      <carousel></carousel>
+      <carousel style="float:left;width: 80%;"></carousel>
+      <card2 style="float:right;width: 12%;margin-right: 3%;margin-top: 2%;cursor: pointer;" @click="toPosts"></card2>
       <div class="search">
         <input type="text" class="input-search" v-model="keyword" id="searchTxt" ref="searchTxt" placeholder="bts周边" filterable  value="">
         <img src="../components/icon/搜索.png" class="iconfont" @click="search">
@@ -42,6 +43,7 @@
 
 <script>
   import carousel from "../components/carousel";
+  import card2 from "../components/card2";
   import goodsType from "../components/goodsType";
   import banner from "../components/banner";
   import {showAllGoods,search} from '../api';
@@ -50,8 +52,9 @@
     name: "home",
     components: {
       carousel,
+      card2,
       goodsType,
-      banner
+      banner,
     },
     data() {
       return {
@@ -79,6 +82,9 @@
           this.allGoods=response.data.data.goodlist;
         })
       },
+      toPosts(){
+
+      }
     },
   }
 </script>

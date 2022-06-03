@@ -11,14 +11,15 @@
         <li class="address" style="list-style:none; font-weight: bold">
 <span style="float: left;margin-left: 2%">
   <input type="radio" name="address" value="address" id="defaultaddress" checked="checked" @click="getValue()" ></input>
-  <label for="defaultaddress" class="chooseAddress">{{buyerAddress}} &nbsp;&nbsp; ({{buyerName}}&nbsp;收) &nbsp;&nbsp;{{buyerPhone}}</label>
+  <label class="chooseAddress">{{buyerAddress}} &nbsp;&nbsp; ({{buyerName}}&nbsp;收) &nbsp;&nbsp;{{buyerPhone}}</label>
   <span style="margin-left:10px">默认地址</span>
 </span>
+
         </li>
         <li v-for="(item) in isnDefaultArr" :key="index" style="list-style:none;">
     <span style="float: left;margin-left: 2%">
-      <input type="radio" v-model='item.checked' name="address" value="address"  id="address" @click="getValue(item)" ></input>
-      <label for="address" class="chooseAddress"> {{item.buyerAddress}} &nbsp;&nbsp; ({{item.buyerName}}&nbsp;收) &nbsp;&nbsp; {{item.buyerPhone}}</label>
+      <input type="radio" v-model='item.checked' name="address" value="address"  :id="index" @click="getValue(item)" ></input>
+      <label :for="index" class="chooseAddress"> {{item.buyerAddress}} &nbsp;&nbsp; ({{item.buyerName}}&nbsp;收) &nbsp;&nbsp; {{item.buyerPhone}}</label>
     </span>
         </li>
         <div class="modal-body">
@@ -54,14 +55,22 @@
                 <span>{{total}}</span>
             </el-table-column>
           </el-table>
-          <div class="modal-footer">
-            <el-button class="model-footer-order" @click="closeSelf()" style="color: deepskyblue;background-color: white;float: right;width: 15%;height: 36px;margin-right: 4%;margin-top: 1.8%;border: 1px solid black;cursor:Pointer;border-radius: 10px;">
-              取消
-            </el-button>
-            <el-button class="model-footer-order" @click="handlePurchase()" style="color: white;background-color: #F88E4E;float: right;width: 15%;height: 36px;margin-right: 4%;margin-top: 1.8%;border: 1px solid black;cursor:Pointer;border-radius: 10px;">
-              下单
-            </el-button>
-          </div>
+        </div>
+        <div class="modal-header">
+          <h4 style="margin-top: 0;margin-bottom: 0;">支付方式</h4>
+        </div>
+        <div class="modal-body">
+          <input type="radio" name="radios" value="1" v-model="myVal"/><label>支付宝支付</label>
+          <br>
+          <input type="radio" name="radios" value="2" v-model="myVal"><label>银行卡支付</label>
+        </div>
+        <div class="modal-footer">
+          <el-button class="model-footer-order" @click="closeSelf()" style="color: deepskyblue;background-color: white;float: right;width: 15%;height: 36px;margin-right: 4%;margin-top: 1.8%;border: 1px solid black;cursor:Pointer;border-radius: 10px;">
+            取消
+          </el-button>
+          <el-button class="model-footer-order" @click="handlePurchase()" style="color: white;background-color: #F88E4E;float: right;width: 15%;height: 36px;margin-right: 4%;margin-top: 1.8%;border: 1px solid black;cursor:Pointer;border-radius: 10px;">
+            下单
+          </el-button>
         </div>
       </div>
     </div>
@@ -69,7 +78,8 @@
 </template>
 
 <script>
-  import {showGoodDetail,showAddress,purchaseInfo} from '../api';
+  import {showGoodDetail, showAddress, purchaseInfo, payAnOrder, finishOrder, payAnOrderByCard} from '../api';
+  import axios from "axios";
 
   export default {
     name: 'addToCartInformation',
@@ -87,11 +97,11 @@
     },
     data() {
       return {
-        a:{},
         addToCartList:[],
         tableData: [],
         myAddressData:[],
         isnDefaultArr:[],
+        name:"",
         price:0,
         total:0,
         totleNum: 0,
@@ -105,6 +115,9 @@
         purchasebuyerPhone:'',
         purchasebuyerAddress:'',
         purchasebuyerAddressId:'',
+        orderId:0,
+        a:{},
+        myVal:"1",
       }
     },
     created() {
@@ -112,12 +125,12 @@
       this.getAddress();
     },
     mounted() {
-      // alert("b")
     },
+
     methods: {
       getGoodDetail(){
         showGoodDetail({
-          goodId:JSON.stringify(this.$route.params.bid),
+          goodId:this.goodId,
           contentType: "application/json"
         })
           .then((response)=> {
@@ -126,6 +139,7 @@
             this.addToCartList=[response.data.data];
             this.myData = response.data.data;
             this.price = this.myData.good.goodPrice;
+            this.name=this.myData.good.goodName;
             this.addToCartList.forEach((item, index) => {
               this.$set(item, 'num', index+1)  // 这是新添加得属性，后期如果要修改一定要使用this.$set添加；
               // this.$set(item,'total',this.price)
@@ -198,22 +212,74 @@
           phone:this.purchasebuyerPhone,
           addressId:this.purchasebuyerAddressId,
           contentType: "application/json",
+        }).then((response) => {
+          // alert("给后端了");
+          if(response.data.code == -1){
+            this.$message.error("下单失败");
+          }else{
+            this.$message.success("下单成功");
+            this.orderId=response.data.data;
+            this.closeSelf();
+            this.getGoodDetail();
+            this.$confirm('即将跳转支付页面...','提示',{
+              confirmButtonText:'确定',
+              ancelButtonText:'取消',
+              type:"warning"
+            }).then(()=> {
+              this.payOrders();
+            })
+          }
         })
-          .then((response) => {
-            // alert("给后端了");
-            console.log(response);
-            if(response.data.code == -1){
-              this.$message.error("下单失败");
-            }else{
-              this.$message.success("下单成功");
-              this.closeSelf();
-              this.getGoodDetail()
-            }
+      },
+
+      payOrders(){
+        sessionStorage.setItem('goodId', this.$route.params.bid);
+        sessionStorage.setItem('payWay', 1);
+        sessionStorage.setItem('orderId', this.orderId);
+        if(this.myVal==="1"){
+          payAnOrder({
+            amount:parseInt(this.total),
+            id:this.orderId,
+            info:this.name,
+            contentType: "application/json",
+          }).then((response) => {
+            this.a=response;
+            const div = document.createElement('divPay');
+            div.innerHTML = response.data.data;
+            document.body.appendChild(div);
+            document.forms[1].submit();
           })
+        }
+        else if(this.myVal==="2"){
+          axios.get(`http://192.168.43.104:2887/api/buyer/unionPay?txnAmt=`+this.total*100).then((response) => {
+          // payAnOrderByCard({
+          //   contentType: "application/json",
+          // }).then((response) => {
+
+          //   this.a=response;
+            const div = document.createElement('div');
+            div.innerHTML = response.data;
+            document.body.appendChild(div);
+            document.forms[1].submit();
+
+            finishOrder({
+              buyerId: parseInt(sessionStorage.getItem("buyerId")),
+              orderId:parseInt(this.orderId),
+              contentType: "application/json",
+            }).then((response) => {
+              //this.$message.success('付款成功！');
+            })
+
+          })
+        }
+        else{
+          alert("请重新选择支付方式");
+        }
       },
 
       getValue(item){
         this.purchasebuyerName = item.buyerName;
+        alert(this.purchasebuyerName)
         this.purchasebuyerPhone = item.buyerPhone;
         this.purchasebuyerAddress = item.buyerAddress;
         this.purchasebuyerAddressId = item.addressId;
@@ -254,6 +320,7 @@
     height:auto;
     min-height:300px;
     max-height:400px;
+    z-index: 90;
   }
   .modal-header {
     border-bottom: 1px solid #eee;

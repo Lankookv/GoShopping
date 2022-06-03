@@ -4,17 +4,17 @@
     <div style="width: 60%; margin-top: 10px;margin-left: 20%;">
       <el-form ref="form" :model="form" label-width="140px" class="form" :rules="rules">
         <el-form-item prop="name" label="姓名：">
-          <el-input type="text" v-model="form.name"></el-input>
+          <el-input type="text" v-model="form.name" ></el-input>
         </el-form-item>
         <el-form-item prop="phone" label="电话号码：">
           <el-input type="text" v-model="form.phone"></el-input>
         </el-form-item>
-        <el-form-item prop="address" label="默认地址：" >
-          <el-input type="textarea" v-model="form.address"></el-input>
+        <el-form-item prop="location" label="交易地址：" >
+          <el-input type="textarea" v-model="form.location"></el-input>
         </el-form-item>
         <el-form-item style="margin-right: 140px;">
           <el-button type="primary" @click="onSubmit('form')">修改</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="toMycenter">返回</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -23,7 +23,7 @@
 
 <script>
 
-  import {editInformation} from "../../api";
+  import {editSellerInformation,showSellerInfo} from "../../api";
 
   export default {
     data:function() {
@@ -42,40 +42,65 @@
         form: {
           name:'',
           phone:'',
-          address:''
+          location:''
         },
         rules: {
           name: [
-            { required: true, message: '请输入名字',trigger: 'blur'},
+            {required: true, trigger: 'blur'},
             {min: 3, max: 15, message: '请输入3-15位字符', trigger: 'blur'}
           ],
           phone: [
-            { required: true, message: '请输入电话号码',trigger: 'blur'},
+            { required: true, trigger: 'blur'},
             {validator: phoneCheck, trigger: 'blur',}
           ],
           address: [
             { required: true, message: '请输入地址',trigger: 'blur'},
             {trigger: 'blur'}
           ]
-        }
+        },
+        sellerInfo:[],
       }
 
     },
+    mounted() {
+      this.init()
+    },
+
     methods: {
+      init(){
+        if(JSON.parse(sessionStorage.getItem("userId"))!=null){
+          showSellerInfo({
+            sellerId:parseInt(sessionStorage.getItem("userId")),
+            contentType: "application/json"
+          })
+            .then((response) => {
+              this.sellerInfo=response.data.data;
+              console.log(this.sellerInfo);
+              this.$set(this.form, 'name',this.sellerInfo.name);
+              this.$set(this.form, 'phone',this.sellerInfo.phone);
+              this.$set(this.form, 'location',this.sellerInfo.location);
+            })
+        }
+
+      },
+      toMycenter(){
+        this.$router.push('sellerCentral');
+      },
       onSubmit(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            editInformation({
-              buyerId:parseInt(sessionStorage.getItem("buyerId")),
-              buyerName:this.form.name,
-              buyerPhone:this.form.phone,
-              buyerLocation:this.form.address,
+            editSellerInformation({
+              sellerId:parseInt(sessionStorage.getItem("userId")),
+              name:this.form.name,
+              phone:this.form.phone,
+              location:this.form.location,
               contentType: "application/json"
             })
               .then((response) => {
                 if(response.data.code !== -1){
                   this.$message.success('修改成功！');
-                  this.$router.push('/');
+                  this.$router.push('sellerCentral');
+                  this.init()
                 }else {
                   this.$message.error('修改失败！');
                 }

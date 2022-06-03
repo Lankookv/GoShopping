@@ -48,7 +48,9 @@
     </div>
     <div class="container3">
       <card></card>
+      <button style="width: 85%;margin-top: 20%;" @click="showModal3=!showModal3;">查看历史价格</button>
     </div>
+    <showPricesModal v-show="showModal3" v-on:closeme="closeme3" :goodId="good.good.goodId"></showPricesModal>
   </div>
 </template>
 
@@ -56,24 +58,27 @@
   import card from "../components/card";
   import {showGoodDetail, showCollectionState,collectGoods} from '../api';
   import addToCartInformation from "../components/addToCartInformationModal";
-  import purchaseInformation from "../components/purchaseInformationModal"
+  import purchaseInformation from "../components/purchaseInformationModal";
+  import showPricesModal from "../components/showPricesModal";
+
   export default {
     name: "goodDetails",
     components: {
       card,
       addToCartInformation,
-      purchaseInformation
+      purchaseInformation,
+      showPricesModal
     },
     data() {
       return {
         good:{},
         collectionState:0,
-        a:{},
         b:{},
         isCollected:false,
         showModal1:false,
         showModal2:false,
         storage:0,
+        showModal3:false,
       }
     },
     created() {
@@ -101,7 +106,7 @@
         // alert(this.$route.params.bid);
         showCollectionState({
           buyerId:parseInt(sessionStorage.getItem("buyerId")),
-          goodId:parseInt(this.$route.params.bid),
+          goodId:this.goodId,
         }).then((response)=> {
           // this.a = response.data;
           if(response.data.data == true){
@@ -116,26 +121,10 @@
 
       Collect(goodsId){
         if(sessionStorage.getItem("buyerId") == null){
-          this.$message.error("请登录或登录买家账号");
+          this.$message.error("请先登录");
         }else{
           if(this.collectionState == 1){
-            collectGoods({
-              buyerId:parseInt(sessionStorage.getItem("buyerId")),
-              goodId:parseInt(goodsId),
-              contentType: "application/json"
-            }).then((response)=> {
-              // alert(response.data.data);
-              if(response.data.data == "already"){
-                this.b = response.data.data;
-                // console.log(this.b);
-                this.$message.success('取消收藏成功！');
-                this.collectionState = 0;
-              }else{
-                // this.a = response.data.code;
-                this.$message.error('取消收藏失败！');
-                this.collectionState = 1;
-              }
-            })
+            alert(this.collectionState+"您已收藏该商品");
           }else{
             collectGoods({
               buyerId:parseInt(sessionStorage.getItem("buyerId")),
@@ -145,7 +134,7 @@
               // alert(response.data.data);
               if(response.data.data == "successful"){
                 this.b = response.data.data;
-                // console.log(this.b);
+                console.log(this.b);
                 this.$message.success('收藏成功！');
                 this.collectionState = 1;
               }else{
@@ -160,34 +149,38 @@
 
       addToCart(){
         if(sessionStorage.getItem("buyerId") == null){
-          this.$message.error("请登录或登录买家账号");
+          this.$message.error("请先登录");
         }else{
           this.showModal1=!this.showModal1;
         }
 
       },
+
       toBuy(){if(sessionStorage.getItem("buyerId") == null){
-        this.$message.error("请登录或登录买家账号");
+        this.$message.error("请先登录");
       }else {
         // alert(this.showModal2)
         this.showModal2 = !this.showModal2;
         // alert(this.showModal2)
       }
       },
+
       tips(){
         this.$message("宝贝没有库存了哦")
       },
 
       closeme1(){
-        // alert(this.showModal1)
         this.showModal1=!this.showModal1;
-        // alert(this.showModal1)
       },
+
       closeme2(){
-        // alert(this.showModal2)
         this.showModal2=!this.showModal2;
-        // alert(this.showModal2)
-      }
+      },
+
+      closeme3(){
+        this.showModal3=!this.showModal3;
+      },
+
     }
   }
 </script>
