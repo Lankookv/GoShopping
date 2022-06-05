@@ -2,7 +2,7 @@
   <div class="modal-backdrop">
     <div class="modal" >
       <div class="modal-header"><h2 style="margin-top: 0;margin-bottom: 0;" >商品历史价格</h2></div>
-      <div class="modal-body" style="width:auto;min-width:650px;height: 300px;">
+      <div class="modal-body" style="width:auto;min-width:600px;height: 300px;">
         <div id="main" style="width: 600px;height: 300px;"></div>
       </div>
       <div class="modal-footer">
