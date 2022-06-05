@@ -150,8 +150,9 @@
         this.allGoods.forEach((good) => {
           good.checked = this.allChecked;
         })
-
-        this.allGoods = this.allGoods.filter((good) => {
+        let all1 = [];
+        all1 = this.allGoods;
+        all1 = all1.filter((good) => {
           if (good.checked == true) {
               this.sum += good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice;
               this.num += 1;
@@ -160,10 +161,6 @@
             this.num=0;
           }
         })
-          .then((response) => {
-
-            })
-
       },
 
       //删除提示
@@ -273,8 +270,8 @@
           this.goodList = this.goods;
         })
         if(i==0){
+          this.$message.warning('您还未选择商品');
           this.init();
-          this.$message.error('您还未选择商品');
         }else {
           this.goodList = this.goods;
           this.Sum = this.sum;
@@ -289,35 +286,44 @@
 
       //删除购物车商品
       deleteCartGood() {
-        this.openDelConfirm().then(() => {
-          var i = 0;
-          this.allGoods = this.allGoods.filter((good) => {
-            if (good.checked === true) {
-              this.goodIdArr[i] = good.cartWithImg.cart.cartId;
-              i++;
-            }
-          })
-          deleteCartgood({
-            cartIds: this.goodIdArr,
-            contentType: "application/json"
-          })
-            .then((response) =>{
-              if (response.data.code !== -1) {
-                if(i==0){
-                  this.$message.error('目前无商品');
-                  this.init();
-                  // window.location.reload()
-                }else {
-                  this.$message.success('删除成功');
-                  this.num=0;
-                  this.sum=0;
-                  this.init();
-                }
-              } else {
-                this.$message.success('删除失败');
-              }
+        var i = 0;
+        let temporary = [];
+        temporary = this.allGoods;
+        temporary = temporary.forEach((good) => {
+          if (good.checked === true) {
+            this.goodIdArr[i] = good.cartWithImg.cart.cartId;
+            i++;
+          }
+        });
+        if(this.goodIdArr.length > 0){
+          this.openDelConfirm().then(() => {
+            deleteCartgood({
+              cartIds: this.goodIdArr,
+              contentType: "application/json"
             })
-        })
+              .then((response) =>{
+                if (response.data.code !== -1) {
+                  if(i==0){
+                    this.$message.error('目前无商品');
+                    this.init();
+                    // window.location.reload()
+                  }else {
+                    this.$message.success('删除成功');
+                    this.num=0;
+                    this.sum=0;
+                    this.init();
+                  }
+                } else {
+                  this.$message.success('删除失败');
+                }
+              })
+          }).catch((err) => {
+            this.goodIdArr = [];
+          });
+        }else {
+          this.$message.warning("您还未选择要删除的商品")
+          this.init();
+        }
       },
       closeme(){
         this.showModal=!this.showModal;

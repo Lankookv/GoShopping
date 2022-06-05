@@ -6,7 +6,7 @@
       </span>
     </div>
     <div class="container1">
-      <button class="create">创建</button>
+      <button class="create" @click="toReleasePosts" style="cursor: pointer;">创建</button>
     </div>
     <div class="container2">
       <div v-if="this.allPosts.length === 0 ">
@@ -63,6 +63,13 @@
           this.allPosts = response.data.data;
         })
       },
+      toReleasePosts(){
+        if(sessionStorage.getItem("buyerId") == null){
+          this.$message.error("请先登录");
+        }else {
+          this.$router.push({name:'ReleasePosts',})
+        }
+      }
     },
   }
 

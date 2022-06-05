@@ -13,9 +13,6 @@ import phoneGoods from "../views/phoneGoods";
 import nothing from "../views/nothing";
 import editInformation from "../views/accountManagement/editInformation"
 import AdminAddress from "../views/accountManagement/AdminAddress"
-import sellerCentral from "../views/sellerCentral";
-import showSquare from "../views/showSquare";
-import postDetails from "../views/postDetails";
 
 //升级包B
 import StateOne from "../views/orderManagement/StateOne"
@@ -32,6 +29,17 @@ import buyerStateFive from "../views/buyerOrderManagement/StateFive"
 import ShoppingCart from "../views/ShoppingCart"
 import myFavorites from "../views/myFavorites"
 
+//升级包C
+import payView from "../views/payView"
+import payViewF from "../views/payViewF"
+import ReleasePosts from "../views/ReleasePosts"
+import sellerCentral from "../views/sellerCentral"
+
+//特色商城
+import myPosts from "../views/myPosts"
+import messageCenter from "../views/messageCenter"
+import showSquare from "../views/showSquare";
+import postDetails from "../views/postDetails";
 
 Vue.use(Router)
 
@@ -40,8 +48,7 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: home
-
+      component: home,
     },
     {
       path: '/goodDetails/:bid',//bid:商品id
@@ -174,14 +181,44 @@ export default new Router({
       component: myFavorites,
     },
     {
+      path: '/sellerCentral/',
+      name: 'sellerCentral',
+      component: sellerCentral,
+    },
+    {
+      path: '/payView',
+      name: 'payView',
+      component: payView,
+    },
+    {
+      path: '/payViewF',
+      name: 'payViewF',
+      component: payViewF,
+    },
+    {
+      path: '/ReleasePosts',
+      name: 'ReleasePosts',
+      component: ReleasePosts,
+    },
+    {
       path: '/AdminAddress/',
       name: 'AdminAddress',
       component: AdminAddress,
     },
     {
-      path: '/sellerCentral/',
-      name: 'sellerCentral',
-      component: sellerCentral,
+      path: '/myPosts/',
+      name: 'myPosts',
+      component: myPosts,
+    },
+    {
+      path: '/myPosts/',
+      name: 'myPosts',
+      component: myPosts,
+    },
+    {
+      path: '/messageCenter/',
+      name: 'messageCenter',
+      component: messageCenter,
     },
     {
       path: '/showSquare/',
@@ -189,7 +226,7 @@ export default new Router({
       component: showSquare,
     },
     {
-      path: '/postDetails/:post',//帖子id
+      path: '/postDetails/:pid',//帖子id
       name: 'postDetails',
       component: postDetails,
     },

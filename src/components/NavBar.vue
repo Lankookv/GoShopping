@@ -23,6 +23,7 @@
             <template slot="title">订单管理</template>
             <el-menu-item index="2-3-1" @click="toBuyerViewOrders">查看历史下单记录</el-menu-item>
           </el-submenu>
+          <el-menu-item index="2-8" @click="toMyposts">查看我的帖子</el-menu-item>
           <hr>
           <el-menu-item index="2-6" @click="buyerLogout">退出登录</el-menu-item>
         </el-submenu>
@@ -254,6 +255,9 @@ export default {
     },
     toAdminAddress(){
       this.$router.push({name:'AdminAddress',})
+    },
+    toMyposts(){
+      this.$router.push({name:'myPosts',})
     },
     Login(){
       this.two=true;

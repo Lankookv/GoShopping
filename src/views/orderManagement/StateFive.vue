@@ -53,8 +53,8 @@
                 <div>
 
 <!--                  <div style="float:right">-->
-                    <img class="agree" src="../../components/icon/已同意.png" v-if="post.stmt == 2">
-                    <img class="agree" src="../../components/icon/已拒绝.png" v-if="post.stmt == 3">
+                    <img class="agree" src="../../components/icon/同意.png" v-if="post.stmt === 2">
+                    <img class="agree" src="../../components/icon/拒绝.png" v-if="post.stmt === 3">
 <!--                  </div>-->
                 <el-form label-width="140px" style="position: relative">
                   <el-form-item label="申请人"><span style="float: left">{{post.buyerName}}</span></el-form-item>

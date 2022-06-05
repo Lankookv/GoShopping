@@ -65,7 +65,7 @@
     methods:{
       init(){
         getPostDetail({
-          forumId:this.$route.params.post,
+          forumId:this.$route.params.pid,
           contentType: "application/json"
         })
           .then((response)=> {
@@ -223,7 +223,7 @@
         margin-right: 20px;
       }
       .img{
-         width: 75%;
+        width: 75%;
         margin-top: 10%;
       }
     }

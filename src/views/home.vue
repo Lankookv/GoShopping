@@ -2,7 +2,7 @@
   <div style="white-space: nowrap;">
     <div>
       <carousel style="float:left;width: 80%;"></carousel>
-      <card2 style="float:right;width: 12%;margin-right: 3%;margin-top: 2%;cursor: pointer;" @click="toPosts"></card2>
+      <card2 style="float:right;width: 12%;margin-right: 3%;margin-top: 2%;cursor: pointer;"></card2>
       <div class="search">
         <input type="text" class="input-search" v-model="keyword" id="searchTxt" ref="searchTxt" placeholder="bts周边" filterable  value="">
         <img src="../components/icon/搜索.png" class="iconfont" @click="search">
@@ -82,9 +82,6 @@
           this.allGoods=response.data.data.goodlist;
         })
       },
-      toPosts(){
-
-      }
     },
   }
 </script>
