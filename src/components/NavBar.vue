@@ -17,12 +17,13 @@
             <template slot="title">账号管理</template>
             <el-menu-item index="2-1-1" @click="toChangePassword">修改密码</el-menu-item>
             <el-menu-item index="2-1-2" @click="toEditInformation">编辑信息</el-menu-item>
+            <el-menu-item index="2-1-2" @click="toAdminAddress">管理地址</el-menu-item>
           </el-submenu>
           <el-submenu index="2-4" :popper-append-to-body="true">
             <template slot="title">订单管理</template>
             <el-menu-item index="2-3-1" @click="toBuyerViewOrders">查看历史下单记录</el-menu-item>
           </el-submenu>
-          <el-menu-item index="2-8" @click="toMyPosts">查看我的帖子</el-menu-item>
+          <el-menu-item index="2-8" @click="toMyposts">查看我的帖子</el-menu-item>
           <hr>
           <el-menu-item index="2-6" @click="buyerLogout">退出登录</el-menu-item>
         </el-submenu>
@@ -49,29 +50,11 @@
           <hr>
           <el-menu-item index="2-6" @click="sellerLogout">退出登录</el-menu-item>
         </el-submenu>
-        <div style="width: 25%;float: right">
-          <div style="width: 18%;float: right">
-            <img src="./icon/v.png" class="faces" height="50px">
-          </div>
-          <div  style="width: 18%;float: right;margin-top: 3%;margin-right: 1.5%">
-            <button class="cart" @click="tomyFavorites"><img src="../components/icon/首页收藏.png" style="height: 35px;">
-            </button>
-          </div>
-          <div  style="width: 18%;float: right;margin-top: 3%">
-            <button class="cart" @click="toShoppingCart">
-                <span style="color: white;float: left;margin-left: 4px;margin-top: 2px;position: absolute;z-index: 999">{{this.sum}} </span>
-                  <img src="../components/icon/购物车1.png" style="height: 35px;position: relative">
-            </button>
-          </div>
-          <div  style="width: 18%;float: right;margin-top: 3%">
-            <button class="cart" @click="toMessage">
-                 <span style="color: white;float: left;margin-left: 2px;margin-top: 3px;position: absolute;z-index: 999">{{this.messageSum}}</span>
-                  <img src="../components/icon/消息.png" style="height: 35px;position: relative">
-
-          </button>
-          </div>
-        </div>
-
+        <img src="./icon/v.png" class="faces" height="50px">
+        <button class="cart" @click="tomyFavorites"><img src="../components/icon/首页收藏.png" style="height: 35px;margin-right: 20px"></button>
+        <button class="cart" @click="toShoppingCart"><img src="../components/icon/购物车1.png" style="height: 36px;margin-right: 10px">
+          <span style="position: absolute; top: 15px; right: 232px;color: white">{{this.sum}}</span>
+        </button>
       </div>
     </el-menu>
     <div class="login-wrap" :style="showModal===false?'display:none':'display:block'" style="padding: 30px 30px 10px 30px">
@@ -135,7 +118,7 @@
 </template>
 
 <script>
-import { login, register, getCartNumber, getMessageNumber } from '../api'
+  import {login, register, getCartNumber} from '../api'
 
 export default {
   components: {
@@ -162,14 +145,13 @@ export default {
       }
     };
     return {
+      sum:0,//购物车里商品数量
       activeIndex: '1',
       activeIndex2: '1',
       isLogin:false,
       isSeller:false,
       two: true,
       showModal:false,
-      sum:0,
-      messageSum:0,
       loginParam: {},
       registerParam: {authority:"2",},
       rules: {
@@ -192,32 +174,21 @@ export default {
     };
   },
   created () {
-    this.init1();
-    this.init2();
-    setInterval(() => {
-      setTimeout(() => {
-        ///调取接口
-        this.init2();
-      }, 0);
-    }, 2000); //两秒请求一次接口
+    this.init();
   },
-
   methods: {
-    init1(){
+    init(){
       //alert("userId:"+sessionStorage.getItem("userId")+"buyerId:"+sessionStorage.getItem("buyerId")+"isSeller:"+sessionStorage.getItem("isSeller"))
       if(sessionStorage.getItem("userId")==null&&sessionStorage.getItem("buyerId")==null){
         this.isLogin=false;
       }else {
         this.isLogin=true;
       }
-      if(sessionStorage.getItem("isSeller")==="true"){
-        this.isSeller=true;
-      }else {
+      if(sessionStorage.getItem("isSeller")==="false"){
         this.isSeller=false;
+      }else {
+        this.isSeller=true;
       }
-    },
-
-    init2(){
       getCartNumber({
         buyerId: parseInt(sessionStorage.getItem("buyerId")),
         contentType: "application/json"
@@ -225,26 +196,12 @@ export default {
         .then((response) =>{
           this.sum = response.data.data;
         })
-
-      getMessageNumber({
-        buyerId: parseInt(sessionStorage.getItem("buyerId")),
-        contentType: "application/json"
-      })
-        .then((response) =>{
-          this.messageSum = response.data.data;
-        })
     },
-
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
     toHome(){
-      if(this.isSeller){
-        this.$router.push({name:'sellerCentral',});
-      }
-      else {
-        this.$router.push({name:'Home',});
-      }
+      this.$router.push({name:'Home',});
     },
     toShoppingCart(){
       if(this.isLogin===false){
@@ -259,21 +216,6 @@ export default {
         }
       }
     },
-
-    toMessage(){
-      if(this.isLogin===false){
-        this.$message.error('请登录~');
-      }
-      else {
-        if(sessionStorage.getItem("buyerId")==null){
-          this.$message.error('请登录买家账号~');
-        }
-        else {
-          this.$router.push({name:'messageCenter',})
-        }
-      }
-    },
-
     tomyFavorites(){
       if(this.isLogin===false){
         this.$message.error('请登录~');
@@ -311,10 +253,12 @@ export default {
     toCustomerInformation(){
       this.$router.push({name:'CustomerInformation',})
     },
-    toMyPosts(){
+    toAdminAddress(){
+      this.$router.push({name:'AdminAddress',})
+    },
+    toMyposts(){
       this.$router.push({name:'myPosts',})
     },
-
     Login(){
       this.two=true;
       sessionStorage.removeItem('buyerId');
@@ -349,7 +293,6 @@ export default {
               // sessionStorage.setItem('token', response.data.details.token);
               // sessionStorage.setItem('id', response.data.details.id);
               // sessionStorage.setItem('account',response.data.details.account);
-              console.log("1"+response.data.data)
               if(response.data.code===-1){
                 this.$message.error('用户名或密码错误');
               }
@@ -358,24 +301,16 @@ export default {
                   sessionStorage.setItem('isSeller', true);
                   this.isSeller=true;
                   sessionStorage.setItem('userId', response.data.data);
-                  sessionStorage.setItem('account', this.loginParam.account);
-                  this.$router.push('/sellerCentral/');
                 }else {
                   sessionStorage.setItem('isSeller', false);
                   this.isSeller=false;
                   sessionStorage.setItem('buyerId', -response.data.data);
-                  this.$router.push('/');
                 }
-                // this.isLogin=!this.isLogin;
-                // this.$message.success('登录成功');
-                // this.showModal=!this.showModal;
-                // this.$router.push('/');
-                // location.reload();
                 this.isLogin=!this.isLogin;
                 this.$message.success('登录成功');
                 this.showModal=!this.showModal;
-                this.init2()
-                // location.reload();
+                this.$router.push('/');
+                location.reload();
               }
             })
         } else {

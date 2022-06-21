@@ -45,6 +45,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: #FBBF9B;
+  /*background-color: #F3D7CA;*/
   height:auto;
   min-height:650px;
   overflow: hidden;
