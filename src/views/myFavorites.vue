@@ -18,7 +18,7 @@
         <ul :loading="loadings.table" id="allGood">
           <router-link class="collection" v-for="(good,index) in allGoods" :to="{name:'GoodDetails',params:{bid:good.favoriteGood.goodId}}" :key="index" tag="li">
             <input type="checkbox" v-model='good.checked' @click.stop @change='chooseOne(good)' style="float:left;width:15px;height: 15px;margin-top: 8%"></input>
-            <img :src="good.goodImagine.imagine" style="width: 18%;height:93%;float: left;margin-left: 1%;margin-top: 1%;">
+            <img :src="good.goodImagine.imagine" style="width: 18%;height:180px;float: left;margin-left: 1%;margin-top: 1%;">
             <div class="container1-2" style="overflow:hidden;">
               <h2><b>{{good.favoriteGood.goodName}}</b></h2>
               <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">

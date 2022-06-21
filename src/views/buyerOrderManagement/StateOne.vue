@@ -50,12 +50,13 @@
         <li class="container_1" v-for="(order,index) in allOrder" :key="index">
           <div style="background-color:rgb(246, 121, 46);height: 50px;border-bottom: 1px solid black;">
             <span style="font-size: 30px;line-height: 50px;float:left;margin-left: 20px">{{order[0].startDate.substring(0,10)+"   "+order[0].startDate.substring(11,16)}}</span>
+            <button style="font-size: 20px;line-height: 50px;float:left;margin-left:20px;background-color:transparent;border: none;cursor: pointer;" @click="sellerInformation(order[0].sellerId)">卖家信息</button>
             <button class="button2" @click="payAnOrder(order[0].orderId,order[0].goodName)"><span style="line-height: 40px;">去付款</span></button>
             <button class="button1" @click="cancelAnOrder(order[0].orderId)"><span style="line-height: 40px;">取消订单</span></button>
           </div>
           <ol>
             <li class="container_2" v-for="(goods,index) in order" :key="index">
-              <img :src="goods.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+              <img :src="goods.img" style="width: 18%;height:180px;float: left;margin-left: 1%;margin-top: 1%;">
               <div class="container1-2" style="overflow:hidden;">
                 <h2><b>{{goods.goodName}}</b></h2>
                 <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
@@ -75,9 +76,8 @@
             <h2 style="margin-top: 0;margin-bottom: 0">支付方式</h2>
           </div>
           <div class="modal-body">
-            <input type="radio" id="1" value="支付宝支付" v-model="myVal"><label>支付宝支付</label>
-            <input type="radio" id="2" value="银行卡支付" v-model="myVal"><label>银行卡支付</label>
-            <input :value="myVal">
+            <input type="radio" id="1" value="1" v-model="myVal"><label>支付宝支付</label>
+            <input type="radio" id="2" value="2" v-model="myVal"><label>银行卡支付</label>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn-close" @click="closeSelf">关闭</button>
@@ -85,7 +85,7 @@
           </div>
         </div>
       </div>
-
+      <sellerInformationModal v-show="showModal1" :seller="seller" v-on:closeme="closeme1"></sellerInformationModal>
     </div>
     <!--    <Pagination :total="total"-->
     <!--                :page-size.sync="limit"-->
@@ -97,13 +97,15 @@
 
 <script>
   import Pagination from '../../components/Pagination'
-  import {buyerCancelAnOrder, buyerShowOrders, finishOrder, payAnOrder} from "../../api";
+  import sellerInformationModal from "../../components/sellerInformationModal"
+  import {buyerCancelAnOrder, buyerShowOrders, finishOrder, payAnOrder, showSellerInfo} from "../../api";
   import axios from "axios";
 
   export default {
     name: "StateOne",
     components: {
       Pagination,
+      sellerInformationModal
     },
     data() {
       return {
@@ -121,9 +123,11 @@
         k:0,
         type:0,
         showModal:false,
-        myVal:1,
+        showModal1:false,
+        myVal:"1",
         orderId:0,
         goodName:"",
+        seller:[],
       }
     },
     mounted() {
@@ -139,7 +143,7 @@
           .then((response)=> {
             this.allOrders=response.data.data.orderList;
             if(this.allOrders.length==0){
-              this.allOrder=[];
+              this.allOrder=null;
             }
             else {
               let n = 0;
@@ -184,7 +188,6 @@
           type: 'warning'
         })
       },
-
       cancelAnOrder(orderId){
         this.openDelConfirm0().then(() => {
           buyerCancelAnOrder({
@@ -232,12 +235,13 @@
       submit(){
         sessionStorage.setItem('payWay', 2);
         sessionStorage.setItem('orderId', this.orderId);
-        if(myVal===1){
+        // alert(this.myVal);
+        if(this.myVal==="1"){
           payAnOrder({
             // amount:parseInt(this.total),
-            amount:parseInt(1),
+            amount:parseInt(31.0),
             id:this.orderId,
-            info:this.name,
+            info:this.goodName,
             contentType: "application/json",
           }).then((response) => {
             const div = document.createElement('divPay');
@@ -246,8 +250,8 @@
             document.forms[1].submit();
           })
         }
-        else if(myVal===2){
-          axios.get(`http://192.168.43.104:2887/api/buyer/unionPay?txnAmt=`+1*100).then((response) => {
+        else if(this.myVal==="2"){
+          axios.get(`http://192.168.12.23:2887/api/buyer/unionPay?txnAmt=`+1*100).then((response) => {
             //   this.a=response;
             sessionStorage.setItem('orderId', this.orderId);
             const div = document.createElement('div');
@@ -268,7 +272,19 @@
         else {
           alert("请重新选择支付方式")
         }
-      }
+      },
+      sellerInformation(sellerId){
+        showSellerInfo({
+          sellerId: sellerId,
+          contentType: "application/json",
+        }).then((response)=> {
+          this.seller=response.data.data;
+        })
+        this.showModal1=!this.showModal1;
+      },
+      closeme1(){
+        this.showModal1=!this.showModal1;
+      },
     }
 
   }
@@ -432,6 +448,63 @@
         }
       }
     }
+  }
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  .modal {
+    background-color: #fff;
+    box-shadow: 2px 2px 20px 1px;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height:auto;
+    border-radius: 15px;
+  }
+  .modal-header {
+    border-bottom: 1px solid #eee;
+    color: #313131;
+    justify-content: space-between;
+    padding: 15px;
+    display: flex;
+  }
+  .modal-footer {
+    border-top: 1px solid #eee;
+    justify-content: flex-end;
+    padding: 15px;
+    display: flex;
+  }
+  .modal-body {
+    position: relative;
+    padding: 10px 10px;
+    input{
+      font-size: 15px;
+    }
+  }
+  .btn-close, .btn-confirm {
+    border-radius: 8px;
+    margin-left:16px;
+    width:56px;
+    height: 36px;
+    border:none;
+    cursor: pointer;
+  }
+  .btn-close {
+    color: #313131;
+    background-color:transparent;
+  }
+  .btn-confirm {
+    color: #fff;
+    background-color: #2d8cf0;
   }
 </style>
 

@@ -8,7 +8,7 @@
         <img src="../components/icon/搜索.png" class="iconfont" @click="search">
       </div>
       <div style="z-index: auto"><goods-type></goods-type></div>
-      <div style="margin-top: -387px;margin-left: 22.5%;z-index: auto"><banner></banner></div>
+      <div style="margin-top: -387px;margin-left: 23%;z-index: auto"><banner></banner></div>
       <div v-if="allGoods.length===0">
         <center>
           <img  src="../components/icon/pic30.png" style="margin-top: 15px">
@@ -21,9 +21,9 @@
         <router-link v-for="(good,index) in allGoods" :to="{name:'GoodDetails',params:{bid:good.goodId}}" :key="index" tag="li" style="list-style:none;">
           <div class="container1-1" >
             <img :src="good.img">
-            <div class="container1-2">
-              <h3><b>{{good.goodName}}</b></h3>
-              <h2><b>￥{{good.goodPrice}}</b></h2>
+            <div class="container1-2" style="overflow:hidden;margin-right: 30px;">
+              <div :title=good.goodName class="goodName"><h3><b>{{good.goodName}}</b></h3></div>
+              <h2 style="margin-top: 0;"><b>￥{{good.goodPrice}}</b></h2>
             </div>
           </div>
         </router-link>
@@ -90,6 +90,15 @@
 </script>
 
 <style scoped lang="less">
+  .goodName {
+    width: 200px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+  }
   .search{
     display:flex;
     border: 1px solid #ccc;
@@ -142,15 +151,16 @@
       margin-bottom: 20px;
       img {
         width: 80%;
+        height: 150px;
         margin-top: 20px;
       }
       h3 {
         float: left;
         margin-left: 30px;
+        margin-right: 30px;
       }
       h2 {
         float: right;
-        margin-right: 30px;
       }
     }
     z-index: 3;

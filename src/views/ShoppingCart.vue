@@ -19,10 +19,12 @@
         <li class="container_1" v-for="(good,index) in allGoods"
                      @click="shoppingCart(good.cartWithImg.cart.goodId)" :key="index" >
           <input type="checkbox" v-model='good.checked' @click.stop @change='chooseOne(good)' style="float:left;width:15px;height: 15px;margin-top: 8%"></input>
-          <img :src="good.cartWithImg.goodImagine.imagine" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+          <img :src="good.cartWithImg.goodImagine.imagine" style="width: 18%;height:180px;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="overflow:hidden;width: 35%">
             <h2 style="float:left"><b>{{good.cartWithImg.cart.goodName}}</b></h2>
-            <small  style="font-size:13px;white-space: pre-line;float: left;margin-top: 1%;margin-left: 4%" v-html="good.cartWithImg.cart.description"></small>
+            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;width: 102%;">
+              <small v-html="good.cartWithImg.cart.description"></small>
+            </div>
 <!--            <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;float: left">-->
 <!--            </div>-->
           </div>
@@ -148,38 +150,41 @@
       choosetrue(good){
         good.checked = true;
         // console.log(good.cartWithImg.cart.goodId);
-          this.sum += good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice;
+        this.sum = this.sum + good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice ;
         this.num += 1;
+        if(this.num==this.allGoods.length){
+          this.allChecked=true;
+        }
       },
 
       choosefalse(good){
         good.checked=false;
-          this.sum -= good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice;
+        this.sum = this.sum - good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice ;
         this.num -= 1;
+        this.allChecked=false;
       },
       chooseOne(good) {
         !good.checked?this.choosefalse(good):this.choosetrue(good)
       },
 
-      //全选
+//全选
       chooseAll() {
         this.sum=0;
+        this.num=0;
         this.allGoods.forEach((good) => {
           good.checked = this.allChecked;
         })
-
-        this.allGoods = this.allGoods.filter((good) => {
+        let all1 = [];
+        all1 = this.allGoods;
+        all1 = all1.filter((good) => {
           if (good.checked == true) {
-              this.sum += good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice;
-              this.num += 1;
+            this.sum += good.cartWithImg.cart.number * good.cartWithImg.cart.goodPrice;
+            this.num += 1;
           }else{
             this.sum=0;
+            this.num=0;
           }
         })
-          .then((response) => {
-
-            })
-
       },
 
       //删除提示
@@ -279,69 +284,61 @@
 
       //购物车结算
       BuyGoods(){
-        var i=0;
+        var i = 0;
         this.allGoods = this.allGoods.filter((good) => {
           if (good.checked === true) {
             this.goods[i] = good;
+            good.checked=false;
             i++;
-            // good.checked=false;
           }
-          this.goodList = this.goods;
         })
-          this.goodList=this.goods;
-          this.Sum=this.sum;
-          this.Num=this.num;
-          this.goods=[];
-          this.sum=0;
-          this.num=0;
-          this.allChecked=false;
-          this.showModal=!this.showModal;
-        // getAddressByBuyer({
-        //   buyerId: parseInt(sessionStorage.getItem("buyerId")),
-        //   contentType: "application/json",
-        // }).then((response)=> {
-        //     this.intentionList=response.data.data;
-        //     this.goodList=this.goods;
-        //     this.Sum=this.sum;
-        //     this.Num=this.num;
-        //     this.goods=[];
-        //     this.sum=0;
-        //     this.num=0;
-        //   })
-
-       },
+        if(i == 0){
+          this.$message.warning('您还未选择商品');
+          this.init();
+        }else {
+          this.goodList = this.goods;
+          this.Sum = this.sum;
+          this.Num = this.num;
+          this.goods = [];
+          this.sum = 0;
+          this.num = 0;
+          this.allChecked = false;
+          this.showModal = !this.showModal;
+        }
+      },
 
       //删除购物车商品
       deleteCartGood() {
-        this.openDelConfirm().then(() => {
-          var i = 0;
-          this.allGoods = this.allGoods.filter((good) => {
-            if (good.checked === true) {
-              this.goodIdArr[i] = good.cartWithImg.cart.cartId;
-              i++;
-            }
-          })
-          deleteCartgood({
-            cartIds: this.goodIdArr,
-            contentType: "application/json"
-          })
-            .then((response) =>{
-              if (response.data.code !== -1) {
-                if(i==0){
-                  this.$message.error('目前无商品');
-                  this.init();
-                  // window.location.reload()
-                }else {
-                  this.$message.success('删除成功');
-                  this.num=0;
-                  this.sum=0;
-                  this.init();
-                }
-              } else {
-                this.$message.success('删除失败');
-              }
+        var i = 0;
+        let temporary = [];
+        temporary = this.allGoods;
+        temporary = temporary.forEach((good) => {
+          if (good.checked === true) {
+            this.goodIdArr[i] = good.cartWithImg.cart.cartId;
+            i++;
+          }
+        });
+        if (this.goodIdArr.length > 0) {
+          this.openDelConfirm().then(() => {
+            deleteCartgood({
+              cartIds: this.goodIdArr,
+              contentType: "application/json"
             })
-        })
+              .then((response) => {
+                if (response.data.data == true) {
+                  this.$message.success('删除成功');
+                  this.init();
+                } else {
+                  this.$message.error('删除失败');
+                }
+              })
+          }).catch((err) => {
+            this.goodIdArr = [];
+          });
+        } else {
+          this.$message.warning("您还未选择要删除的商品")
+          this.init();
+        }
       },
       closeme(){
         this.showModal=!this.showModal;

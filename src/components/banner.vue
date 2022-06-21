@@ -1,22 +1,23 @@
 <template>
   <div id="banner">
     <img :src="imgArr[index]" id="pic">
-    <img src="../components/icon/左滑.png" id="left" @click="pre()" >
-    <img src="../components/icon/右滑.png" id="right" @click="next()">
+<!--    <img src="../components/icon/左滑.png" id="left" @click="pre()" >-->
+<!--    <img src="../components/icon/右滑.png" id="right" @click="next()">-->
   </div>
 </template>
 
 <style>
   #banner{
     width: 1000px;
-    height: 400px;
+    height: 300px;
     position: relative;
     /*z-index: 0;*/
   }
   #pic{
     z-index: 0;
-    width: 1000px;
-    height: 358px;
+    width: 750px;
+    height: 278px;
+    float: left;
   }
   #left{
     z-index: 1;
@@ -50,9 +51,9 @@
         flag: true, // 节流阀，防止连续点击切换
         index: 0,
         imgArr: [	// 图片数组
-          require("../components/icon/1.jpg"),
-          require("../components/icon/2.jpg"),
-          require("../components/icon/3.jpg"),]
+          require("../components/icon/bannerPic1.png"),]
+          // require("../components/icon/2.jpg"),
+          // require("../components/icon/3.jpg"),]
       }
     },
     methods:{

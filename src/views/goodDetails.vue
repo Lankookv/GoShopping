@@ -2,7 +2,7 @@
   <div class="container">
     <div class="container1">
       <!--            {{a}}-->
-      <img :src="good.img[0].imagine" alt="这里是封面">
+      <img :src="good.img[0].imagine" alt="这里是封面" style="height: 350px;">
       <div class="container2">
         <h1 class="goodName"><b>{{good.good.goodName}}</b></h1>
         <div class="like">
@@ -124,7 +124,23 @@
           this.$message.error("请先登录");
         }else{
           if(this.collectionState == 1){
-            alert(this.collectionState+"您已收藏该商品");
+            collectGoods({
+              buyerId:parseInt(sessionStorage.getItem("buyerId")),
+              goodId:parseInt(goodsId),
+              contentType: "application/json"
+            }).then((response)=> {
+              // alert(response.data.data);
+              if(response.data.data == "already"){
+                this.b = response.data.data;
+                console.log(this.b);
+                this.$message.success('取消收藏成功！');
+                this.collectionState = 0;
+              }else{
+                // this.a = response.data.code;
+                this.$message.error('取消收藏失败！');
+                this.collectionState = 1;
+              }
+            })
           }else{
             collectGoods({
               buyerId:parseInt(sessionStorage.getItem("buyerId")),

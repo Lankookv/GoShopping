@@ -1,17 +1,18 @@
 <template>
   <div class="container">
     <div class="container1">
-      <img :src="good.img[0].imagine" alt="这里是封面">
+      <img :src="good.img[0].imagine" alt="这里是封面" style="height: 350px;">
       <div class="container2">
-        <h1><b>{{good.good.goodName}}</b></h1>
+        <h1 style="float: left;"><b>{{good.good.goodName}}</b></h1>
         <div style="overflow:hidden;width:95%;">
           <div class="info">
             <small v-html="good.good.description"></small>
           </div>
         </div>
-        <h1 style="color: red;font-size: 40px;margin-left: 8%"><b>￥{{good.good.goodPrice}}</b></h1>
+        <button class="price" @click="changeprice">修改价格</button>
+        <h1 style="color: red;font-size: 40px;margin-right:5%"><b>￥{{good.good.goodPrice}}</b></h1>
         <p style="margin-top: 5%">
-          <span style="vertical-align:middle; line-height:50px;float: right;margin-right: 100px;font-size: 30px">
+          <span style="vertical-align:middle; line-height:50px;float: left;margin-left: 10%;font-size: 30px">
             库存：{{good.good.storage}}
           </span>
         </p>
@@ -24,16 +25,28 @@
           <img :src="img.imagine">
         </div>
       </div>
+      <div class="all" v-show="dialogVisible"></div>
+      <div class="post" v-show="dialogVisible">
+        <div style="height:24%;border-bottom: 1px solid #eee;">
+          <span style="float: left;margin: 2% -15% 3% 3%;font-size: 20px"><b>修改价格</b></span>
+          <img src="../../components/icon/关闭.png" @click="dialogVisible=!dialogVisible" style="margin-right: 2%;float: right;width: 5%;height: 60%">
+        </div>
+        <div>
+          <input id="text" style="width: 90%;height: 40px;margin-top: 5%;background-color: #f1f1f1"></input>
+        </div>
+        <button class="change" @click="change">确认</button>
+      </div>
     </div>
+  </div>
 <!--    <div class="container3">-->
 <!--      <card></card>-->
 <!--    </div>-->
-  </div>
+
 </template>
 
 <script>
   import card from "../../components/card";
-  import {showGoodDetail} from '../../api';
+  import {showGoodDetail,changePrice} from '../../api';
 
   export default {
     name: "goodDetail-onSale",
@@ -43,9 +56,13 @@
     data() {
       return {
         good:{},
+        dialogVisible:false,
       }
     },
     created() {
+      this.getGoodDetail();
+    },
+    mounted() {
       this.getGoodDetail();
     },
     methods:{
@@ -57,6 +74,24 @@
             //alert(JSON.stringify(this.$route.params.bid))
             this.good=response.data.data;
           })
+      },
+      changeprice(){
+        this.dialogVisible = !this.dialogVisible;
+      },
+      change() {
+        if (text.value.length === 0) {
+          this.$message.error('您还未填价格');
+        }else{
+          changePrice({
+            goodId: this.good.good.goodId,
+            oldPrice: this.good.good.goodPrice,
+            newPrice: text.value,
+          }).then((response) => {
+            this.$message.success('修改成功！');
+            this.dialogVisible = !this.dialogVisible;
+            this.getGoodDetail();
+          })
+        }
       },
     }
   }
@@ -88,7 +123,7 @@
         h1{
           margin-left: 10%;
           margin-bottom: 2%;
-          float: left;
+          float: right;
           display: inline;
           margin-top: 4%;
         }
@@ -99,6 +134,16 @@
           overflow-y: scroll;
           overflow-x: hidden;
           text-align:left;
+        }
+        .price{
+          float: right;
+          margin-top: 5%;
+          width: 25%;
+          height: 45px;
+          font-size: 20px;
+          background-color: #F56E1C;
+          border: 1px solid;
+          border-radius: 10px;
         }
       }
       .container4{
@@ -133,5 +178,39 @@
         font-size:15px;
       }
     }
+  }
+  .all{
+    position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    opacity:0.5;
+    filter:alpha(opacity=5);
+    z-index:99;
+  }
+  .post{
+    position:fixed;
+    top:0;right:0;
+    bottom:0;
+    left:0;
+    width: 40%;
+    height:200px;
+    margin:auto;
+    background-color:#fff;
+    overflow:auto;
+    z-index:100;
+  }
+  .change{
+    color: white;
+    background-color: #F88E4E;
+    float: right;
+    width: 15%;
+    height: 36px;
+    margin-right: 42%;
+    margin-top: 2%;
+    border: 1px solid black;
+    cursor:Pointer;
+    border-radius: 10px;
   }
 </style>

@@ -55,7 +55,7 @@
           </div>
           <ol>
             <li class="container_2" v-for="(goods,index) in order" :key="index">
-              <img :src="goods.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+              <img :src="goods.img" style="width: 18%;height:180px;float: left;margin-left: 1%;margin-top: 1%;">
               <div class="container1-2" style="overflow:hidden;">
                 <h2><b>{{goods.goodName}}</b></h2>
                 <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
@@ -64,7 +64,7 @@
               </div>
               <span>
               <h1 style="color: black;font-size: 40px;margin-top:74px;"><b>{{goods.number}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥{{goods.goodPrice}}</b></h1>
-                <el-button class="service"  @click="showPost(goods.orderId,goods.stmt)">售后处理</el-button>
+                <el-button class="service" v-if="goods.stmt===7" @click="showPost(goods.orderId,goods.stmt)">售后处理</el-button>
             </span>
               <div class="all" v-show="dialogVisible"></div>
               <div class="post" v-show="dialogVisible">
@@ -180,11 +180,7 @@
       //拿到售后单
       showPost(val,stmt){
         this.post=[];
-        if(stmt==7) {
-          this.dialogVisible = !this.dialogVisible;
-        }else {
-          this.$message.error('该商品没有售后单！');
-        }
+        this.dialogVisible = !this.dialogVisible;
         getPost({
           orderId:val,
           contentType: "application/json"
@@ -204,6 +200,7 @@
 //拒绝售后
       notagree(val){
         notagreePost({
+          orderId:val.orderId,
           postSaleId:val.postSaleId,
           contentType: "application/json"
         }).then((response) =>{
@@ -215,6 +212,7 @@
 //同意售后
       agree(val){
         agreePost({
+          orderId:val.orderId,
           postSaleId:val.postSaleId,
           contentType: "application/json"
         }).then((response) =>{
@@ -396,7 +394,7 @@
       float: right;
       width: 10%;
       height: 36px;
-      margin-right: 3%;
+      margin-right: 7%;
       margin-bottom: 2%;
       background-color: orangered;
       border: 1px solid black;

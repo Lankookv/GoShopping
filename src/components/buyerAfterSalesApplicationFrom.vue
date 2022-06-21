@@ -15,7 +15,7 @@
           </span>
           <el-form ref="form" :model="form" label-width="140px" class="form" style="position: relative">
             <el-form-item label="售后内容：" prop="type"><span style="float: left">{{applicationContentName}}</span></el-form-item>
-            <el-form-item label="具体原因描述：" prop="description" style="width: 500px;"><span  style="float: left">{{applicationContent.reasons}}</span></el-form-item>
+            <el-form-item label="具体原因描述：" prop="description" style="width: 400px;"><span  style="float: left">{{applicationContent.reasons}}</span></el-form-item>
             <el-form-item label="图片：" label-width="140px">
 <!--              <img src="../components/icon/ipad-2021.png" style="float:left;width: 120px;">-->
               <div v-for="(img) in applicationContent.images">
@@ -49,7 +49,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="具体描述" prop="description" style="width: 500px;">
+            <el-form-item label="具体描述" prop="description" style="width: 400px;">
               <el-input type="textarea"  :rows="5"  resize="none" v-model="form.description"></el-input>
             </el-form-item>
             <el-form-item label="图片上传" label-width="140px">

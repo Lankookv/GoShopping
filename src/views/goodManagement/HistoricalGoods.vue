@@ -178,7 +178,7 @@
       //单选
       chooseOne(good) {
           good.checked = true;
-          alert(good.goodId)
+          // alert(good.goodId)
       },
       //全选
       chooseAll() {

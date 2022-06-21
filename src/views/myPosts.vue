@@ -25,7 +25,7 @@
       </div>
       <div v-else>
         <ul :loading="loadings.table">
-          <router-link class="collection" v-for="(post,index) in Posts" :to="{name:'GoodDetails'}" :key="index" tag="li">
+          <router-link class="collection" v-for="(post,index) in Posts" :to="{name:'postDetails',params:{pid:post.forumId}}" :key="index" tag="li">
             <input type="checkbox" v-model='post.checked' @click.stop @change='chooseOne(post)' style="float:left;width:15px;height: 15px;margin-top: 5%"></input>
             <img :src="post.img[0].imagine" style="width: 10%;height:93%;float: left;margin-left: 1%;margin-top: 1%;">
             <div class="container2-2" style="overflow:hidden;">
@@ -193,6 +193,9 @@
           this.init()
         }
 
+      },
+      toPosts(){
+        this.$router.push({name:'showSquare',})
       }
     }
   }

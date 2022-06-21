@@ -1,12 +1,11 @@
 // src\api\api.js
 import axios from 'axios';    // 导入axios
 
-//let host = 'http://10.61.33.105:2887/api';//苇苇学校
-
+// let host = 'http://10.61.2.9:2887/api';//苇苇学校
 let host = 'http://192.168.12.23:2887/api';//苇苇寝室
 // let host = 'http://192.168.193.40:2887/api';//苇苇热点
 // let host = 'http://10.61.180.170:2887/api';//杨柳学校
-// // let host = 'http://10.61.196.17:2887/api';//杨柳寝室
+// let host = 'http://10.61.196.17:2887/api';//杨柳寝室
 // let host = 'http://192.168.43.104:2887/api';//杨柳热点
 // let host = 'http://192.168.43.133:2887/api';//我热点
 // let host = "http://121.40.97.124:2887/api";//云端
@@ -187,10 +186,10 @@ export const showApplicationContent = params => { return axios.post(`${host}/buy
 //是否有售后
 export const getApplicationExist = params => { return axios.post(`${host}/buyer/seeWhetherThereIsPostSale`, params)};
 
-//买家撤销售后
+//买家撤销售后1
 export const cancelApplication = params => { return axios.post(`${host}/buyer/cancelPostSale`, params)};
 
-//卖家取售后单
+//卖家取售后单1
 export const getPost = params => { return axios.post(`${host}/buyer/getPostSaleByOrderId`, params)};
 
 //卖家同意售后
@@ -222,15 +221,25 @@ export const addAddress = params => { return axios.post(`${host}/buyer/addNotDef
 //设为默认地址
 export const alterdefault = params => { return axios.post(`${host}/buyer/alterDefaultAddressByBuyer`,params)};
 
-//删除地址
+//删除地址1
 export const deleteAddress = params => { return axios.post(`${host}/buyer/deleteAddress`, params)};
+
+//升级包D
+//卖家修改信息
+export const editSellerInformation = params => { return axios.post(`${host}/seller/updateSellerInfo`, params)};
+
+//获取卖家信息1
+export const showSellerInfo = params => { return axios.post(`${host}/seller/getSellerInfo`, params)};
 
 //特色
 //发帖releasePost
 export const releasePost = params => { return axios.post(`${host}/platform/uploadForum`, params)};
 
-//升级包e
-export const getPrices = params => { return axios.post(`${host}/buyer/getPriceChangeByGoodId`, params)};
+//拿取所有帖子
+export const getAllPosts = params => { return axios.post(`${host}/platform/getAllPosts`, params)};
+
+//拿帖子内容
+export const getPostDetail = params => { return axios.post(`${host}/platform/getPostDetail`, params)};
 
 //查看自己的帖子
 export const showMyPosts = params => { return axios.post(`${host}/platform/getPostByBuyerId`, params)};
@@ -238,14 +247,12 @@ export const showMyPosts = params => { return axios.post(`${host}/platform/getPo
 //删除自己一个帖子
 export const deleteOnePost = params => { return axios.post(`${host}/platform/deletePost`, params)};
 
-//删除自己所有帖子
+//删除自己所有帖子1
 export const deleteAllPost = params => { return axios.post(`${host}/platform/deletePosts`, params)};
 
-//升级包D 卖家修改信息
-export const editSellerInformation = params => { return axios.post(`${host}/seller/updateSellerInfo`, params)};
-
-//升级包D 获取卖家信息
-export const showSellerInfo = params => { return axios.post(`${host}/seller/getSellerInfo`, params)};
+//升级包E
+//拿历史价格1
+export const getPrices = params => { return axios.post(`${host}/buyer/getPriceChangeByGoodId`, params)};
 
 //获取消息中心未读消息数量
 export const getMessageNumber = params => { return axios.post(`${host}/buyer/getChangeMessageNumber`, params)};
@@ -258,3 +265,6 @@ export const setOneRead = params => { return axios.post(`${host}/buyer/readMessa
 
 //将所有消息设置为已读
 export const setAllRead = params => { return axios.post(`${host}/buyer/readMessages`, params)};
+
+//修改价格
+export const changePrice = params => { return axios.post(`${host}/seller/changePrice`, params)};

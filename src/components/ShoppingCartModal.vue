@@ -16,10 +16,10 @@
              </span>
             </li>
           <li v-for="(item) in isnDefaultArr" :key="index" style="list-style:none;">
-            <span style="float: left;margin-left: 2%">
-              <input type="radio" v-model='item.checked' name="address" value="address"  id="address" @click="getValue(item)" ></input>
-              <label for="address" class="chooseAddress"> {{item.buyerAddress}} &nbsp;&nbsp; ({{item.buyerName}}&nbsp;收) &nbsp;&nbsp; {{item.buyerPhone}}</label>
-           </span>
+    <span style="float: left;margin-left: 2%">
+      <input type="radio" v-model='item.checked' name="address" value="address"  :id="index" @click="getValue(item)" ></input>
+      <label :for="index" class="chooseAddress"> {{item.buyerAddress}} &nbsp;&nbsp; ({{item.buyerName}}&nbsp;收) &nbsp;&nbsp; {{item.buyerPhone}}</label>
+    </span>
           </li>
         </div>
         <div  style="border-bottom:1px solid #eee">
@@ -31,7 +31,7 @@
         <li class="container_1" v-for="(good,index) in goodList" :key="index">
           <img :src="good.cartWithImg.goodImagine.imagine" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
           <div class="container1-2" style="width: 25%">
-            <h2 style="float:left;margin-left: 10%;margin-top: 25%"><b style="font-size: 30px">{{good.cartWithImg.cart.goodName}}</b></h2>
+            <h2 style="float:left;margin-left: 10%;margin-top: 25%"><b style="font-size: 21px">{{good.cartWithImg.cart.goodName}}</b></h2>
           </div>
           <div class="box">
             <button class="minus" @click.stop @click="minus(good.cartWithImg.cart.number,good)">
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-  import {changecartnumber, finishOrder, OrderGoodsFromCart, payAnOrder} from "../api";
+  import {changecartnumber, finishOrder, OrderGoodsFromCart, payAnOrder,showAddress} from "../api";
   import axios from "axios";
 
   export default {
@@ -103,23 +103,29 @@
       },
 
       getAddress(){
-        this.address = this.intentionList;
-        let noisDefaultArr = [];
-        var index = this.address.findIndex(item =>{
-          if(item.isDefault == 1){
-            // alert("默认地址的id"+item.addressId)
-            this.buyerAddress = item.buyerAddress;
-            this.buyerName = item.buyerName;
-            this.buyerPhone = item.buyerPhone;
-            this.addressid = item.addressId;
-            // this.purchasebuyerAddressId = item.addressId;
-          }else{
-            item.type = "noisDefault";
-            noisDefaultArr.push(item);
-            this.isnDefaultArr= noisDefaultArr;
-          }
+        showAddress({
+          buyerId:parseInt(sessionStorage.getItem("buyerId")),
+          contentType: "application/json"
         })
-
+          .then((response)=> {
+            this.address = response.data.data;
+            this.myAddressData = this.address
+            console.log(this.address);
+            let noisDefaultArr = [];
+            var index = this.address.findIndex(item =>{
+              if(item.isDefault == 1){
+                // alert("默认地址的id"+item.addressId)
+                this.buyerAddress = item.buyerAddress;
+                this.buyerName = item.buyerName;
+                this.buyerPhone = item.buyerPhone
+                this.purchasebuyerAddressId = item.addressId;
+              }else{
+                item.type = "noisDefault";
+                noisDefaultArr.push(item);
+                this.isnDefaultArr= noisDefaultArr;
+              }
+            })
+          })
       },
 
       //减少购物车数量

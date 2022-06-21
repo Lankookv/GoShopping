@@ -43,7 +43,7 @@
           <ul v-if="relatedGoods.length>0" style="list-sytle:none;display: flex;
     flex-wrap: wrap;border: 1px solid black;">
             <li v-for="(item, index) in relatedGoods" :key="index" style="list-sytle:none;width: 33%;margin-bottom:5px;margin-top:5px; ">
-              <img :src="item.img" style="width: 30%;float: left;">
+              <img :src="item.img" style="width: 30%;height: 55px;float: left;">
               <span style="float: left;">{{item.goodName}}</span>
             </li>
           </ul>
@@ -143,6 +143,7 @@
               this.$message.error('发布失败！');
             } else
               this.$message.success('发布成功！');
+              this.$router.push({name:'showsquare'});
           })
         }
       },

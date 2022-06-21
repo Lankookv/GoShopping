@@ -21,7 +21,8 @@
       </div>
       <div v-else>
         <ul>
-          <router-link class="collection" v-for="(message,index) in Messages" :to="{name:'GoodDetails',params:{bid:message.goodId}}" :key="index" tag="li">
+          <li class="collection" v-for="(message,index) in Messages" :key="index">
+            <router-link v-if="message.cartOrFavorite===2" :to="{name:'myFavorites'}">
             <input type="checkbox" v-model='message.checked' @click.stop @change='chooseOne(message)' style="float:left;width:15px;height: 15px;margin-top: 5%"></input>
             <img :src="message.goodwithImg.img[0].imagine" style="width: 10%;height:93%;float: left;margin-left: 1%;margin-top: 1%;">
             <div class="container2-2" style="overflow:hidden;">
@@ -47,7 +48,36 @@
             <span v-if="message.readOrNot===0" class="container2-3" style="color: black;font-size: 40px;margin-top: 0%;margin-right: 3%">
                 <button  @click.stop @click="handleReadOneMessage(message.messageId)" style="width: 10%;height: 30px;background-color: #85d0e4;border-style: solid;border-radius: 3px">设为已读</button>
             </span>
-          </router-link>
+            </router-link>
+
+            <router-link v-if="message.cartOrFavorite===1" :to="{name:'ShoppingCart'}">
+              <input type="checkbox" v-model='message.checked' @click.stop @change='chooseOne(message)' style="float:left;width:15px;height: 15px;margin-top: 5%"></input>
+              <img :src="message.goodwithImg.img[0].imagine" style="width: 10%;height:93%;float: left;margin-left: 1%;margin-top: 1%;">
+              <div class="container2-2" style="overflow:hidden;">
+                <h3>
+                <span style="white-space:nowrap;overflow: hidden;text-overflow: ellipsis;-o-text-overflow: ellipsis;">
+                  <span v-if="message.cartOrFavorite === 2">您收藏的</span>
+                  <span v-if="message.cartOrFavorite === 1">您购物车的</span>
+                    <b>{{message.goodName}}</b>
+                  <span v-if="message.oldPrice>message.newPrice">
+                    现仅需<span style="font-size: 26px;color: red">￥{{message.newPrice}}</span>元!
+                    降低了{{message.oldPrice-message.newPrice}}元!速来抢购!
+                  </span>
+                  <span v-if="message.oldPrice<message.newPrice">价格有变动!
+                    之前为￥{{message.oldPrice}}元,
+                    现为<span style="font-size: 24px;">￥{{message.newPrice}}</span>元
+                  </span>
+                </span>
+                </h3>
+                <div>
+                  <span style="font-size: 14px;color:gray;">{{message.changeDate.substring(0,10)+"   "+message.changeDate.substring(11,16)}}</span>
+                </div>
+              </div>
+              <span v-if="message.readOrNot===0" class="container2-3" style="color: black;font-size: 40px;margin-top: 0%;margin-right: 3%">
+                <button  @click.stop @click="handleReadOneMessage(message.messageId)" style="width: 10%;height: 30px;background-color: #85d0e4;border-style: solid;border-radius: 3px">设为已读</button>
+            </span>
+            </router-link>
+          </li>
         </ul>
       </div>
       <!--      <div class="footer">-->

@@ -57,7 +57,7 @@
           </div>
           <ol>
             <li class="container_2" v-for="(goods,index) in order" :key="index">
-              <img :src="goods.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+              <img :src="goods.img" style="width: 18%;height:180px;float: left;margin-left: 1%;margin-top: 1%;">
               <div class="container1-2" style="overflow:hidden;">
                 <h2><b>{{goods.goodName}}</b></h2>
                 <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">
@@ -184,45 +184,46 @@
           })
         })
       },
-      deliverGoods(orderId){
-        this.$alert('确认发货吗？', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(({ value }) => {
-          deliverGoods({
-            sellerId: parseInt(sessionStorage.getItem("userId")),
-            orderId:orderId,
-            trackingNumber:"123456",
-            contentType: "application/json",
-          }).then((response) => {
-            this.init();
-            this.$message.success('发货完成！');
-          })
-        })
-      },
       // deliverGoods(orderId){
-      //   this.$prompt('请输入物流单号', {
+      //   this.$alert('确认发货吗？', {
       //     confirmButtonText: '确定',
       //     cancelButtonText: '取消',
-      //     // inputPattern: /[^A-Za-z0-9]/g,
-      //     // inputErrorMessage: '物流单号不正确'
       //   }).then(({ value }) => {
       //     deliverGoods({
       //       sellerId: parseInt(sessionStorage.getItem("userId")),
       //       orderId:orderId,
-      //       trackingNumber:value,
+      //       trackingNumber:"123456",
       //       contentType: "application/json",
       //     }).then((response) => {
       //       this.init();
       //       this.$message.success('发货完成！');
       //     })
-      //   }).catch(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '取消输入'
-      //     });
-      //   });
+      //   })
       // },
+      deliverGoods(orderId){
+        this.$prompt('请输入物流单号', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          // inputPattern: /[^A-Za-z0-9]/g,
+          // inputErrorMessage: '物流单号不正确'
+        }).then(({ value }) => {
+          alert(value)
+          deliverGoods({
+            sellerId: parseInt(sessionStorage.getItem("userId")),
+            orderId:orderId,
+            trackingNumber:value,
+            contentType: "application/json",
+          }).then((response) => {
+            this.init();
+            this.$message.success('发货完成！');
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });
+        });
+      },
       buyerInformation(orderId){
         getBuyerInformation({
           orderId: orderId,

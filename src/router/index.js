@@ -38,6 +38,8 @@ import sellerCentral from "../views/sellerCentral"
 //特色商城
 import myPosts from "../views/myPosts"
 import messageCenter from "../views/messageCenter"
+import showSquare from "../views/showSquare";
+import postDetails from "../views/postDetails";
 
 Vue.use(Router)
 
@@ -217,6 +219,16 @@ export default new Router({
       path: '/messageCenter/',
       name: 'messageCenter',
       component: messageCenter,
+    },
+    {
+      path: '/showSquare/',
+      name: 'showsquare',
+      component: showSquare,
+    },
+    {
+      path: '/postDetails/:pid',//帖子id
+      name: 'postDetails',
+      component: postDetails,
     },
   ]
 })

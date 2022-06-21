@@ -279,7 +279,7 @@
 
       getValue(item){
         this.purchasebuyerName = item.buyerName;
-        alert(this.purchasebuyerName)
+        // alert(this.purchasebuyerName)
         this.purchasebuyerPhone = item.buyerPhone;
         this.purchasebuyerAddress = item.buyerAddress;
         this.purchasebuyerAddressId = item.addressId;

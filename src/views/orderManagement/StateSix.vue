@@ -57,7 +57,7 @@
           </div>
           <ol>
             <li class="container_2" v-for="(goods,index) in order" :key="index">
-              <img :src="goods.img" style="width: 18%;float: left;margin-left: 1%;margin-top: 1%;">
+              <img :src="goods.img" style="width: 18%;height:180px;float: left;margin-left: 1%;margin-top: 1%;">
               <div class="container1-2" style="overflow:hidden;">
                 <h2><b>{{goods.goodName}}</b></h2>
                 <div style="overflow-y: scroll;overflow-x: hidden;white-space: pre-line;">

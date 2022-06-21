@@ -6,13 +6,13 @@
       </div>
       <div class="modal-body">
         <h3>
-          购买人：{{buyer.buyerName}}
+          卖家：{{seller.name}}
         </h3>
         <h3>
-          购买人电话：{{buyer.buyerPhone}}
+          卖家电话：{{seller.phone}}
         </h3>
         <h3>
-          购买人地址：{{buyer.buyerAddress}}
+          卖家地址：{{seller.location}}
         </h3>
       </div>
       <div class="modal-footer">
@@ -25,9 +25,9 @@
 
 <script>
   export default {
-    name: "buyerInformationModal",
+    name: "sellerInformationModal",
     props: {
-      buyer:{
+      seller:{
         type: [Object,Array],
         default: [],
       }
